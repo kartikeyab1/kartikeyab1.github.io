@@ -175,10 +175,10 @@ Array.from(document.querySelectorAll('a[href^=\"#\"]')).forEach(a => {
     if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
 });
-// ===== Typewriter effect for subtitle (cycling) =====
+// ===== Typewriter effect with icons before text =====
 const subtitles = [
-  "Electrical Engineering @ McMaster University",
-  "Research Intern @ McMaster Automotive Resource Centre"
+  "⚡ Electrical Engineering @ McMaster University",
+  "🏎️ Research Intern @ McMaster Automotive Resource Centre (MARC)"
 ];
 const subtitleEl = document.getElementById("typed-subtitle");
 
@@ -211,6 +211,9 @@ function typeSubtitle() {
     setTimeout(typeSubtitle, 500);
   }
 }
+
+typeSubtitle();
+
 
 typeSubtitle();
 
