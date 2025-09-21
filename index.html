@@ -1,18 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!--
-    ✨ Ultra-Polished Portfolio for GitHub Pages
-    - Single-file drop-in (index.html) — perfect for GitHub Pages
-    - Three.js 3D background with scroll-synced animation
-    - GSAP ScrollTrigger for buttery scroll effects
-    - Responsive, accessible, and well-commented for easy edits
-
-    How to use:
-    1) Replace name, tagline, links, and project data below.
-    2) Commit as index.html at the root of your GitHub Pages repo.
-    3) (Optional) Add your own images to /assets and update URLs.
-  -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark light" />
@@ -25,159 +13,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- Icons (optional) -->
+  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%230ea5e9'/%3E%3Ctext x='50' y='60' font-size='50' text-anchor='middle' fill='white'%3EK%3C/text%3E%3C/svg%3E"/>
 
-  <!-- THREE.js & GSAP (via CDNs for easy one-file setup) -->
-  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-  <script src="https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js" type="module"></script>
-  <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-
-  <style>
-    :root {
-      --bg: #0b0f1a;        /* Deep navy */
-      --bg-2: #0f172a;      /* Sapphire */
-      --soft: #111827;      /* Panel */
-      --text: #e5e7eb;      /* Light text */
-      --muted: #93a4b8;     /* Muted text */
-      --brand: #0ea5e9;     /* Sky */
-      --brand-2: #22d3ee;   /* Cyan */
-      --accent: #a78bfa;    /* Purple */
-      --card: rgba(17, 24, 39, 0.6);
-      --glass: rgba(255,255,255,0.06);
-      --radius: 18px;
-      --shadow: 0 10px 40px rgba(0,0,0,.4);
-      --max-w: 1100px;
-    }
-
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0; padding: 0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-      color: var(--text);
-      background: radial-gradient(1200px 800px at 70% 10%, #0a1826 0%, var(--bg) 40%, #060913 100%);
-      overflow-x: hidden;
-    }
-
-    /* Fixed 3D canvas underlay */
-    #bg-canvas {
-      position: fixed;
-      inset: 0;
-      z-index: -2; /* sit beneath content */
-    }
-
-    /* Subtle vignette overlay for readability */
-    .vignette {
-      position: fixed; inset: 0; z-index: -1;
-      pointer-events: none;
-      background: radial-gradient(1200px 600px at 50% -10%, rgba(14,165,233,0.12), transparent 50%),
-                  radial-gradient(800px 500px at 10% 10%, rgba(167,139,250,0.18), transparent 60%),
-                  radial-gradient(900px 700px at 90% 20%, rgba(34,211,238,0.12), transparent 55%),
-                  linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(6,9,19,0.55) 85%);
-    }
-
-    header {
-      position: sticky; top: 0; z-index: 50;
-      background: linear-gradient(180deg, rgba(11,15,26,0.8) 0%, rgba(11,15,26,0.55) 100%);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    nav { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; }
-    .brand { display: flex; gap: 12px; align-items: center; text-decoration: none; color: var(--text); }
-    .brand .dot { width: 10px; height: 10px; border-radius: 999px; background: linear-gradient(135deg, var(--brand), var(--accent)); box-shadow: 0 0 18px rgba(14,165,233,.7); }
-    .brand h1 { font-size: 16px; letter-spacing: .3px; margin: 0; font-weight: 800; }
-
-    .nav-links { display: flex; gap: 14px; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; padding: 8px 12px; border-radius: 10px; }
-    .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
-
-    .container { max-width: var(--max-w); margin: 0 auto; padding: 64px 18px; }
-
-    .hero {
-      min-height: 88dvh; display: grid; place-items: center; position: relative;
-      padding-top: 80px; /* for sticky header spacing */
-    }
-
-    .hero-card {
-      width: min(100%, 960px);
-      border-radius: calc(var(--radius) + 6px);
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-      border: 1px solid rgba(255,255,255,0.08);
-      backdrop-filter: blur(12px);
-      box-shadow: var(--shadow);
-      padding: clamp(24px, 4vw, 44px);
-      position: relative; overflow: hidden;
-    }
-
-    .hero-badge { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); background: rgba(14,165,233,0.08); border: 1px solid rgba(14,165,233,0.25); padding: 6px 10px; border-radius: 999px; }
-    .hero-badge .pulse { width: 6px; height: 6px; border-radius: 999px; background: var(--brand-2); box-shadow: 0 0 10px rgba(34,211,238,.85); }
-
-    .hero h2 { font-size: clamp(28px, 6vw, 60px); letter-spacing: -0.6px; margin: 16px 0 10px; }
-    .hero p { max-width: 60ch; margin: 0; line-height: 1.6; color: var(--muted); }
-
-    .cta { display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
-    .btn {
-      text-decoration: none;
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 12px 16px; border-radius: 12px; font-weight: 600; font-size: 14px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: linear-gradient(135deg, rgba(14,165,233,.15), rgba(167,139,250,.15));
-      color: var(--text);
-    }
-    .btn:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-1px); transition: .2s ease; }
-
-    section { scroll-margin-top: 72px; }
-    .section-title { font-size: 26px; margin: 0 0 18px; letter-spacing: .2px; }
-    .section-sub { color: var(--muted); margin: 0 0 28px; max-width: 70ch; }
-
-    /* Card grid */
-    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
-    .card {
-      grid-column: span 12;
-      background: var(--card); border: 1px solid rgba(255,255,255,0.08);
-      border-radius: var(--radius); padding: 18px; position: relative; overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-    @media (min-width: 720px) {
-      .card.sm-6 { grid-column: span 6; }
-      .card.sm-4 { grid-column: span 4; }
-    }
-
-    .card h3 { margin: 0 0 8px; font-size: 20px; }
-    .card p { margin: 0; color: var(--muted); }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-    .chip { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; color: #cbd5e1; background: rgba(148,163,184,.15); border: 1px solid rgba(255,255,255,.08); padding: 6px 10px; border-radius: 999px; }
-
-    /* Project screenshot mask (optional image) */
-    .thumb {
-      aspect-ratio: 16/9; border-radius: 14px; overflow: hidden; margin-top: 12px;
-      background: linear-gradient(135deg, rgba(14,165,233,.15), rgba(167,139,250,.15));
-      border: 1px dashed rgba(255,255,255,0.12);
-      display: grid; place-items: center; color: rgba(229,231,235,.85);
-      font-size: 14px;
-    }
-
-    /* Timeline */
-    .timeline { position: relative; padding-left: 24px; }
-    .timeline::before { content: ""; position: absolute; top: 0; bottom: 0; left: 8px; width: 2px; background: linear-gradient(180deg, rgba(14,165,233,.6), rgba(167,139,250,.6)); border-radius: 2px; }
-    .t-item { margin-bottom: 18px; position: relative; }
-    .t-item::marker { content: none; }
-    .t-dot { position: absolute; left: -2px; top: 6px; width: 12px; height: 12px; border-radius: 999px; background: linear-gradient(135deg, var(--brand), var(--accent)); box-shadow: 0 0 10px rgba(14,165,233,.7); border: 2px solid rgba(255,255,255,0.5); }
-
-    /* Footer */
-    footer { text-align: center; color: var(--muted); padding: 40px 18px 60px; }
-
-    /* In-view animations (fade/slide) */
-    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
-    .reveal.in { opacity: 1; transform: translateY(0); }
-
-    /* Theme toggle */
-    .theme-toggle { border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 10px; font-size: 13px; color: var(--text); cursor: pointer; }
-  </style>
+  <!-- Styles -->
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
   <!-- Fullscreen WebGL canvas under content -->
@@ -204,11 +44,11 @@
   <!-- Hero -->
   <main id="top" class="hero container">
     <div class="hero-card reveal">
-      <span class="hero-badge"><span class="pulse"></span> Available for 8‑month internship (Jan–Aug 2026)</span>
-      <h2>Building high‑voltage EV systems, elegant PCBs, and fast, safe power electronics.</h2>
+      <span class="hero-badge"><span class="pulse"></span> Available for 8-month internship (Jan–Aug 2026)</span>
+      <h2>Building high-voltage EV systems, elegant PCBs, and fast, safe power electronics.</h2>
       <p>
         I’m Kartikeya — Electrical Director at MAC Formula Electric and Research Intern at MARC.
-        I design and validate EV power electronics (600V+), orchestrate full‑stack electrical integrations,
+        I design and validate EV power electronics (600V+), orchestrate full-stack electrical integrations,
         and turn test data into better, cleaner hardware.
       </p>
       <div class="cta">
@@ -222,7 +62,7 @@
   <!-- About -->
   <section id="about" class="container">
     <h2 class="section-title">About</h2>
-    <p class="section-sub">I love rapid prototyping, careful iteration, and design-for-test. Areas of focus: high‑voltage safety, contactor sequencing, OBC/APM converters, and instrumentation‑friendly PCBs.</p>
+    <p class="section-sub">I love rapid prototyping, careful iteration, and design-for-test. Areas of focus: high-voltage safety, contactor sequencing, OBC/APM converters, and instrumentation-friendly PCBs.</p>
 
     <div class="grid">
       <article class="card sm-6 reveal">
@@ -232,7 +72,7 @@
           <span class="chip">PCB Design (Altium)</span>
           <span class="chip">SiC DPT + Validation</span>
           <span class="chip">HV Safety & IMD</span>
-          <span class="chip">Firmware Bring‑up</span>
+          <span class="chip">Firmware Bring-up</span>
           <span class="chip">HIL & Test Rigs</span>
         </div>
       </article>
@@ -257,15 +97,11 @@
     <p class="section-sub">A few builds I’m proud of. Swap in your own screenshots (replace the <em>thumb</em> boxes with images).</p>
 
     <div class="grid">
-      <!-- Project Card Template -->
       <article class="card sm-6 reveal">
         <h3>HV Safety Test Board</h3>
         <p>Analog-only control for contactors with sequenced precharge, IMD interlocks, and isolated sensing (AMC1411).</p>
         <div class="chips">
-          <span class="chip">600V</span>
-          <span class="chip">AMC1411</span>
-          <span class="chip">TPS1H200A-Q1</span>
-          <span class="chip">555 Timers</span>
+          <span class="chip">600V</span><span class="chip">AMC1411</span><span class="chip">TPS1H200A-Q1</span><span class="chip">555 Timers</span>
         </div>
         <div class="thumb">Replace with an image</div>
       </article>
@@ -273,44 +109,28 @@
       <article class="card sm-6 reveal">
         <h3>EV7 Systems Integration</h3>
         <p>Directed validation & integration of HV/LV subsystems to achieve the team’s first fully operational FSAE EV.</p>
-        <div class="chips">
-          <span class="chip">144s NMC</span>
-          <span class="chip">Contactor Logic</span>
-          <span class="chip">Fault Handling</span>
-        </div>
+        <div class="chips"><span class="chip">144s NMC</span><span class="chip">Contactor Logic</span><span class="chip">Fault Handling</span></div>
         <div class="thumb">Replace with an image</div>
       </article>
 
       <article class="card sm-4 reveal">
         <h3>HIL Interface PCB</h3>
         <p>Bridged converter eval board to Typhoon HIL; clean measurement and safety interlocks baked in.</p>
-        <div class="chips">
-          <span class="chip">Altium</span>
-          <span class="chip">HIL</span>
-          <span class="chip">Testability</span>
-        </div>
+        <div class="chips"><span class="chip">Altium</span><span class="chip">HIL</span><span class="chip">Testability</span></div>
         <div class="thumb">Replace with an image</div>
       </article>
 
       <article class="card sm-4 reveal">
         <h3>APM Interleaved Buck</h3>
-        <p>Co‑authored IECON’25 paper on optimized design for a 3.6 kW APM two‑stage architecture.</p>
-        <div class="chips">
-          <span class="chip">3.6 kW</span>
-          <span class="chip">Interleaved</span>
-          <span class="chip">Optimization</span>
-        </div>
+        <p>Co-authored IECON’25 paper on optimized design for a 3.6 kW APM two-stage architecture.</p>
+        <div class="chips"><span class="chip">3.6 kW</span><span class="chip">Interleaved</span><span class="chip">Optimization</span></div>
         <div class="thumb">Replace with an image</div>
       </article>
 
       <article class="card sm-4 reveal">
         <h3>LV Battery Pack</h3>
         <p>Custom 6S 2170 pack with proper isolation, BMS, and service-friendly harnessing.</p>
-        <div class="chips">
-          <span class="chip">2170</span>
-          <span class="chip">BMS</span>
-          <span class="chip">Serviceability</span>
-        </div>
+        <div class="chips"><span class="chip">2170</span><span class="chip">BMS</span><span class="chip">Serviceability</span></div>
         <div class="thumb">Replace with an image</div>
       </article>
     </div>
@@ -329,7 +149,7 @@
       <li class="t-item card reveal">
         <span class="t-dot"></span>
         <h3>Research Intern · McMaster Automotive Resource Centre</h3>
-        <p>Prototyped and validated power electronics subsystems; developed HIL interface strategies and instrumentation‑ready PCBs.</p>
+        <p>Prototyped and validated power electronics subsystems; developed HIL interface strategies and instrumentation-ready PCBs.</p>
       </li>
     </ol>
   </section>
@@ -342,14 +162,14 @@
     <div class="grid">
       <article class="card sm-6 reveal">
         <h3>Get in touch</h3>
-        <p>Email: <a href="mailto:babhutak@mcmaster.ca" style="color: var(--brand-2); text-decoration: none;">babhutak@mcmaster.ca</a></p>
-        <p>LinkedIn: <a href="https://www.linkedin.com/in/kartikeya-babhuta" target="_blank" rel="noopener" style="color: var(--brand-2); text-decoration: none;">linkedin.com/in/kartikeya-babhuta</a></p>
+        <p>Email: <a href="mailto:babhutak@mcmaster.ca" class="link">babhutak@mcmaster.ca</a></p>
+        <p>LinkedIn: <a href="https://www.linkedin.com/in/kartikeya-babhuta" target="_blank" rel="noopener" class="link">linkedin.com/in/kartikeya-babhuta</a></p>
       </article>
 
       <article class="card sm-6 reveal">
         <h3>Resume</h3>
         <p>Keep a PDF named <em>resume.pdf</em> in your repo root and this link will point to it:</p>
-        <p><a href="./resume.pdf" style="color: var(--brand-2); text-decoration: none;">Download resume.pdf</a></p>
+        <p><a href="./resume.pdf" class="link">Download resume.pdf</a></p>
       </article>
     </div>
   </section>
@@ -358,225 +178,12 @@
     <small>© <span id="year"></span> Kartikeya Babhuta • Built with HTML, Three.js & GSAP</small>
   </footer>
 
-  <script>
-    // =========================
-    //  Accessibility niceties
-    // =========================
-    const yearEl = document.getElementById('year');
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
+  <!-- Vendor libs via CDN (globals) -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 
-    // Simple theme toggle (persists in localStorage)
-    const toggle = document.getElementById('themeToggle');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const savedTheme = localStorage.getItem('theme');
-    const root = document.documentElement;
-
-    function setTheme(mode) {
-      // Light tweaks shift the palette subtly; keep contrast high
-      if (mode === 'light') {
-        root.style.setProperty('--bg', '#f8fafc');
-        root.style.setProperty('--bg-2', '#f1f5f9');
-        root.style.setProperty('--soft', '#e2e8f0');
-        root.style.setProperty('--text', '#0b1220');
-        root.style.setProperty('--muted', '#475569');
-        root.style.setProperty('--card', 'rgba(255,255,255,0.7)');
-        document.body.style.background = 'radial-gradient(1200px 800px at 70% 10%, #eef6ff 0%, #f8fafc 40%, #eef2ff 100%)';
-      } else {
-        // reset to defaults by removing overrides
-        root.style.removeProperty('--bg');
-        root.style.removeProperty('--bg-2');
-        root.style.removeProperty('--soft');
-        root.style.removeProperty('--text');
-        root.style.removeProperty('--muted');
-        root.style.removeProperty('--card');
-        document.body.style.background = 'radial-gradient(1200px 800px at 70% 10%, #0a1826 0%, var(--bg) 40%, #060913 100%)';
-      }
-    }
-
-    const initial = savedTheme || (prefersDark ? 'dark' : 'light');
-    setTheme(initial);
-
-    toggle.addEventListener('click', () => {
-      const next = (localStorage.getItem('theme') || initial) === 'dark' ? 'light' : 'dark';
-      localStorage.setItem('theme', next);
-      setTheme(next);
-    });
-
-    // =========================
-    //  Reveal-on-scroll helper
-    // =========================
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-
-    // =========================
-    //  3D BACKGROUND with Three.js
-    //  - Lightweight, no external assets
-    //  - Scroll-synced camera & object motion via GSAP/ScrollTrigger
-    // =========================
-    const canvas = document.getElementById('bg-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 8);
-
-    // Subtle fog for depth
-    scene.fog = new THREE.FogExp2(0x071018, 0.08);
-
-    // Responsive sizing
-    function onResize() {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
-    }
-    window.addEventListener('resize', onResize);
-    onResize();
-
-    // Lights
-    const light = new THREE.DirectionalLight(0x7fdcff, 1.1);
-    light.position.set(2, 3, 2);
-    scene.add(light);
-    scene.add(new THREE.AmbientLight(0x5577aa, 0.6));
-
-    // Procedural starfield (instanced points)
-    const starCount = 1200;
-    const starGeom = new THREE.BufferGeometry();
-    const positions = new Float32Array(starCount * 3);
-    for (let i = 0; i < starCount; i++) {
-      const r = 20 * Math.random() + 6;      // ring radius
-      const a = Math.random() * Math.PI * 2; // angle
-      positions[i * 3 + 0] = Math.cos(a) * r;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 8;
-      positions[i * 3 + 2] = Math.sin(a) * r;
-    }
-    starGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const starMat = new THREE.PointsMaterial({ color: 0x66e4ff, size: 0.03, transparent: true, opacity: 0.85 });
-    const stars = new THREE.Points(starGeom, starMat);
-    scene.add(stars);
-
-    // Centerpiece: glossy torus knot (symbolic of interleaving/energy flow)
-    const tkGeom = new THREE.TorusKnotGeometry(1.2, 0.38, 222, 24);
-    const tkMat = new THREE.MeshStandardMaterial({
-      color: 0x2bd4ff,
-      metalness: 0.6,
-      roughness: 0.25,
-      envMapIntensity: 1.0,
-    });
-    const knot = new THREE.Mesh(tkGeom, tkMat);
-    scene.add(knot);
-
-    // Floating chips around the knot — subtle rotating quads
-    const chipGeom = new THREE.PlaneGeometry(0.45, 0.3);
-    const chipMat = new THREE.MeshBasicMaterial({ color: 0xa78bfa, transparent: true, opacity: 0.7, side: THREE.DoubleSide });
-    const chips = [];
-    for (let i = 0; i < 10; i++) {
-      const chip = new THREE.Mesh(chipGeom, chipMat.clone());
-      chip.position.set((Math.random()-0.5)*6, (Math.random()-0.5)*4, (Math.random()-0.5)*6);
-      chip.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
-      chips.push(chip);
-      scene.add(chip);
-    }
-
-    // Render loop
-    let t = 0;
-    function animate() {
-      requestAnimationFrame(animate);
-      t += 0.01;
-      knot.rotation.x += 0.004;
-      knot.rotation.y += 0.006;
-      stars.rotation.y += 0.0008;
-      chips.forEach((c, i) => {
-        c.rotation.y += 0.01 + i * 0.0003;
-        c.position.y += Math.sin(t * 0.4 + i) * 0.0006;
-      });
-      renderer.render(scene, camera);
-    }
-    animate();
-
-    // =========================
-    //  GSAP Scroll Animations
-    //  - Pin hero for parallax
-    //  - Scroll camera forward & subtly offset over sections
-    //  - Color shift lights through the page
-    // =========================
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Parallax pin on hero card
-    ScrollTrigger.create({
-      trigger: '.hero',
-      start: 'top top',
-      end: '+=80%',
-      pin: true,
-      pinSpacing: true,
-    });
-
-    // Camera tween through sections
-    const sections = gsap.utils.toArray('section');
-    sections.forEach((sec, i) => {
-      const zTarget = 8 - i * 1.2; // move slightly closer each section
-      const yTarget = (i % 2 === 0) ? 0.2 : -0.2;
-
-      gsap.to(camera.position, {
-        scrollTrigger: {
-          trigger: sec,
-          start: 'top 70%',
-          end: 'bottom 30%',
-          scrub: 0.8,
-        },
-        z: zTarget,
-        y: yTarget,
-        ease: 'power2.out'
-      });
-
-      // Subtle hue shift on the knot
-      gsap.to(knot.material.color, {
-        scrollTrigger: {
-          trigger: sec,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          scrub: 0.6,
-        },
-        r: 0.2 + 0.2 * Math.sin(i),
-        g: 0.8 - 0.1 * i,
-        b: 1.0 - 0.1 * i,
-      });
-    });
-
-    // Light sweep down the page
-    gsap.to(light.position, {
-      scrollTrigger: {
-        trigger: '#projects',
-        start: 'top center',
-        end: 'bottom center',
-        scrub: true,
-      },
-      x: 3, y: 2, z: 1
-    });
-
-    // =========================
-    //  Small enhancements
-    // =========================
-    // Smooth internal anchor scroll (improves keyboard navigation too)
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', (e) => {
-        const target = document.querySelector(a.getAttribute('href'));
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-    });
-  </script>
+  <!-- Your app code -->
+  <script src="./app.js"></script>
 </body>
 </html>
