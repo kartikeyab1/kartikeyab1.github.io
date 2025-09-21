@@ -1,148 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kartikeya Babhuta – Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0f1115;--fg:#e8ebf1;--muted:#a5b0c2;--card:#151922;--acc:#8b5cf6;--acc2:#22c55e;--shadow:rgba(0,0,0,.35);
-}
-@media (prefers-color-scheme: light){
-  :root{--bg:#f7f8fb;--fg:#0f1115;--muted:#5d6679;--card:#ffffff;--shadow:rgba(0,0,0,.08)}
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;background:radial-gradient(1200px 800px at 70% -10%, rgba(139,92,246,.12), transparent 60%),
-                    radial-gradient(800px 600px at -10% 80%, rgba(34,197,94,.12), transparent 60%),
-                    var(--bg);
-  color:var(--fg);font:16px/1.6 'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-}
-.container{max-width:1000px;margin:0 auto;padding:24px}
-.nav{display:flex;gap:16px;justify-content:flex-end;flex-wrap:wrap}
-.nav a{color:var(--fg);text-decoration:none;opacity:.9}
-.nav a:hover{opacity:1}
+  <!--
+  Tech: vanilla HTML + CSS + tiny JS + Spline web component.
+  No build tools, no frameworks, copy-paste into index.html.
+  ==========================================================
+  -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f1115" />
+  <title>Portfolio • EDIT ME: Your Name</title>
+  <meta name="description" content="EDIT ME: short site description for SEO" />
 
-.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center;margin:24px 0 32px}
-@media (max-width:800px){.hero{grid-template-columns:1fr}}
-.card{background:var(--card);border-radius:18px;box-shadow:0 20px 60px var(--shadow);padding:24px}
-h1{font-size:clamp(28px,4vw,48px);margin:0 0 8px}
-h2{font-size:clamp(22px,3vw,32px);margin:0 0 12px}
-.pill{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:14px}
-.buttons a{display:inline-block;margin-right:10px;margin-top:10px;padding:10px 14px;border-radius:12px;text-decoration:none;color:var(--fg);
-  border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.02));
-  transition:transform .12s ease, box-shadow .12s ease}
-.buttons a:hover{transform:translateY(-1px);box-shadow:0 10px 16px var(--shadow)}
+  <!-- Fonts (safe to remove/change) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-@media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:620px){.grid{grid-template-columns:1fr}}
-.tile h3{margin:0 0 6px;font-size:18px}
-.tile p{margin:0;color:var(--muted)}
-.tile a{
-  display:inline-block;margin-top:10px;font-size:14px;color:var(--fg);text-decoration:none;opacity:.9;
-  border-bottom:1px dashed rgba(255,255,255,.25);
-}
-.tile a:hover{opacity:1}
+  <!-- Spline viewer (web component) -->
+  <!-- Replace the version with latest if you like; this is pinned for stability. -->
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.40/build/spline-viewer.js"></script>
 
-.section{margin:34px 0}
-ul.skills{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none}
-ul.skills li{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:14px}
+  <style>
+    /* =======================
+       THEME & RESET
+       ======================= */
+    :root {
+      /* EDIT ME: Brand colors */
+      --bg: #0f1115;
+      --card: #121622;
+      --fg: #e8eef6;
+      --muted: #9aa6bf;
+      --accent: #8b5cf6;  /* purple */
+      --accent2: #22c55e; /* green */
+      --line: rgba(255,255,255,0.08);
 
-.footer{margin:30px 0;color:var(--muted);font-size:14px;text-align:center}
-</style>
+      --radius: 16px;
+      --shadow: 0 24px 80px rgba(0,0,0,0.35);
+      --container: min(1100px, 92vw);
+    }
+    @media (prefers-color-scheme: light) {
+      :root { --bg:#f7f8fb; --card:#ffffff; --fg:#0f1115; --muted:#5d6679; --line: rgba(0,0,0,0.08); }
+    }
+    * { box-sizing: border-box }
+    html, body { height: 100% }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--fg);
+      background:
+        radial-gradient(1200px 800px at 70% -10%, rgba(139,92,246,.12), transparent 60%),
+        radial-gradient(900px 600px at -10% 80%, rgba(34,197,94,.12), transparent 60%),
+        var(--bg);
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none }
+    .container { width: var(--container); margin: 0 auto; padding: 20px }
+    .card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--line) }
+    .btn { display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius: 12px; border:1px solid var(--line); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 16px rgba(0,0,0,.25) }
+    .muted { color: var(--muted) }
+
+    /* =======================
+       HEADER / NAV
+       ======================= */
+    header.site-header {
+      position: sticky; top: 0; z-index: 50;
+      background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0));
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .brand { display:flex; align-items:center; gap:14px; }
+    .brand .dot { width:10px; height:10px; border-radius:999px; background:var(--accent); box-shadow: 0 0 0 4px rgba(139,92,246,.25) }
+    .brand h1 { font-size: 18px; margin: 0 }
+    .links { display:flex; align-items:center; gap:12px; flex-wrap: wrap }
+    .links a { opacity: .95; padding: 8px 10px; border-radius: 10px; border: 1px solid transparent }
+    .links a:hover { border-color: var(--line) }
+
+    /* =======================
+       HERO (Pinned Spline)
+       ======================= */
+    .hero {
+      position: relative; isolation: isolate; /* allow overlays */
+      min-height: 100vh; display: grid; place-items: center; overflow: hidden;
+    }
+    .hero .inner { width: var(--container); display: grid; grid-template-columns: 1.2fr .8fr; gap: 24px; align-items: center }
+    @media (max-width: 900px) { .hero .inner { grid-template-columns: 1fr } }
+
+    .hero-copy.card { padding: 24px }
+    .hero-copy h2 { font-size: clamp(28px, 5vw, 56px); margin: 0 0 6px }
+    .hero-copy p { margin: 0; color: var(--muted) }
+    .buttons { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px }
+
+    /* Spline viewer wrapper (sticky) */
+    .spline-wrap {
+      position: relative; height: 70vh; min-height: 420px; border-radius: var(--radius); overflow: hidden; border:1px solid var(--line)
+    }
+    spline-viewer { width: 100%; height: 100%; display: block }
+    .spline-overlay { position: absolute; inset: 0; pointer-events: none; }
+
+    /* =======================
+       SCROLLYTELLING (Apple-ish)
+       pinned 3D with step text that fades in/out
+       ======================= */
+    .scrolly {
+      position: relative; padding: 40px 0 120px;
+    }
+    .scrolly .pin { position: sticky; top: 80px; height: 70vh; min-height: 420px; border-radius: var(--radius); overflow: hidden; border:1px solid var(--line) }
+    .scrolly .steps { margin-top: 40px; display: grid; gap: 24px }
+    .step { padding: 20px; border:1px solid var(--line); border-radius: 14px; background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); opacity: .5; transform: translateY(8px); transition: opacity .3s, transform .3s }
+    .step.active { opacity: 1; transform: translateY(0) }
+
+    /* =======================
+       PROJECTS GRID
+       ======================= */
+    .section { padding: 40px 0 }
+    .section h3 { font-size: clamp(22px, 3.6vw, 32px); margin: 0 0 12px }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px }
+    @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr) } }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr } }
+    .tile { padding: 18px; display: grid; gap: 8px }
+    .tile h4 { margin: 0; font-size: 18px }
+    .tile p { margin: 0; color: var(--muted) }
+
+    /* =======================
+       FOOTER
+       ======================= */
+    footer { border-top: 1px solid var(--line); padding: 26px 0; color: var(--muted); font-size: 14px }
+
+    /* =======================
+       Reduced motion support
+       ======================= */
+    @media (prefers-reduced-motion: reduce) {
+      .step, .btn, .tile { transition: none !important }
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <nav class="nav">
-      <a href="#projects">Projects</a>
-      <a href="#skills">Skills</a>
-      <a href="#about">About</a>
-      <a href="https://github.com/kartikeyab1" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://www.linkedin.com/in/kbabhuta/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="mailto:babhutak@mcmaster.ca">Email</a>
-    </nav>
+  <!-- =====================
+       HEADER / NAV (EDIT ME)
+       ===================== -->
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">
+        <span class="dot" aria-hidden="true"></span>
+        <h1>EDIT ME • Your Name</h1>
+      </div>
+      <nav class="links" aria-label="Primary">
+        <a href="#work">Work</a>
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <!-- No email (per your preference). Add it back if you want. -->
+        <a class="btn" href="https://github.com/EDIT_ME_GITHUB" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/EDIT_ME_LINKEDIN/" target="_blank" rel="noopener">LinkedIn</a>
+      </nav>
+    </div>
+  </header>
 
-    <section class="hero">
-      <div class="card">
-        <span class="pill">Portfolio</span>
-        <h1>Kartikeya Babhuta</h1>
-        <p style="margin:8px 0 16px;color:var(--muted)">Electrical Engineer • EV Power Electronics • FSAE</p>
+  <!-- =====================
+       HERO with pinned Spline (EDIT ME)
+       ===================== -->
+  <section class="hero" id="work">
+    <div class="inner">
+      <div class="hero-copy card">
+        <h2>EDIT ME: Kartikeya Babhuta</h2>
+        <p class="muted">EDIT ME: Electrical Engineer • EV Power Electronics • FSAE</p>
         <div class="buttons">
-          <a href="#projects">View Projects</a>
-          <a href="https://github.com/kartikeyab1" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://www.linkedin.com/in/kbabhuta/" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="mailto:babhutak@mcmaster.ca">Email me</a>
+          <a class="btn" href="#projects">View Projects</a>
+          <a class="btn" href="https://github.com/EDIT_ME_GITHUB" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn" href="https://www.linkedin.com/in/EDIT_ME_LINKEDIN/" target="_blank" rel="noopener">LinkedIn</a>
         </div>
       </div>
-      <div class="card">
-        <h2>Quick Highlights</h2>
-        <ul style="margin:6px 0 0 16px">
-          <li>Directed integration & validation of MAC Formula Electric EV (first fully operational).</li>
-          <li>HV Safety Test Board design: analog sequencing, IMD logic, isolation/OV/OC protection.</li>
-          <li>Research @ McMaster Automotive Resource Centre (SuperBox converter prototype, HIL).</li>
-          <li>Wireless BMS capstone for a 600 V pack; strong PCB design + lab validation focus.</li>
-        </ul>
+
+      <!-- Pinned 3D Spline scene. Replace the URL below with your scene link from Spline.
+           In Spline: File → Export → Web → Copy the scene URL. -->
+      <div class="spline-wrap card" aria-label="3D scene">
+        <spline-viewer id="splineHero" loading="auto" events="true" url="EDIT_ME_SPLINE_SCENE_URL"></spline-viewer>
+        <div class="spline-overlay" aria-hidden="true"></div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="section" id="projects">
-      <h2>Projects</h2>
-      <div class="grid">
-        
-        <article class="card tile">
-          <h3>MAC Formula Electric – EV7 Integration</h3>
-          <p>Directed validation & integration of HV/LV systems to achieve the team's first fully operational EV.</p>
-          <a href="https://www.mcmaster.ca/" target="_blank" rel="noopener">Learn more →</a>
-        </article>
-        <article class="card tile">
-          <h3>HV Safety Test Board</h3>
-          <p>Analog contactor sequencing, IMD logic, isolation sensing, surge/OV/OC protection for HV bench testing.</p>
-          
-        </article>
-        <article class="card tile">
-          <h3>SuperBox: Integrated OBC–Traction–Boost–APM</h3>
-          <p>Research prototype (MARC) for a multi-stage automotive power converter; interface PCBs & HIL.</p>
-          
-        </article>
-        <article class="card tile">
-          <h3>Wireless BMS (Capstone, 600 V pack)</h3>
-          <p>Team lead for PCB architecture and validation; RF teammate on comms, mechanical on pack integration.</p>
-          
-        </article>
-        <article class="card tile">
-          <h3>Interface PCB for HIL</h3>
-          <p>Bridged converter evaluation board to Typhoon HIL; defined pinout, isolation, and safety paths.</p>
-          
-        </article>
-        <article class="card tile">
-          <h3>Double‑Pulse Test Bench (SiC)</h3>
-          <p>Characterized switching behavior at ~600–850 V; safe gate drive/measurement with IsoVu & HV probes.</p>
-          
-        </article>
-      </div>
-    </section>
+  <!-- =====================
+       SCROLLYTELLING (Apple-ish)
+       - Left: steps that activate as you scroll
+       - Right: sticky/pinned second Spline scene (or reuse the same scene)
+       ===================== -->
+  <section class="scrolly container" aria-label="Highlights">
+    <div class="pin card" aria-hidden="false">
+      <!-- Option A: Reuse the same hero scene (duplicate id not needed if not scripting it). -->
+      <spline-viewer id="splinePin" url="EDIT_ME_SPLINE_SCENE_URL_2"></spline-viewer>
+    </div>
 
-    <section class="section" id="skills">
-      <h2>Skills</h2>
-      <ul class="skills">
-        <li>Power Electronics</li><li>PCB Design (Altium)</li><li>High‑Voltage Safety</li><li>Analog/Digital</li>
-        <li>HIL (Typhoon)</li><li>SPICE / MATLAB</li><li>Oscilloscopes & HV Probing</li><li>Embedded (basic)</li>
-      </ul>
-    </section>
+    <div class="steps" id="steps">
+      <article class="step card" data-step="1">
+        <h3>EV7 – First Full Operation</h3>
+        <p class="muted">Led validation & integration of HV/LV systems to achieve the team’s first fully operational EV.</p>
+      </article>
+      <article class="step card" data-step="2">
+        <h3>HV Safety Test Board</h3>
+        <p class="muted">Analog contactor sequencing, IMD/iso monitoring, surge/OV/OC protection for safe bench testing.</p>
+      </article>
+      <article class="step card" data-step="3">
+        <h3>SuperBox Research (MARC)</h3>
+        <p class="muted">Interface PCBs & HIL for integrated OBC–Traction–Boost–APM power converter prototype.</p>
+      </article>
+      <article class="step card" data-step="4">
+        <h3>Wireless BMS (Capstone)</h3>
+        <p class="muted">600 V pack architecture; collaboration across RF comms and mechanical integration.</p>
+      </article>
+    </div>
+  </section>
 
-    <section class="section" id="about">
-      <h2>About</h2>
-      <p style="color:var(--muted)">
-        I’m an Electrical Engineering student at McMaster University (’27) focused on EV power electronics and high‑voltage test systems.
-        I lead hands‑on integration, debugging, and validation across HV/LV systems. I enjoy fast, careful iteration—from bench
-        measurements to PCB spins—always tying decisions to test data.
+  <!-- =====================
+       PROJECTS GRID (EDIT ME)
+       ===================== -->
+  <section class="container section" id="projects">
+    <h3>Selected Projects</h3>
+    <div class="grid">
+      <a class="tile card" href="#" target="_blank" rel="noopener">
+        <h4>Interface PCB for HIL</h4>
+        <p>Bridged converter eval board to Typhoon HIL; defined pinout, isolation, and safety paths.</p>
+      </a>
+      <a class="tile card" href="#" target="_blank" rel="noopener">
+        <h4>SiC Double‑Pulse Test Bench</h4>
+        <p>Characterized switching at ~600–850 V; safe probing with IsoVu & HV differential probes.</p>
+      </a>
+      <a class="tile card" href="#" target="_blank" rel="noopener">
+        <h4>HV Safety Test Board</h4>
+        <p>Analog sequencing, comparators, isolation amplifiers, OV/OC protection & indicators.</p>
+      </a>
+      <a class="tile card" href="#" target="_blank" rel="noopener">
+        <h4>EV7 Electrical Integration</h4>
+        <p>Directed end‑to‑end integration and validation for a fully operational FSAE EV.</p>
+      </a>
+      <a class="tile card" href="#" target="_blank" rel="noopener">
+        <h4>Wireless BMS (600 V)</h4>
+        <p>Capstone project; PCB architecture lead; RF teammate on comms; systems integration.</p>
+      </a>
+      <a class="tile card" href="#" target="_blank" rel="noopener">
+        <h4>SuperBox Interface</h4>
+        <p>PCBs & HIL for integrated OBC–Traction–Boost–APM research prototype.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- =====================
+       ABOUT (EDIT ME)
+       ===================== -->
+  <section class="container section" id="about">
+    <h3>About</h3>
+    <div class="card" style="padding:18px">
+      <p class="muted" style="margin:0">
+        EDIT ME: I’m an Electrical Engineering student focused on EV power electronics
+        and high‑voltage test systems. I like fast, careful iteration—from bench
+        measurements to PCB spins—tying decisions to test data.
       </p>
-    </section>
+    </div>
+  </section>
 
-    <p class="footer">© Kartikeya Babhuta — Built for GitHub Pages</p>
-  </div>
+  <footer>
+    <div class="container">© <span id="year"></span> EDIT ME • Your Name. Built with Spline + vanilla web tech.</div>
+  </footer>
+
+  <!-- =======================
+       SCRIPT: tiny, readable, and optional.
+       - IntersectionObserver to activate steps on scroll
+       - Gentle parallax for hero gradient
+       - (Optional) Spline messaging hooks are left as comments for you to extend
+       ======================= -->
+  <script>
+    // Year in footer (small nicety)
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // IntersectionObserver: mark the current step as active
+    const steps = Array.from(document.querySelectorAll('.step'));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          steps.forEach(s => s.classList.remove('active'));
+          e.target.classList.add('active');
+
+          // OPTIONAL: If you want to send messages to Spline to trigger state changes,
+          // you can do it here per step. For advanced usage, see Spline docs.
+          // Example pseudocode (requires a scene set up to listen to events):
+          // const spline = document.getElementById('splinePin');
+          // spline.emitEvent('start', 'Step' + e.target.dataset.step);
+        }
+      });
+    }, { threshold: 0.6 });
+    steps.forEach(step => io.observe(step));
+
+    // Gentle parallax on scroll (background gradients)
+    const parallax = () => {
+      const y = window.scrollY || document.documentElement.scrollTop;
+      document.body.style.backgroundPosition = `0px ${-y * 0.05}px, 0px ${-y * 0.02}px, 0 0`;
+    };
+    window.addEventListener('scroll', parallax, { passive: true });
+
+    // Spline viewer tips:
+    // - You can have a single scene and animate inside Spline with timeline triggers.
+    // - Or use two different scene URLs (hero vs. scrolly) as shown.
+    // - In Spline, you can name objects and listen for events via the viewer API.
+  </script>
 </body>
 </html>
