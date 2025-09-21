@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kartikeya Babhuta – Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1115;--fg:#e8ebf1;--muted:#a5b0c2;--card:#151922;--acc:#8b5cf6;--acc2:#22c55e;--shadow:rgba(0,0,0,.35);
+}
+@media (prefers-color-scheme: light){
+  :root{--bg:#f7f8fb;--fg:#0f1115;--muted:#5d6679;--card:#ffffff;--shadow:rgba(0,0,0,.08)}
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:radial-gradient(1200px 800px at 70% -10%, rgba(139,92,246,.12), transparent 60%),
+                    radial-gradient(800px 600px at -10% 80%, rgba(34,197,94,.12), transparent 60%),
+                    var(--bg);
+  color:var(--fg);font:16px/1.6 'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+}
+.container{max-width:1000px;margin:0 auto;padding:24px}
+.nav{display:flex;gap:16px;justify-content:flex-end;flex-wrap:wrap}
+.nav a{color:var(--fg);text-decoration:none;opacity:.9}
+.nav a:hover{opacity:1}
+
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center;margin:24px 0 32px}
+@media (max-width:800px){.hero{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:18px;box-shadow:0 20px 60px var(--shadow);padding:24px}
+h1{font-size:clamp(28px,4vw,48px);margin:0 0 8px}
+h2{font-size:clamp(22px,3vw,32px);margin:0 0 12px}
+.pill{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:14px}
+.buttons a{display:inline-block;margin-right:10px;margin-top:10px;padding:10px 14px;border-radius:12px;text-decoration:none;color:var(--fg);
+  border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.02));
+  transition:transform .12s ease, box-shadow .12s ease}
+.buttons a:hover{transform:translateY(-1px);box-shadow:0 10px 16px var(--shadow)}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:620px){.grid{grid-template-columns:1fr}}
+.tile h3{margin:0 0 6px;font-size:18px}
+.tile p{margin:0;color:var(--muted)}
+.tile a{
+  display:inline-block;margin-top:10px;font-size:14px;color:var(--fg);text-decoration:none;opacity:.9;
+  border-bottom:1px dashed rgba(255,255,255,.25);
+}
+.tile a:hover{opacity:1}
+
+.section{margin:34px 0}
+ul.skills{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none}
+ul.skills li{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:14px}
+
+.footer{margin:30px 0;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#about">About</a>
+      <a href="https://github.com/kartikeyab1" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/kbabhuta/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:babhutak@mcmaster.ca">Email</a>
+    </nav>
+
+    <section class="hero">
+      <div class="card">
+        <span class="pill">Portfolio</span>
+        <h1>Kartikeya Babhuta</h1>
+        <p style="margin:8px 0 16px;color:var(--muted)">Electrical Engineer • EV Power Electronics • FSAE</p>
+        <div class="buttons">
+          <a href="#projects">View Projects</a>
+          <a href="https://github.com/kartikeyab1" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/kbabhuta/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="mailto:babhutak@mcmaster.ca">Email me</a>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Quick Highlights</h2>
+        <ul style="margin:6px 0 0 16px">
+          <li>Directed integration & validation of MAC Formula Electric EV (first fully operational).</li>
+          <li>HV Safety Test Board design: analog sequencing, IMD logic, isolation/OV/OC protection.</li>
+          <li>Research @ McMaster Automotive Resource Centre (SuperBox converter prototype, HIL).</li>
+          <li>Wireless BMS capstone for a 600 V pack; strong PCB design + lab validation focus.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <h2>Projects</h2>
+      <div class="grid">
+        
+        <article class="card tile">
+          <h3>MAC Formula Electric – EV7 Integration</h3>
+          <p>Directed validation & integration of HV/LV systems to achieve the team's first fully operational EV.</p>
+          <a href="https://www.mcmaster.ca/" target="_blank" rel="noopener">Learn more →</a>
+        </article>
+        <article class="card tile">
+          <h3>HV Safety Test Board</h3>
+          <p>Analog contactor sequencing, IMD logic, isolation sensing, surge/OV/OC protection for HV bench testing.</p>
+          
+        </article>
+        <article class="card tile">
+          <h3>SuperBox: Integrated OBC–Traction–Boost–APM</h3>
+          <p>Research prototype (MARC) for a multi-stage automotive power converter; interface PCBs & HIL.</p>
+          
+        </article>
+        <article class="card tile">
+          <h3>Wireless BMS (Capstone, 600 V pack)</h3>
+          <p>Team lead for PCB architecture and validation; RF teammate on comms, mechanical on pack integration.</p>
+          
+        </article>
+        <article class="card tile">
+          <h3>Interface PCB for HIL</h3>
+          <p>Bridged converter evaluation board to Typhoon HIL; defined pinout, isolation, and safety paths.</p>
+          
+        </article>
+        <article class="card tile">
+          <h3>Double‑Pulse Test Bench (SiC)</h3>
+          <p>Characterized switching behavior at ~600–850 V; safe gate drive/measurement with IsoVu & HV probes.</p>
+          
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="skills">
+      <h2>Skills</h2>
+      <ul class="skills">
+        <li>Power Electronics</li><li>PCB Design (Altium)</li><li>High‑Voltage Safety</li><li>Analog/Digital</li>
+        <li>HIL (Typhoon)</li><li>SPICE / MATLAB</li><li>Oscilloscopes & HV Probing</li><li>Embedded (basic)</li>
+      </ul>
+    </section>
+
+    <section class="section" id="about">
+      <h2>About</h2>
+      <p style="color:var(--muted)">
+        I’m an Electrical Engineering student at McMaster University (’27) focused on EV power electronics and high‑voltage test systems.
+        I lead hands‑on integration, debugging, and validation across HV/LV systems. I enjoy fast, careful iteration—from bench
+        measurements to PCB spins—always tying decisions to test data.
+      </p>
+    </section>
+
+    <p class="footer">© Kartikeya Babhuta — Built for GitHub Pages</p>
+  </div>
+</body>
+</html>
