@@ -178,7 +178,7 @@ Array.from(document.querySelectorAll('a[href^=\"#\"]')).forEach(a => {
 // ===== Typewriter effect with stable leading icons =====
 const subtitles = [
   { icon: "⚡", text: "Electrical Engineering @ McMaster University" },
-  { icon: "🏎️", text: "Research Intern @ McMaster Automotive Resource Centre (MARC)" }
+  { icon: "🏎️", text: "Research Intern @ McMaster Automotive Resource Centre" }
 ];
 
 const iconEl = document.getElementById("subtitle-icon");
