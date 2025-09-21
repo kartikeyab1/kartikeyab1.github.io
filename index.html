@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark light" />
+  <meta name="description" content="Portfolio of Kartikeya Babhuta – Power Electronics, PCB Design, EV Systems." />
   <meta name="theme-color" content="#0ea5e9" />
   <title>Kartikeya Babhuta · Portfolio</title>
 
@@ -12,15 +13,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
+  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%230ea5e9'/%3E%3Ctext x='50' y='60' font-size='50' text-anchor='middle' fill='white'%3EK%3C/text%3E%3C/svg%3E"/>
+
+  <!-- Styles -->
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <!-- Space background layers -->
+  <!-- Fullscreen WebGL canvas under content -->
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
   <div class="vignette" aria-hidden="true"></div>
 
-  <!-- Sticky header -->
+  <!-- Sticky header navigation -->
   <header>
     <nav>
       <a class="brand" href="#top" aria-label="Home">
@@ -29,7 +33,7 @@
       </a>
       <div class="nav-links">
         <a href="#about">About</a>
-        <a href="#portfolio">Portfolio</a>
+        <a href="#projects">Projects</a>
         <a href="#experience">Experience</a>
         <a href="#contact">Contact</a>
         <button class="theme-toggle" id="themeToggle" title="Toggle theme">Toggle Theme</button>
@@ -40,15 +44,17 @@
   <!-- Hero -->
   <main id="top" class="hero container">
     <div class="hero-card reveal">
-      <span class="hero-badge"><span class="pulse"></span> Open to opportunities</span>
-      <h2>Power electronics, elegant PCBs, and data-driven validation.</h2>
+      <span class="hero-badge"><span class="pulse"></span> Available for 8-month internship (Jan–Aug 2026)</span>
+      <h2>Building high-voltage EV systems, elegant PCBs, and fast, safe power electronics.</h2>
       <p>
-        I build high-voltage systems and test them like I mean it. Scroll to explore work — the ring reacts as you go.
+        I’m Kartikeya — Electrical Director at MAC Formula Electric and Research Intern at MARC.
+        I design and validate EV power electronics (600V+), orchestrate full-stack electrical integrations,
+        and turn test data into better, cleaner hardware.
       </p>
       <div class="cta">
-        <a class="btn" href="#portfolio">See the work</a>
-        <a class="btn" href="mailto:babhutak@mcmaster.ca">Email</a>
         <a class="btn" href="https://www.linkedin.com/in/kartikeya-babhuta" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="#projects">Featured Projects</a>
+        <a class="btn" href="mailto:babhutak@mcmaster.ca">Email Me</a>
       </div>
     </div>
   </main>
@@ -56,67 +62,75 @@
   <!-- About -->
   <section id="about" class="container">
     <h2 class="section-title">About</h2>
-    <p class="section-sub">Rapid prototyping, careful iteration, and design-for-test. Focus areas: HV safety, contactor sequencing, converter design, and instrumentation-friendly boards.</p>
+    <p class="section-sub">I love rapid prototyping, careful iteration, and design-for-test. Areas of focus: high-voltage safety, contactor sequencing, OBC/APM converters, and instrumentation-friendly PCBs.</p>
 
     <div class="grid">
       <article class="card sm-6 reveal">
         <h3>Core Skills</h3>
         <div class="chips">
           <span class="chip">Power Electronics</span>
-          <span class="chip">PCB Design</span>
-          <span class="chip">HV Safety</span>
-          <span class="chip">DPT / Validation</span>
-          <span class="chip">HIL</span>
+          <span class="chip">PCB Design (Altium)</span>
+          <span class="chip">SiC DPT + Validation</span>
+          <span class="chip">HV Safety & IMD</span>
+          <span class="chip">Firmware Bring-up</span>
+          <span class="chip">HIL & Test Rigs</span>
         </div>
       </article>
 
       <article class="card sm-6 reveal">
         <h3>Tools</h3>
         <div class="chips">
-          <span class="chip">Altium</span>
-          <span class="chip">MATLAB</span>
+          <span class="chip">Altium Designer</span>
+          <span class="chip">MATLAB / Simulink</span>
           <span class="chip">PSPICE / PSIM</span>
+          <span class="chip">Tek MSO4B / IsoVu</span>
+          <span class="chip">Keysight / ITECH</span>
           <span class="chip">Typhoon HIL</span>
-          <span class="chip">Tektronix / Keysight</span>
         </div>
       </article>
     </div>
   </section>
 
-  <!-- PORTFOLIO: the ring grows to frame these tiles -->
-  <section id="portfolio" class="container">
-    <h2 class="section-title">Portfolio</h2>
-    <p class="section-sub">Selected work. The 3D ring expands to “orbit” these tiles as you scroll.</p>
+  <!-- Projects -->
+  <section id="projects" class="container">
+    <h2 class="section-title">Projects</h2>
+    <p class="section-sub">A few builds I’m proud of. Swap in your own screenshots (replace the <em>thumb</em> boxes with images).</p>
 
-    <div class="tile-grid reveal" id="tileGrid" aria-label="portfolio items">
-      <!-- 9 example tiles (replace links/labels as you like) -->
-      <a class="tile" href="#" aria-label="Project 1">
-        <div class="tile-icon">W</div><div class="tile-label">Wireless BMS</div>
-      </a>
-      <a class="tile" href="#" aria-label="Project 2">
-        <div class="tile-icon">H</div><div class="tile-label">HIL Interface</div>
-      </a>
-      <a class="tile" href="#" aria-label="Project 3">
-        <div class="tile-icon">E</div><div class="tile-label">EV Systems</div>
-      </a>
-      <a class="tile" href="#" aria-label="Project 4">
-        <div class="tile-icon">A</div><div class="tile-label">APM Buck</div>
-      </a>
-      <a class="tile" href="#" aria-label="Project 5">
-        <div class="tile-icon">S</div><div class="tile-label">Safety Board</div>
-      </a>
-      <a class="tile" href="#" aria-label="Project 6">
-        <div class="tile-icon">L</div><div class="tile-label">LV Pack</div>
-      </a>
-      <a class="tile" href="#" aria-label="Project 7">
-        <div class="tile-icon">D</div><div class="tile-label">DPT Rig</div>
-      </a>
-      <a class="tile" href="#" aria-label="Project 8">
-        <div class="tile-icon">C</div><div class="tile-label">Contactor Logic</div>
-      </a>
-      <a class="tile" href="#" aria-label="Project 9">
-        <div class="tile-icon">T</div><div class="tile-label">Test Harness</div>
-      </a>
+    <div class="grid">
+      <article class="card sm-6 reveal">
+        <h3>HV Safety Test Board</h3>
+        <p>Analog-only control for contactors with sequenced precharge, IMD interlocks, and isolated sensing (AMC1411).</p>
+        <div class="chips"><span class="chip">600V</span><span class="chip">AMC1411</span><span class="chip">TPS1H200A-Q1</span><span class="chip">555 Timers</span></div>
+        <div class="thumb">Replace with an image</div>
+      </article>
+
+      <article class="card sm-6 reveal">
+        <h3>EV7 Systems Integration</h3>
+        <p>Directed validation & integration of HV/LV subsystems to achieve the team’s first fully operational FSAE EV.</p>
+        <div class="chips"><span class="chip">144s NMC</span><span class="chip">Contactor Logic</span><span class="chip">Fault Handling</span></div>
+        <div class="thumb">Replace with an image</div>
+      </article>
+
+      <article class="card sm-4 reveal">
+        <h3>HIL Interface PCB</h3>
+        <p>Bridged converter eval board to Typhoon HIL; clean measurement and safety interlocks baked in.</p>
+        <div class="chips"><span class="chip">Altium</span><span class="chip">HIL</span><span class="chip">Testability</span></div>
+        <div class="thumb">Replace with an image</div>
+      </article>
+
+      <article class="card sm-4 reveal">
+        <h3>APM Interleaved Buck</h3>
+        <p>Co-authored IECON’25 paper on optimized design for a 3.6 kW APM two-stage architecture.</p>
+        <div class="chips"><span class="chip">3.6 kW</span><span class="chip">Interleaved</span><span class="chip">Optimization</span></div>
+        <div class="thumb">Replace with an image</div>
+      </article>
+
+      <article class="card sm-4 reveal">
+        <h3>LV Battery Pack</h3>
+        <p>Custom 6S 2170 pack with proper isolation, BMS, and service-friendly harnessing.</p>
+        <div class="chips"><span class="chip">2170</span><span class="chip">BMS</span><span class="chip">Serviceability</span></div>
+        <div class="thumb">Replace with an image</div>
+      </article>
     </div>
   </section>
 
@@ -128,12 +142,12 @@
       <li class="t-item card reveal">
         <span class="t-dot"></span>
         <h3>Electrical Director · MAC Formula Electric</h3>
-        <p>Led integration and validation of HV/LV systems and instituted robust safety & test practices.</p>
+        <p>Led integration/validation of HV and LV systems; first fully operational EV for the team; instituted HV safety processes and DFT practices.</p>
       </li>
       <li class="t-item card reveal">
         <span class="t-dot"></span>
-        <h3>Research Intern · MARC</h3>
-        <p>Prototyped power-electronics subsystems, HIL strategies, and instrumentation-ready PCBs.</p>
+        <h3>Research Intern · McMaster Automotive Resource Centre</h3>
+        <p>Prototyped and validated power electronics subsystems; developed HIL interface strategies and instrumentation-ready PCBs.</p>
       </li>
     </ol>
   </section>
@@ -141,31 +155,33 @@
   <!-- Contact -->
   <section id="contact" class="container">
     <h2 class="section-title">Contact</h2>
-    <p class="section-sub">Let’s build something fast and reliable.</p>
+    <p class="section-sub">Let’s chat about internships, collaborations, or cool hardware you want to bring to life.</p>
+
     <div class="grid">
       <article class="card sm-6 reveal">
         <h3>Get in touch</h3>
-        <p>Email: <a class="link" href="mailto:babhutak@mcmaster.ca">babhutak@mcmaster.ca</a></p>
-        <p>LinkedIn: <a class="link" target="_blank" rel="noopener" href="https://www.linkedin.com/in/kartikeya-babhuta">linkedin.com/in/kartikeya-babhuta</a></p>
+        <p>Email: <a href="mailto:babhutak@mcmaster.ca" class="link">babhutak@mcmaster.ca</a></p>
+        <p>LinkedIn: <a href="https://www.linkedin.com/in/kartikeya-babhuta" target="_blank" rel="noopener" class="link">linkedin.com/in/kartikeya-babhuta</a></p>
       </article>
+
       <article class="card sm-6 reveal">
         <h3>Resume</h3>
-        <p>Add <em>resume.pdf</em> to your repo root:</p>
+        <p>Keep a PDF named <em>resume.pdf</em> in your repo root and this link will point to it:</p>
         <p><a href="./resume.pdf" class="link">Download resume.pdf</a></p>
       </article>
     </div>
   </section>
 
   <footer>
-    <small>© <span id="year"></span> Kartikeya Babhuta • Space theme with Three.js + GSAP</small>
+    <small>© <span id="year"></span> Kartikeya Babhuta • Built with HTML, Three.js & GSAP</small>
   </footer>
 
-  <!-- Vendors -->
+  <!-- Vendor libs via CDN (globals) -->
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
   <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 
-  <!-- App -->
+  <!-- Your app code -->
   <script src="./app.js"></script>
 </body>
 </html>
