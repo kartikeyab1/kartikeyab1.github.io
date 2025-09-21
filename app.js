@@ -175,44 +175,46 @@ Array.from(document.querySelectorAll('a[href^=\"#\"]')).forEach(a => {
     if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
 });
-// ===== Typewriter effect with icons before text =====
+// ===== Typewriter effect with stable leading icons =====
 const subtitles = [
-  "⚡ Electrical Engineering @ McMaster University",
-  "🏎️ Research Intern @ McMaster Automotive Resource Centre (MARC)"
+  { icon: "⚡", text: "Electrical Engineering @ McMaster University" },
+  { icon: "🏎️", text: "Research Intern @ McMaster Automotive Resource Centre (MARC)" }
 ];
-const subtitleEl = document.getElementById("typed-subtitle");
 
-let idx = 0;          // index of character
-let sentence = 0;     // index of which sentence
-let deleting = false; // are we deleting?
+const iconEl = document.getElementById("subtitle-icon");
+const textEl = document.getElementById("subtitle-text");
 
-function typeSubtitle() {
-  const current = subtitles[sentence];
-  const displayed = subtitleEl.textContent;
+let sentence = 0;   // which subtitle
+let idx = 0;        // character index
+let deleting = false;
+
+function cycleSubtitle() {
+  const current = subtitles[sentence].text;
+  iconEl.textContent = subtitles[sentence].icon; // set the icon for this sentence
 
   if (!deleting && idx < current.length) {
-    // Typing forward
-    subtitleEl.textContent = current.slice(0, idx + 1);
+    // typing forward
+    textEl.textContent = current.slice(0, idx + 1);
     idx++;
-    setTimeout(typeSubtitle, 60);
+    setTimeout(cycleSubtitle, 60);
   } else if (!deleting && idx === current.length) {
-    // Pause at full sentence
+    // pause when complete
     deleting = true;
-    setTimeout(typeSubtitle, 1500); // hold full text
+    setTimeout(cycleSubtitle, 1500);
   } else if (deleting && idx > 0) {
-    // Deleting backwards
-    subtitleEl.textContent = current.slice(0, idx - 1);
+    // deleting backward
+    textEl.textContent = current.slice(0, idx - 1);
     idx--;
-    setTimeout(typeSubtitle, 40);
+    setTimeout(cycleSubtitle, 40);
   } else if (deleting && idx === 0) {
-    // Switch sentence and start typing next
+    // switch sentence
     deleting = false;
     sentence = (sentence + 1) % subtitles.length;
-    setTimeout(typeSubtitle, 500);
+    setTimeout(cycleSubtitle, 500);
   }
 }
+cycleSubtitle();
 
-typeSubtitle();
 
 
 typeSubtitle();
