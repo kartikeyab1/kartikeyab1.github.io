@@ -6,146 +6,95 @@
   <title>🚧 Under Construction</title>
   <meta name="description" content="Site under construction. Check back soon!" />
   <style>
-    :root {
-      --bg: #0f1115;
-      --card: #161a22;
-      --text: #e8ebf1;
-      --muted: #95a1b5;
-      --accent: #ffc857;
-      --accent-2: #2b6cb0;
-      --shadow: rgba(0,0,0,0.35);
+    :root{
+      --bg:#0f1115;--card:#161a22;--text:#e8ebf1;--muted:#95a1b5;
+      --accent:#ffc857;--accent-2:#2b6cb0;--shadow:rgba(0,0,0,.35)
     }
-
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: #f7f8fb;
-        --card: #ffffff;
-        --text: #0f1115;
-        --muted: #586174;
-        --shadow: rgba(0,0,0,0.08);
-      }
+    @media (prefers-color-scheme: light){
+      :root{--bg:#f7f8fb;--card:#fff;--text:#0f1115;--muted:#586174;--shadow:rgba(0,0,0,.08)}
     }
-
-    * { box-sizing: border-box }
-    html, body { height: 100% }
-    body {
-      margin: 0;
-      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background: radial-gradient(1200px 800px at 70% -10%, rgba(255,200,87,.12), transparent 60%),
-                  radial-gradient(800px 600px at -10% 80%, rgba(43,108,176,.14), transparent 60%),
-                  var(--bg);
-      color: var(--text);
-      display: grid;
-      place-items: center;
-      padding: 24px;
-    }
-
-    .card {
-      width: min(720px, 92vw);
-      background: var(--card);
-      border-radius: 18px;
-      box-shadow: 0 20px 60px var(--shadow);
-      padding: clamp(20px, 3.6vw, 36px);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .tape {
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 14px;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;
       background:
-        repeating-linear-gradient(45deg,
-          var(--accent) 0 18px,
-          #222 18px 36px);
-      filter: saturate(1.1);
-      animation: slide 1.6s linear infinite;
+        radial-gradient(1200px 800px at 70% -10%, rgba(255,200,87,.12), transparent 60%),
+        radial-gradient(800px 600px at -10% 80%, rgba(43,108,176,.14), transparent 60%),
+        var(--bg);
+      color:var(--text);display:grid;place-items:center;padding:24px
     }
-    @keyframes slide { to { background-position: 72px 0 } }
+    .card{
+      width:min(720px,92vw);background:var(--card);border-radius:18px;
+      box-shadow:0 20px 60px var(--shadow);
+      padding:clamp(20px,3.6vw,36px);position:relative;overflow:hidden
+    }
+    /* animated caution tape header */
+    .tape{
+      position:absolute;inset:0 0 auto 0;height:14px;
+      background:repeating-linear-gradient(45deg,var(--accent) 0 18px,#222 18px 36px);
+      filter:saturate(1.1);animation:slide 1.6s linear infinite
+    }
+    @keyframes slide{to{background-position:72px 0}}
 
-    header {
-      display: grid;
-      grid-template-columns: 88px 1fr;
-      gap: 18px;
-      align-items: center;
-      margin-top: 12px;
+    header{
+      display:grid;grid-template-columns:120px 1fr;gap:18px;
+      align-items:center;margin-top:12px
     }
+    h1{
+      font-size:clamp(26px,3.6vw,40px);margin:0 0 6px 0;letter-spacing:.3px
+    }
+    .title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .subtitle{color:var(--muted);margin:0}
 
-    h1 { 
-      font-size: clamp(26px, 3.6vw, 40px);
-      margin: 0 0 6px 0;
-      letter-spacing: .3px;
+    .icon-wrap{
+      width:120px;height:120px;display:grid;place-items:center;border-radius:16px;
+      background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)
     }
-    .title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .subtitle { color: var(--muted); margin: 0 }
-
-    .icon-wrap {
-      width: 120px; height: 120px;
-      display: grid; place-items: center;
-      border-radius: 16px;
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    .digging{
+      font-size:96px;line-height:1;display:block;
+      animation:bob 1.6s ease-in-out infinite alternate;transform-origin:50% 80%
     }
-    .digging { display:block; font-size: 88px; line-height: 1; animation: bob 1.6s ease-in-out infinite alternate; transform-origin: 50% 80%; }
-    @keyframes bob { 0% { transform: translateY(0px) rotate(0deg); } 100% { transform: translateY(-6px) rotate(-2deg); } }
-      100% { transform: translateY(-5px); }
-    }
-
-    .progress {
-      margin: 22px 0 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      overflow: hidden;
-      position: relative;
-    }
-    .progress > i {
-      position: relative;
-      display: block; height: 100%; width: 60%;
-      background: var(--accent);
-      overflow: hidden;
-    }
-    .progress > i::before {
-      content: ""; position: absolute; inset: 0;
-      background: linear-gradient(90deg, rgba(255,255,255,.18), rgba(255,255,255,0)),
-                  repeating-linear-gradient(45deg, rgba(0,0,0,.0) 0 12px, rgba(0,0,0,.10) 12px 24px);
-      background-size: 24px 24px, 24px 24px;
-      animation: stripes 1.2s linear infinite;
-      mix-blend-mode: overlay;
-    }
-    @keyframes stripes { 0% { background-position: 0 0, 0 0 } 100% { background-position: 24px 0, 24px 0 } }
-      50% { width: 68% }
-      100% { width: 38% }
+    @keyframes bob{
+      0%{transform:translateY(0) rotate(0deg)}
+      100%{transform:translateY(-6px) rotate(-2deg)}
     }
 
-    .dots::after {
-      content: "";
-      display: inline-block;
-      width: 1ch;
-      text-align: left;
-      animation: dots 1.6s steps(4, end) infinite;
+    /* continuous progress bar (no width animation) */
+    .progress{
+      margin:22px 0 10px;height:10px;border-radius:999px;
+      background:rgba(255,255,255,.08);overflow:hidden;position:relative
     }
-    @keyframes dots { 0% { content: "" } 25% { content: "." } 50% { content: ".." } 75% { content: "..." } }
-
-    .row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px }
-    a.button {
-      text-decoration: none;
-      color: var(--text);
-      padding: 10px 14px;
-      border-radius: 12px;
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.02));
-      border: 1px solid rgba(255,255,255,.12);
-      display: inline-flex; align-items: center; gap: 10px;
-      transition: transform .12s ease, box-shadow .12s ease;
+    .progress>i{
+      position:relative;display:block;height:100%;width:100%;background:var(--accent)
     }
-    a.button:hover { transform: translateY(-1px); box-shadow: 0 10px 16px var(--shadow) }
-    .small { font-size: 14px; color: var(--muted) }
+    .progress>i::before{
+      content:"";position:absolute;inset:0;
+      background:
+        linear-gradient(90deg,rgba(255,255,255,.18),rgba(255,255,255,0)),
+        repeating-linear-gradient(45deg,rgba(0,0,0,0) 0 12px,rgba(0,0,0,.10) 12px 24px);
+      background-size:24px 24px,24px 24px;
+      animation:stripes 1.2s linear infinite;mix-blend-mode:overlay
+    }
+    @keyframes stripes{
+      0%{background-position:0 0,0 0}
+      100%{background-position:24px 0,24px 0}
+    }
 
-    .cones {
-      position: absolute; inset: auto -10px -12px auto; opacity: .75; pointer-events: none;
-      transform: rotate(2deg);
-      width: 160px;
-      filter: drop-shadow(0 6px 10px var(--shadow));
+    .row{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+    a.button{
+      text-decoration:none;color:var(--text);padding:10px 14px;border-radius:12px;
+      background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.12);
+      display:inline-flex;align-items:center;gap:10px;
+      transition:transform .12s ease,box-shadow .12s ease
+    }
+    a.button:hover{transform:translateY(-1px);box-shadow:0 10px 16px var(--shadow)}
+    .small{font-size:14px;color:var(--muted)}
+
+    .cones{
+      position:absolute;inset:auto -10px -12px auto;opacity:.75;pointer-events:none;
+      transform:rotate(2deg);width:160px;filter:drop-shadow(0 6px 10px var(--shadow))
     }
   </style>
 </head>
@@ -155,11 +104,10 @@
 
     <header>
       <div class="icon-wrap" aria-hidden="true">
-        <!-- Man digging emoji/icon -->
-        <div class="digging" role="img" aria-label="Man Digging">👷‍♂️</div>
+        <div class="digging" role="img" aria-label="Person Digging">👷‍♂️</div>
       </div>
       <div>
-        <h1 id="heading" class="title">🚧 Website Under Construction</h1><!-- now forced into one line -->
+        <h1 id="heading" class="title">🚧 Website Under Construction</h1>
         <p class="subtitle">I’m digging away at something cool. Check back soon<span class="dots"></span></p>
       </div>
     </header>
@@ -168,11 +116,12 @@
     <p class="small">Pardon the dust! If you’re looking for my work, you can still reach me below.</p>
 
     <div class="row">
-      <a class="button" href="https://github.com/USERNAME" target="_blank" rel="noopener">💻 GitHub</a>
-      <a class="button" href="mailto:you@example.com">✉️ Email</a>
-      <a class="button" href="https://www.linkedin.com/in/USERNAME/" target="_blank" rel="noopener">💼 LinkedIn</a>
+      <a class="button" href="https://github.com/kartikeyab1" target="_blank" rel="noopener">💻 GitHub</a>
+      <a class="button" href="mailto:" title="Email me">✉️ Email</a> <!-- add your address after mailto: -->
+      <a class="button" href="https://www.linkedin.com/in/kbabhuta/" target="_blank" rel="noopener">💼 LinkedIn</a>
     </div>
 
+    <!-- Decorative traffic cones -->
     <svg class="cones" viewBox="0 0 220 90" aria-hidden="true">
       <g>
         <g transform="translate(10,8)">
