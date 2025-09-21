@@ -1,255 +1,582 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Demon‑Level 3D Portfolio — v2 (magnetic cursor, split‑text reveals, progress bar) -->
+  <!--
+    ✨ Ultra-Polished Portfolio for GitHub Pages
+    - Single-file drop-in (index.html) — perfect for GitHub Pages
+    - Three.js 3D background with scroll-synced animation
+    - GSAP ScrollTrigger for buttery scroll effects
+    - Responsive, accessible, and well-commented for easy edits
+
+    How to use:
+    1) Replace name, tagline, links, and project data below.
+    2) Commit as index.html at the root of your GitHub Pages repo.
+    3) (Optional) Add your own images to /assets and update URLs.
+  -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0b0d12" />
-  <title>🚀 Portfolio — 🚧 EDIT ME: Your Name</title>
-  <meta name="description" content="🚧 EDIT ME: short description for SEO" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="description" content="Portfolio of Kartikeya Babhuta – Power Electronics, PCB Design, EV Systems." />
+  <meta name="theme-color" content="#0ea5e9" />
+  <title>Kartikeya Babhuta · Portfolio</title>
 
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- Libraries (CDN) -->
-  <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+  <!-- Icons (optional) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%230ea5e9'/%3E%3Ctext x='50' y='60' font-size='50' text-anchor='middle' fill='white'%3EK%3C/text%3E%3C/svg%3E"/>
+
+  <!-- THREE.js & GSAP (via CDNs for easy one-file setup) -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js" type="module"></script>
   <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
 
   <style>
     :root {
-      --bg: #0b0d12; --ink: #e9eef7; --muted: #9aa6bf; --panel: #111522; --line: rgba(255,255,255,0.08);
-      --acc: #8b5cf6; --acc2: #22c55e; --shadow: 0 24px 80px rgba(0,0,0,.35); --radius: 16px; --container: min(1100px, 92vw);
+      --bg: #0b0f1a;        /* Deep navy */
+      --bg-2: #0f172a;      /* Sapphire */
+      --soft: #111827;      /* Panel */
+      --text: #e5e7eb;      /* Light text */
+      --muted: #93a4b8;     /* Muted text */
+      --brand: #0ea5e9;     /* Sky */
+      --brand-2: #22d3ee;   /* Cyan */
+      --accent: #a78bfa;    /* Purple */
+      --card: rgba(17, 24, 39, 0.6);
+      --glass: rgba(255,255,255,0.06);
+      --radius: 18px;
+      --shadow: 0 10px 40px rgba(0,0,0,.4);
+      --max-w: 1100px;
     }
-    @media (prefers-color-scheme: light) { :root { --bg:#f7f8fb; --ink:#0b0d12; --muted:#5a6577; --panel:#ffffff; --line: rgba(0,0,0,0.08); } }
-    * { box-sizing: border-box }
-    html, body { height: 100% }
-    body { margin: 0; font: 16px/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color: var(--ink); background: var(--bg); overflow-x: hidden }
-    a { color: inherit; text-decoration: none }
 
-    /* 3D backdrop */
-    .webgl { position: fixed; inset: 0; z-index: 0; background:
-      radial-gradient(1200px 800px at 70% -10%, rgba(139,92,246,.12), transparent 60%),
-      radial-gradient(900px 600px at -10% 80%, rgba(34,197,94,.12), transparent 60%), var(--bg); }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; padding: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 70% 10%, #0a1826 0%, var(--bg) 40%, #060913 100%);
+      overflow-x: hidden;
+    }
 
-    /* layout */
-    .layer { position: relative; z-index: 1 }
-    .container { width: var(--container); margin: 0 auto; padding: 20px }
-    .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow) }
-    .muted { color: var(--muted) }
-    .btn { display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; border:1px solid var(--line);
-           background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); transition: transform .12s ease, box-shadow .12s ease }
-    .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 16px rgba(0,0,0,.25) }
+    /* Fixed 3D canvas underlay */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -2; /* sit beneath content */
+    }
 
-    /* custom cursor (magnetic) */
-    .cursor { position: fixed; left: 0; top: 0; width: 28px; height: 28px; border-radius: 999px; pointer-events: none; z-index: 10;
-      border: 2px solid rgba(255,255,255,.45); mix-blend-mode: difference; transform: translate(-50%, -50%); transition: width .15s, height .15s, border-color .15s }
-    .cursor.-active { width: 56px; height: 56px; border-color: rgba(255,255,255,.75) }
+    /* Subtle vignette overlay for readability */
+    .vignette {
+      position: fixed; inset: 0; z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(1200px 600px at 50% -10%, rgba(14,165,233,0.12), transparent 50%),
+                  radial-gradient(800px 500px at 10% 10%, rgba(167,139,250,0.18), transparent 60%),
+                  radial-gradient(900px 700px at 90% 20%, rgba(34,211,238,0.12), transparent 55%),
+                  linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(6,9,19,0.55) 85%);
+    }
 
-    /* header */
-    header { position: sticky; top: 0; z-index: 5; backdrop-filter: blur(6px); background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0)); border-bottom: 1px solid var(--line) }
-    .nav { display:flex; align-items:center; justify-content:space-between; gap:16px }
-    .brand { display:flex; align-items:center; gap:10px }
-    .dot { width:10px; height:10px; border-radius:999px; background:var(--acc); box-shadow:0 0 0 4px rgba(139,92,246,.25) }
-    .brand h1 { font-size: 18px; margin: 0 }
-    .links { display:flex; align-items:center; gap:10px; flex-wrap: wrap }
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: linear-gradient(180deg, rgba(11,15,26,0.8) 0%, rgba(11,15,26,0.55) 100%);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
 
-    /* progress bar at top */
-    .progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(90deg, var(--acc), var(--acc2)); z-index: 6 }
+    nav { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; }
+    .brand { display: flex; gap: 12px; align-items: center; text-decoration: none; color: var(--text); }
+    .brand .dot { width: 10px; height: 10px; border-radius: 999px; background: linear-gradient(135deg, var(--brand), var(--accent)); box-shadow: 0 0 18px rgba(14,165,233,.7); }
+    .brand h1 { font-size: 16px; letter-spacing: .3px; margin: 0; font-weight: 800; }
 
-    /* hero */
-    .hero { min-height: 100vh; display: grid; place-items: center }
-    .hero .inner { width: var(--container); display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; align-items:center }
-    @media (max-width: 900px) { .hero .inner { grid-template-columns: 1fr } }
-    .hero-copy { padding: 24px }
-    .hero-copy h2 { font-size: clamp(30px, 5vw, 56px); margin: 0 0 8px; letter-spacing: .2px }
-    .buttons { margin-top: 12px; display:flex; gap:10px; flex-wrap: wrap }
-    .hero-panel { height: 60vh; min-height: 420px; overflow: hidden; position: relative }
-    .hero-panel::after{ content:""; position:absolute; inset:0; border:1px solid var(--line); border-radius: var(--radius) }
+    .nav-links { display: flex; gap: 14px; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; padding: 8px 12px; border-radius: 10px; }
+    .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
 
-    /* scrolly */
-    section { padding: 40px 0 }
-    .scrolly { display:grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start }
-    @media (max-width: 980px){ .scrolly{ grid-template-columns: 1fr } }
-    .pin { position: sticky; top: 80px; height: 70vh; min-height: 420px; border-radius: var(--radius); border:1px solid var(--line); overflow:hidden }
-    .steps { display:grid; gap:16px }
-    .step { padding: 16px; border:1px solid var(--line); border-radius: 14px; background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); opacity:.5; transform: translateY(8px); transition: opacity .3s, transform .3s }
-    .step.active { opacity: 1; transform: translateY(0) }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 64px 18px; }
 
-    /* projects */
-    .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px }
-    @media (max-width: 900px){ .grid{ grid-template-columns: repeat(2, 1fr) } }
-    @media (max-width: 640px){ .grid{ grid-template-columns: 1fr } }
-    .tile { padding: 18px; display:grid; gap:6px; transform: translateZ(0) }
-    .tile h4 { margin:0; font-size: 18px }
-    .tile p { margin:0; color: var(--muted) }
+    .hero {
+      min-height: 88dvh; display: grid; place-items: center; position: relative;
+      padding-top: 80px; /* for sticky header spacing */
+    }
 
-    /* footer */
-    footer { border-top:1px solid var(--line); padding: 24px 0; color: var(--muted); font-size: 14px; text-align:center }
+    .hero-card {
+      width: min(100%, 960px);
+      border-radius: calc(var(--radius) + 6px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 4vw, 44px);
+      position: relative; overflow: hidden;
+    }
 
-    /* reduced motion */
-    @media (prefers-reduced-motion: reduce){ .btn, .step, .tile { transition:none !important } .cursor{ display:none } }
+    .hero-badge { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); background: rgba(14,165,233,0.08); border: 1px solid rgba(14,165,233,0.25); padding: 6px 10px; border-radius: 999px; }
+    .hero-badge .pulse { width: 6px; height: 6px; border-radius: 999px; background: var(--brand-2); box-shadow: 0 0 10px rgba(34,211,238,.85); }
+
+    .hero h2 { font-size: clamp(28px, 6vw, 60px); letter-spacing: -0.6px; margin: 16px 0 10px; }
+    .hero p { max-width: 60ch; margin: 0; line-height: 1.6; color: var(--muted); }
+
+    .cta { display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
+    .btn {
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 16px; border-radius: 12px; font-weight: 600; font-size: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(135deg, rgba(14,165,233,.15), rgba(167,139,250,.15));
+      color: var(--text);
+    }
+    .btn:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-1px); transition: .2s ease; }
+
+    section { scroll-margin-top: 72px; }
+    .section-title { font-size: 26px; margin: 0 0 18px; letter-spacing: .2px; }
+    .section-sub { color: var(--muted); margin: 0 0 28px; max-width: 70ch; }
+
+    /* Card grid */
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
+    .card {
+      grid-column: span 12;
+      background: var(--card); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius); padding: 18px; position: relative; overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    @media (min-width: 720px) {
+      .card.sm-6 { grid-column: span 6; }
+      .card.sm-4 { grid-column: span 4; }
+    }
+
+    .card h3 { margin: 0 0 8px; font-size: 20px; }
+    .card p { margin: 0; color: var(--muted); }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .chip { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; color: #cbd5e1; background: rgba(148,163,184,.15); border: 1px solid rgba(255,255,255,.08); padding: 6px 10px; border-radius: 999px; }
+
+    /* Project screenshot mask (optional image) */
+    .thumb {
+      aspect-ratio: 16/9; border-radius: 14px; overflow: hidden; margin-top: 12px;
+      background: linear-gradient(135deg, rgba(14,165,233,.15), rgba(167,139,250,.15));
+      border: 1px dashed rgba(255,255,255,0.12);
+      display: grid; place-items: center; color: rgba(229,231,235,.85);
+      font-size: 14px;
+    }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 24px; }
+    .timeline::before { content: ""; position: absolute; top: 0; bottom: 0; left: 8px; width: 2px; background: linear-gradient(180deg, rgba(14,165,233,.6), rgba(167,139,250,.6)); border-radius: 2px; }
+    .t-item { margin-bottom: 18px; position: relative; }
+    .t-item::marker { content: none; }
+    .t-dot { position: absolute; left: -2px; top: 6px; width: 12px; height: 12px; border-radius: 999px; background: linear-gradient(135deg, var(--brand), var(--accent)); box-shadow: 0 0 10px rgba(14,165,233,.7); border: 2px solid rgba(255,255,255,0.5); }
+
+    /* Footer */
+    footer { text-align: center; color: var(--muted); padding: 40px 18px 60px; }
+
+    /* In-view animations (fade/slide) */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* Theme toggle */
+    .theme-toggle { border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 10px; font-size: 13px; color: var(--text); cursor: pointer; }
   </style>
 </head>
 <body>
-  <div class="progress" id="progress"></div>
-  <div class="cursor" id="cursor"></div>
+  <!-- Fullscreen WebGL canvas under content -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
 
-  <!-- 3D BACKDROP CANVAS -->
-  <canvas class="webgl" id="scene"></canvas>
-
-  <!-- CONTENT LAYER -->
-  <div class="layer">
-    <header>
-      <div class="container nav">
-        <div class="brand"><span class="dot" aria-hidden="true"></span><h1>🚧 EDIT ME • Your Name</h1></div>
-        <nav class="links" aria-label="Primary">
-          <a href="#work" class="magnet">Work</a>
-          <a href="#projects" class="magnet">Projects</a>
-          <a href="#about" class="magnet">About</a>
-          <a class="btn magnet" href="https://github.com/EDIT_ME_GITHUB" target="_blank" rel="noopener">GitHub</a>
-          <a class="btn magnet" href="https://www.linkedin.com/in/EDIT_ME_LINKEDIN/" target="_blank" rel="noopener">LinkedIn</a>
-        </nav>
+  <!-- Sticky header navigation -->
+  <header>
+    <nav>
+      <a class="brand" href="#top" aria-label="Home">
+        <span class="dot"></span>
+        <h1>Kartikeya Babhuta</h1>
+      </a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme">Toggle Theme</button>
       </div>
-    </header>
+    </nav>
+  </header>
 
-    <section class="hero" id="work">
-      <div class="inner">
-        <div class="hero-copy card">
-          <h2 class="split">🚧 EDIT ME: Kartikeya Babhuta</h2>
-          <p class="muted">🚧 EDIT ME: Electrical Engineer • EV Power Electronics • FSAE</p>
-          <div class="buttons">
-            <a class="btn magnet" href="#projects">View Projects</a>
-            <a class="btn magnet" href="https://github.com/EDIT_ME_GITHUB" target="_blank" rel="noopener">GitHub</a>
-            <a class="btn magnet" href="https://www.linkedin.com/in/EDIT_ME_LINKEDIN/" target="_blank" rel="noopener">LinkedIn</a>
-          </div>
+  <!-- Hero -->
+  <main id="top" class="hero container">
+    <div class="hero-card reveal">
+      <span class="hero-badge"><span class="pulse"></span> Available for 8‑month internship (Jan–Aug 2026)</span>
+      <h2>Building high‑voltage EV systems, elegant PCBs, and fast, safe power electronics.</h2>
+      <p>
+        I’m Kartikeya — Electrical Director at MAC Formula Electric and Research Intern at MARC.
+        I design and validate EV power electronics (600V+), orchestrate full‑stack electrical integrations,
+        and turn test data into better, cleaner hardware.
+      </p>
+      <div class="cta">
+        <a class="btn" href="https://www.linkedin.com/in/kartikeya-babhuta" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="#projects">Featured Projects</a>
+        <a class="btn" href="mailto:babhutak@mcmaster.ca">Email Me</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- About -->
+  <section id="about" class="container">
+    <h2 class="section-title">About</h2>
+    <p class="section-sub">I love rapid prototyping, careful iteration, and design-for-test. Areas of focus: high‑voltage safety, contactor sequencing, OBC/APM converters, and instrumentation‑friendly PCBs.</p>
+
+    <div class="grid">
+      <article class="card sm-6 reveal">
+        <h3>Core Skills</h3>
+        <div class="chips">
+          <span class="chip">Power Electronics</span>
+          <span class="chip">PCB Design (Altium)</span>
+          <span class="chip">SiC DPT + Validation</span>
+          <span class="chip">HV Safety & IMD</span>
+          <span class="chip">Firmware Bring‑up</span>
+          <span class="chip">HIL & Test Rigs</span>
         </div>
-        <div class="hero-panel card"></div>
-      </div>
-    </section>
+      </article>
 
-    <section class="container scrolly">
-      <div class="pin card" id="pin"></div>
-      <div class="steps" id="steps">
-        <article class="step card" data-step="1"><h3 class="split">EV7 — First Full Operation</h3><p class="muted">Directed validation & integration of HV/LV systems to achieve the team’s first fully operational EV.</p></article>
-        <article class="step card" data-step="2"><h3 class="split">HV Safety Test Board</h3><p class="muted">Analog contactor sequencing, IMD logic, isolation monitoring, surge/OV/OC protection.</p></article>
-        <article class="step card" data-step="3"><h3 class="split">SuperBox Research (MARC)</h3><p class="muted">Interface PCBs & HIL for integrated OBC–Traction–Boost–APM converter prototype.</p></article>
-        <article class="step card" data-step="4"><h3 class="split">Wireless BMS (600 V)</h3><p class="muted">Capstone: PCB architecture lead; RF comms teammate; 600 V pack integration.</p></article>
-      </div>
-    </section>
+      <article class="card sm-6 reveal">
+        <h3>Tools</h3>
+        <div class="chips">
+          <span class="chip">Altium Designer</span>
+          <span class="chip">MATLAB / Simulink</span>
+          <span class="chip">PSPICE / PSIM</span>
+          <span class="chip">Tek MSO4B / IsoVu</span>
+          <span class="chip">Keysight / ITECH</span>
+          <span class="chip">Typhoon HIL</span>
+        </div>
+      </article>
+    </div>
+  </section>
 
-    <section class="container" id="projects">
-      <h3 style="font-size:clamp(22px,3.6vw,32px);margin:0 0 12px" class="split">Selected Projects</h3>
-      <div class="grid" id="projectGrid"></div>
-    </section>
+  <!-- Projects -->
+  <section id="projects" class="container">
+    <h2 class="section-title">Projects</h2>
+    <p class="section-sub">A few builds I’m proud of. Swap in your own screenshots (replace the <em>thumb</em> boxes with images).</p>
 
-    <section class="container" id="about">
-      <h3 style="font-size:clamp(22px,3.6vw,32px);margin:0 0 12px" class="split">About</h3>
-      <div class="card" style="padding:18px">
-        <p class="muted" style="margin:0">🚧 EDIT ME: I’m an Electrical Engineering student focused on EV power electronics and high‑voltage test systems. I like fast, careful iteration—from bench measurements to PCB spins—tying decisions to test data.</p>
-      </div>
-    </section>
+    <div class="grid">
+      <!-- Project Card Template -->
+      <article class="card sm-6 reveal">
+        <h3>HV Safety Test Board</h3>
+        <p>Analog-only control for contactors with sequenced precharge, IMD interlocks, and isolated sensing (AMC1411).</p>
+        <div class="chips">
+          <span class="chip">600V</span>
+          <span class="chip">AMC1411</span>
+          <span class="chip">TPS1H200A-Q1</span>
+          <span class="chip">555 Timers</span>
+        </div>
+        <div class="thumb">Replace with an image</div>
+      </article>
 
-    <footer><div class="container">© <span id="year"></span> 🚧 EDIT ME • Your Name — Built with Three.js + GSAP.</div></footer>
-  </div>
+      <article class="card sm-6 reveal">
+        <h3>EV7 Systems Integration</h3>
+        <p>Directed validation & integration of HV/LV subsystems to achieve the team’s first fully operational FSAE EV.</p>
+        <div class="chips">
+          <span class="chip">144s NMC</span>
+          <span class="chip">Contactor Logic</span>
+          <span class="chip">Fault Handling</span>
+        </div>
+        <div class="thumb">Replace with an image</div>
+      </article>
+
+      <article class="card sm-4 reveal">
+        <h3>HIL Interface PCB</h3>
+        <p>Bridged converter eval board to Typhoon HIL; clean measurement and safety interlocks baked in.</p>
+        <div class="chips">
+          <span class="chip">Altium</span>
+          <span class="chip">HIL</span>
+          <span class="chip">Testability</span>
+        </div>
+        <div class="thumb">Replace with an image</div>
+      </article>
+
+      <article class="card sm-4 reveal">
+        <h3>APM Interleaved Buck</h3>
+        <p>Co‑authored IECON’25 paper on optimized design for a 3.6 kW APM two‑stage architecture.</p>
+        <div class="chips">
+          <span class="chip">3.6 kW</span>
+          <span class="chip">Interleaved</span>
+          <span class="chip">Optimization</span>
+        </div>
+        <div class="thumb">Replace with an image</div>
+      </article>
+
+      <article class="card sm-4 reveal">
+        <h3>LV Battery Pack</h3>
+        <p>Custom 6S 2170 pack with proper isolation, BMS, and service-friendly harnessing.</p>
+        <div class="chips">
+          <span class="chip">2170</span>
+          <span class="chip">BMS</span>
+          <span class="chip">Serviceability</span>
+        </div>
+        <div class="thumb">Replace with an image</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section id="experience" class="container">
+    <h2 class="section-title">Experience</h2>
+    <p class="section-sub">Recent roles and highlights.</p>
+    <ol class="timeline">
+      <li class="t-item card reveal">
+        <span class="t-dot"></span>
+        <h3>Electrical Director · MAC Formula Electric</h3>
+        <p>Led integration/validation of HV and LV systems; first fully operational EV for the team; instituted HV safety processes and DFT practices.</p>
+      </li>
+      <li class="t-item card reveal">
+        <span class="t-dot"></span>
+        <h3>Research Intern · McMaster Automotive Resource Centre</h3>
+        <p>Prototyped and validated power electronics subsystems; developed HIL interface strategies and instrumentation‑ready PCBs.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="container">
+    <h2 class="section-title">Contact</h2>
+    <p class="section-sub">Let’s chat about internships, collaborations, or cool hardware you want to bring to life.</p>
+
+    <div class="grid">
+      <article class="card sm-6 reveal">
+        <h3>Get in touch</h3>
+        <p>Email: <a href="mailto:babhutak@mcmaster.ca" style="color: var(--brand-2); text-decoration: none;">babhutak@mcmaster.ca</a></p>
+        <p>LinkedIn: <a href="https://www.linkedin.com/in/kartikeya-babhuta" target="_blank" rel="noopener" style="color: var(--brand-2); text-decoration: none;">linkedin.com/in/kartikeya-babhuta</a></p>
+      </article>
+
+      <article class="card sm-6 reveal">
+        <h3>Resume</h3>
+        <p>Keep a PDF named <em>resume.pdf</em> in your repo root and this link will point to it:</p>
+        <p><a href="./resume.pdf" style="color: var(--brand-2); text-decoration: none;">Download resume.pdf</a></p>
+      </article>
+    </div>
+  </section>
+
+  <footer>
+    <small>© <span id="year"></span> Kartikeya Babhuta • Built with HTML, Three.js & GSAP</small>
+  </footer>
 
   <script>
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    document.getElementById('year').textContent = new Date().getFullYear();
+    // =========================
+    //  Accessibility niceties
+    // =========================
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-    // PROJECTS DATA — EDIT ME
-    const projectData = [
-      { title: 'Interface PCB for HIL', blurb: 'Bridged converter eval board to Typhoon HIL; defined pinout, isolation, safety paths.', href: '#' },
-      { title: 'SiC Double‑Pulse Test Bench', blurb: 'Characterized switching at ~600–850 V; safe probing with IsoVu & HV diff probes.', href: '#' },
-      { title: 'HV Safety Test Board', blurb: 'Analog sequencing, comparators, isolation amplifiers, OV/OC protection & indicators.', href: '#' },
-      { title: 'EV7 Electrical Integration', blurb: 'End‑to‑end integration & validation for a fully operational FSAE EV.', href: '#' },
-      { title: 'Wireless BMS (600 V)', blurb: 'Capstone: PCB architecture lead; RF comms teammate; 600 V pack integration.', href: '#' },
-      { title: 'SuperBox Interface', blurb: 'PCBs & HIL for integrated OBC–Traction–Boost–APM research prototype.', href: '#' }
-    ];
-    document.getElementById('projectGrid').innerHTML = projectData.map(p => `
-      <a class="tile card magnet" ${p.href ? `href="${p.href}" target="_blank" rel="noopener"` : ''}>
-        <h4>${p.title}</h4><p>${p.blurb}</p>
-      </a>`).join('');
+    // Simple theme toggle (persists in localStorage)
+    const toggle = document.getElementById('themeToggle');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedTheme = localStorage.getItem('theme');
+    const root = document.documentElement;
 
-    // ===== Three.js scene =====
-    const canvas = document.getElementById('scene');
+    function setTheme(mode) {
+      // Light tweaks shift the palette subtly; keep contrast high
+      if (mode === 'light') {
+        root.style.setProperty('--bg', '#f8fafc');
+        root.style.setProperty('--bg-2', '#f1f5f9');
+        root.style.setProperty('--soft', '#e2e8f0');
+        root.style.setProperty('--text', '#0b1220');
+        root.style.setProperty('--muted', '#475569');
+        root.style.setProperty('--card', 'rgba(255,255,255,0.7)');
+        document.body.style.background = 'radial-gradient(1200px 800px at 70% 10%, #eef6ff 0%, #f8fafc 40%, #eef2ff 100%)';
+      } else {
+        // reset to defaults by removing overrides
+        root.style.removeProperty('--bg');
+        root.style.removeProperty('--bg-2');
+        root.style.removeProperty('--soft');
+        root.style.removeProperty('--text');
+        root.style.removeProperty('--muted');
+        root.style.removeProperty('--card');
+        document.body.style.background = 'radial-gradient(1200px 800px at 70% 10%, #0a1826 0%, var(--bg) 40%, #060913 100%)';
+      }
+    }
+
+    const initial = savedTheme || (prefersDark ? 'dark' : 'light');
+    setTheme(initial);
+
+    toggle.addEventListener('click', () => {
+      const next = (localStorage.getItem('theme') || initial) === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', next);
+      setTheme(next);
+    });
+
+    // =========================
+    //  Reveal-on-scroll helper
+    // =========================
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    // =========================
+    //  3D BACKGROUND with Three.js
+    //  - Lightweight, no external assets
+    //  - Scroll-synced camera & object motion via GSAP/ScrollTrigger
+    // =========================
+    const canvas = document.getElementById('bg-canvas');
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
+
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 7);
-    const ambient = new THREE.AmbientLight(0xffffff, 0.6); scene.add(ambient);
-    const dir = new THREE.DirectionalLight(0xffffff, 1.0); dir.position.set(5,5,5); scene.add(dir);
-    const geo = new THREE.TorusKnotGeometry(1.2, 0.36, 220, 32);
-    const mat = new THREE.MeshPhysicalMaterial({ color: 0x8b5cf6, metalness: 0.2, roughness: 0.15, transmission: 0.7, thickness: 0.6, clearcoat: 0.6, sheen: 0.4, sheenRoughness: 0.5, clearcoatRoughness: 0.1 });
-    const knot = new THREE.Mesh(geo, mat); scene.add(knot);
-    const pcount = 2000; const pgeo = new THREE.BufferGeometry(); const positions = new Float32Array(pcount*3);
-    for (let i=0;i<pcount;i++){ positions[i*3] = (Math.random()-0.5)*40; positions[i*3+1] = (Math.random()-0.5)*40; positions[i*3+2] = (Math.random()-0.5)*40; }
-    pgeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const pmaterial = new THREE.PointsMaterial({ color: 0x22c55e, size: 0.02, transparent: true, opacity: 0.7 });
-    const points = new THREE.Points(pgeo, pmaterial); scene.add(points);
-    window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 8);
 
-    // ===== Smooth scroll + GSAP ScrollTrigger =====
-    gsap.registerPlugin(ScrollTrigger);
-    const lenis = new Lenis({ smoothWheel: true, lerp: 0.08, smoothTouch: false, normalizeWheel: true });
-    function raf(time){ lenis.raf(time); ScrollTrigger.update(); requestAnimationFrame(raf); } requestAnimationFrame(raf);
+    // Subtle fog for depth
+    scene.fog = new THREE.FogExp2(0x071018, 0.08);
 
-    // Progress bar
-    const progress = document.getElementById('progress');
-    ScrollTrigger.create({ start: 0, end: 'max', onUpdate: self => progress.style.width = (self.progress*100)+'%' });
-
-    // 3D choreography tied to scroll
-    const tl = gsap.timeline({ defaults: { ease: 'none' } });
-    tl.to(knot.rotation, { y: '+=' + Math.PI * 0.5, duration: 2 })
-      .to(camera.position, { z: 5.5, duration: 2 }, '<')
-      .to(knot.rotation, { x: '+=' + Math.PI * 0.25, duration: 2 }, '<')
-      .to(knot.rotation, { y: '+=' + Math.PI, x: '+=' + Math.PI * 0.25, duration: 3 })
-      .to(camera.position, { x: 0.7, y: 0.2, duration: 3 }, '<');
-    ScrollTrigger.create({ animation: tl, trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: true });
-    ScrollTrigger.create({ trigger: '#pin', start: 'top top+=80', end: 'bottom 60%', pin: true, pinSpacing: true });
-
-    // Activate steps
-    gsap.utils.toArray('.step').forEach(el => {
-      ScrollTrigger.create({ trigger: el, start: 'top 70%', end: 'bottom 30%', onEnter: () => el.classList.add('active'), onLeaveBack: () => el.classList.remove('active') });
-    });
-
-    // Split‑text reveals (no plugin) — simple per‑char fade‑up
-    function splitAndReveal(selector){
-      document.querySelectorAll(selector).forEach(el => {
-        const text = el.textContent; el.textContent = '';
-        const frag = document.createDocumentFragment();
-        for (const ch of text) { const span = document.createElement('span'); span.textContent = ch; span.style.display='inline-block'; span.style.opacity=0; span.style.transform='translateY(12px)'; frag.appendChild(span); }
-        el.appendChild(frag);
-        gsap.to(el.querySelectorAll('span'), { opacity: 1, y: 0, duration: .6, ease: 'power2.out', stagger: 0.02, scrollTrigger: { trigger: el, start: 'top 80%' } });
-      });
+    // Responsive sizing
+    function onResize() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
     }
-    splitAndReveal('.split');
+    window.addEventListener('resize', onResize);
+    onResize();
 
-    // Magnetic cursor & buttons — inspired by GSAP community techniques
-    const cursor = document.getElementById('cursor');
-    window.addEventListener('mousemove', e => { cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`; });
-    const magnets = document.querySelectorAll('.magnet');
-    magnets.forEach(el => {
-      const strength = 0.35; const hoverScale = 1.03;
-      el.addEventListener('mousemove', (e) => {
-        const rect = el.getBoundingClientRect();
-        const relX = e.clientX - rect.left - rect.width/2;
-        const relY = e.clientY - rect.top - rect.height/2;
-        gsap.to(el, { x: relX * strength, y: relY * strength, rotate: relX * 0.02, duration: 0.2 });
-        cursor.classList.add('-active');
+    // Lights
+    const light = new THREE.DirectionalLight(0x7fdcff, 1.1);
+    light.position.set(2, 3, 2);
+    scene.add(light);
+    scene.add(new THREE.AmbientLight(0x5577aa, 0.6));
+
+    // Procedural starfield (instanced points)
+    const starCount = 1200;
+    const starGeom = new THREE.BufferGeometry();
+    const positions = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+      const r = 20 * Math.random() + 6;      // ring radius
+      const a = Math.random() * Math.PI * 2; // angle
+      positions[i * 3 + 0] = Math.cos(a) * r;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 8;
+      positions[i * 3 + 2] = Math.sin(a) * r;
+    }
+    starGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0x66e4ff, size: 0.03, transparent: true, opacity: 0.85 });
+    const stars = new THREE.Points(starGeom, starMat);
+    scene.add(stars);
+
+    // Centerpiece: glossy torus knot (symbolic of interleaving/energy flow)
+    const tkGeom = new THREE.TorusKnotGeometry(1.2, 0.38, 222, 24);
+    const tkMat = new THREE.MeshStandardMaterial({
+      color: 0x2bd4ff,
+      metalness: 0.6,
+      roughness: 0.25,
+      envMapIntensity: 1.0,
+    });
+    const knot = new THREE.Mesh(tkGeom, tkMat);
+    scene.add(knot);
+
+    // Floating chips around the knot — subtle rotating quads
+    const chipGeom = new THREE.PlaneGeometry(0.45, 0.3);
+    const chipMat = new THREE.MeshBasicMaterial({ color: 0xa78bfa, transparent: true, opacity: 0.7, side: THREE.DoubleSide });
+    const chips = [];
+    for (let i = 0; i < 10; i++) {
+      const chip = new THREE.Mesh(chipGeom, chipMat.clone());
+      chip.position.set((Math.random()-0.5)*6, (Math.random()-0.5)*4, (Math.random()-0.5)*6);
+      chip.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
+      chips.push(chip);
+      scene.add(chip);
+    }
+
+    // Render loop
+    let t = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      t += 0.01;
+      knot.rotation.x += 0.004;
+      knot.rotation.y += 0.006;
+      stars.rotation.y += 0.0008;
+      chips.forEach((c, i) => {
+        c.rotation.y += 0.01 + i * 0.0003;
+        c.position.y += Math.sin(t * 0.4 + i) * 0.0006;
       });
-      el.addEventListener('mouseleave', () => { gsap.to(el, { x:0, y:0, rotate:0, duration: 0.4, ease:'power3.out' }); cursor.classList.remove('-active'); });
-      el.addEventListener('mouseenter', () => { el.style.transformOrigin = 'center'; gsap.to(el, { scale: hoverScale, duration: .2 }); });
-      el.addEventListener('mouseleave', () => { gsap.to(el, { scale: 1, duration: .3 }); });
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // =========================
+    //  GSAP Scroll Animations
+    //  - Pin hero for parallax
+    //  - Scroll camera forward & subtly offset over sections
+    //  - Color shift lights through the page
+    // =========================
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Parallax pin on hero card
+    ScrollTrigger.create({
+      trigger: '.hero',
+      start: 'top top',
+      end: '+=80%',
+      pin: true,
+      pinSpacing: true,
     });
 
-    // Animation loop
-    let t = 0; const speed = 0.003;
-    function tick(){ t += speed; if (!prefersReducedMotion){ knot.rotation.y += 0.003; knot.rotation.x += 0.0015; points.rotation.y -= 0.0006; } renderer.render(scene, camera); requestAnimationFrame(tick); }
-    tick();
+    // Camera tween through sections
+    const sections = gsap.utils.toArray('section');
+    sections.forEach((sec, i) => {
+      const zTarget = 8 - i * 1.2; // move slightly closer each section
+      const yTarget = (i % 2 === 0) ? 0.2 : -0.2;
+
+      gsap.to(camera.position, {
+        scrollTrigger: {
+          trigger: sec,
+          start: 'top 70%',
+          end: 'bottom 30%',
+          scrub: 0.8,
+        },
+        z: zTarget,
+        y: yTarget,
+        ease: 'power2.out'
+      });
+
+      // Subtle hue shift on the knot
+      gsap.to(knot.material.color, {
+        scrollTrigger: {
+          trigger: sec,
+          start: 'top 80%',
+          end: 'bottom 20%',
+          scrub: 0.6,
+        },
+        r: 0.2 + 0.2 * Math.sin(i),
+        g: 0.8 - 0.1 * i,
+        b: 1.0 - 0.1 * i,
+      });
+    });
+
+    // Light sweep down the page
+    gsap.to(light.position, {
+      scrollTrigger: {
+        trigger: '#projects',
+        start: 'top center',
+        end: 'bottom center',
+        scrub: true,
+      },
+      x: 3, y: 2, z: 1
+    });
+
+    // =========================
+    //  Small enhancements
+    // =========================
+    // Smooth internal anchor scroll (improves keyboard navigation too)
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
   </script>
 </body>
 </html>
