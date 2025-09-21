@@ -175,3 +175,17 @@ Array.from(document.querySelectorAll('a[href^=\"#\"]')).forEach(a => {
     if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
 });
+// ===== Typewriter effect for subtitle =====
+const subtitleText = "Electrical Engineering @ McMaster University";
+const subtitleEl = document.getElementById("typed-subtitle");
+
+let idx = 0;
+function typeSubtitle() {
+  if (idx < subtitleText.length) {
+    subtitleEl.textContent += subtitleText.charAt(idx);
+    idx++;
+    setTimeout(typeSubtitle, 60); // typing speed in ms
+  }
+}
+typeSubtitle();
+
