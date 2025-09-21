@@ -221,5 +221,21 @@ footer { text-align: center; color: var(--muted); padding: 40px 18px 60px; }
   height: 60%;
   object-fit: contain;
 }
+#typed-subtitle {
+  display: inline-block;
+  font-size: 1.2rem;
+  color: var(--muted);
+  border-right: 2px solid var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  animation: blink 0.7s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
 
 /* Light theme overrides are applied via inline style changes in JS */
