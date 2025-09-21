@@ -1,306 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!--
-  Tech: vanilla HTML + CSS + tiny JS + Spline web component.
-  No build tools, no frameworks, copy-paste into index.html.
-  ==========================================================
-  -->
+  <!-- Demon‑Level 3D Portfolio — v2 (magnetic cursor, split‑text reveals, progress bar) -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0f1115" />
-  <title>Portfolio • EDIT ME: Your Name</title>
-  <meta name="description" content="EDIT ME: short site description for SEO" />
+  <meta name="theme-color" content="#0b0d12" />
+  <title>🚀 Portfolio — 🚧 EDIT ME: Your Name</title>
+  <meta name="description" content="🚧 EDIT ME: short description for SEO" />
 
-  <!-- Fonts (safe to remove/change) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Spline viewer (web component) -->
-  <!-- Replace the version with latest if you like; this is pinned for stability. -->
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.40/build/spline-viewer.js"></script>
+  <!-- Libraries (CDN) -->
+  <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
 
   <style>
-    /* =======================
-       THEME & RESET
-       ======================= */
     :root {
-      /* EDIT ME: Brand colors */
-      --bg: #0f1115;
-      --card: #121622;
-      --fg: #e8eef6;
-      --muted: #9aa6bf;
-      --accent: #8b5cf6;  /* purple */
-      --accent2: #22c55e; /* green */
-      --line: rgba(255,255,255,0.08);
-
-      --radius: 16px;
-      --shadow: 0 24px 80px rgba(0,0,0,0.35);
-      --container: min(1100px, 92vw);
+      --bg: #0b0d12; --ink: #e9eef7; --muted: #9aa6bf; --panel: #111522; --line: rgba(255,255,255,0.08);
+      --acc: #8b5cf6; --acc2: #22c55e; --shadow: 0 24px 80px rgba(0,0,0,.35); --radius: 16px; --container: min(1100px, 92vw);
     }
-    @media (prefers-color-scheme: light) {
-      :root { --bg:#f7f8fb; --card:#ffffff; --fg:#0f1115; --muted:#5d6679; --line: rgba(0,0,0,0.08); }
-    }
+    @media (prefers-color-scheme: light) { :root { --bg:#f7f8fb; --ink:#0b0d12; --muted:#5a6577; --panel:#ffffff; --line: rgba(0,0,0,0.08); } }
     * { box-sizing: border-box }
     html, body { height: 100% }
-    body {
-      margin: 0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      color: var(--fg);
-      background:
-        radial-gradient(1200px 800px at 70% -10%, rgba(139,92,246,.12), transparent 60%),
-        radial-gradient(900px 600px at -10% 80%, rgba(34,197,94,.12), transparent 60%),
-        var(--bg);
-      overflow-x: hidden;
-    }
+    body { margin: 0; font: 16px/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color: var(--ink); background: var(--bg); overflow-x: hidden }
     a { color: inherit; text-decoration: none }
+
+    /* 3D backdrop */
+    .webgl { position: fixed; inset: 0; z-index: 0; background:
+      radial-gradient(1200px 800px at 70% -10%, rgba(139,92,246,.12), transparent 60%),
+      radial-gradient(900px 600px at -10% 80%, rgba(34,197,94,.12), transparent 60%), var(--bg); }
+
+    /* layout */
+    .layer { position: relative; z-index: 1 }
     .container { width: var(--container); margin: 0 auto; padding: 20px }
-    .card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--line) }
-    .btn { display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius: 12px; border:1px solid var(--line); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); }
-    .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 16px rgba(0,0,0,.25) }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow) }
     .muted { color: var(--muted) }
+    .btn { display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; border:1px solid var(--line);
+           background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); transition: transform .12s ease, box-shadow .12s ease }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 16px rgba(0,0,0,.25) }
 
-    /* =======================
-       HEADER / NAV
-       ======================= */
-    header.site-header {
-      position: sticky; top: 0; z-index: 50;
-      background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0));
-      backdrop-filter: blur(6px);
-      border-bottom: 1px solid var(--line);
-    }
-    .nav { display:flex; align-items:center; justify-content:space-between; gap:16px; }
-    .brand { display:flex; align-items:center; gap:14px; }
-    .brand .dot { width:10px; height:10px; border-radius:999px; background:var(--accent); box-shadow: 0 0 0 4px rgba(139,92,246,.25) }
+    /* custom cursor (magnetic) */
+    .cursor { position: fixed; left: 0; top: 0; width: 28px; height: 28px; border-radius: 999px; pointer-events: none; z-index: 10;
+      border: 2px solid rgba(255,255,255,.45); mix-blend-mode: difference; transform: translate(-50%, -50%); transition: width .15s, height .15s, border-color .15s }
+    .cursor.-active { width: 56px; height: 56px; border-color: rgba(255,255,255,.75) }
+
+    /* header */
+    header { position: sticky; top: 0; z-index: 5; backdrop-filter: blur(6px); background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0)); border-bottom: 1px solid var(--line) }
+    .nav { display:flex; align-items:center; justify-content:space-between; gap:16px }
+    .brand { display:flex; align-items:center; gap:10px }
+    .dot { width:10px; height:10px; border-radius:999px; background:var(--acc); box-shadow:0 0 0 4px rgba(139,92,246,.25) }
     .brand h1 { font-size: 18px; margin: 0 }
-    .links { display:flex; align-items:center; gap:12px; flex-wrap: wrap }
-    .links a { opacity: .95; padding: 8px 10px; border-radius: 10px; border: 1px solid transparent }
-    .links a:hover { border-color: var(--line) }
+    .links { display:flex; align-items:center; gap:10px; flex-wrap: wrap }
 
-    /* =======================
-       HERO (Pinned Spline)
-       ======================= */
-    .hero {
-      position: relative; isolation: isolate; /* allow overlays */
-      min-height: 100vh; display: grid; place-items: center; overflow: hidden;
-    }
-    .hero .inner { width: var(--container); display: grid; grid-template-columns: 1.2fr .8fr; gap: 24px; align-items: center }
+    /* progress bar at top */
+    .progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(90deg, var(--acc), var(--acc2)); z-index: 6 }
+
+    /* hero */
+    .hero { min-height: 100vh; display: grid; place-items: center }
+    .hero .inner { width: var(--container); display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; align-items:center }
     @media (max-width: 900px) { .hero .inner { grid-template-columns: 1fr } }
+    .hero-copy { padding: 24px }
+    .hero-copy h2 { font-size: clamp(30px, 5vw, 56px); margin: 0 0 8px; letter-spacing: .2px }
+    .buttons { margin-top: 12px; display:flex; gap:10px; flex-wrap: wrap }
+    .hero-panel { height: 60vh; min-height: 420px; overflow: hidden; position: relative }
+    .hero-panel::after{ content:""; position:absolute; inset:0; border:1px solid var(--line); border-radius: var(--radius) }
 
-    .hero-copy.card { padding: 24px }
-    .hero-copy h2 { font-size: clamp(28px, 5vw, 56px); margin: 0 0 6px }
-    .hero-copy p { margin: 0; color: var(--muted) }
-    .buttons { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px }
-
-    /* Spline viewer wrapper (sticky) */
-    .spline-wrap {
-      position: relative; height: 70vh; min-height: 420px; border-radius: var(--radius); overflow: hidden; border:1px solid var(--line)
-    }
-    spline-viewer { width: 100%; height: 100%; display: block }
-    .spline-overlay { position: absolute; inset: 0; pointer-events: none; }
-
-    /* =======================
-       SCROLLYTELLING (Apple-ish)
-       pinned 3D with step text that fades in/out
-       ======================= */
-    .scrolly {
-      position: relative; padding: 40px 0 120px;
-    }
-    .scrolly .pin { position: sticky; top: 80px; height: 70vh; min-height: 420px; border-radius: var(--radius); overflow: hidden; border:1px solid var(--line) }
-    .scrolly .steps { margin-top: 40px; display: grid; gap: 24px }
-    .step { padding: 20px; border:1px solid var(--line); border-radius: 14px; background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); opacity: .5; transform: translateY(8px); transition: opacity .3s, transform .3s }
+    /* scrolly */
+    section { padding: 40px 0 }
+    .scrolly { display:grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start }
+    @media (max-width: 980px){ .scrolly{ grid-template-columns: 1fr } }
+    .pin { position: sticky; top: 80px; height: 70vh; min-height: 420px; border-radius: var(--radius); border:1px solid var(--line); overflow:hidden }
+    .steps { display:grid; gap:16px }
+    .step { padding: 16px; border:1px solid var(--line); border-radius: 14px; background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); opacity:.5; transform: translateY(8px); transition: opacity .3s, transform .3s }
     .step.active { opacity: 1; transform: translateY(0) }
 
-    /* =======================
-       PROJECTS GRID
-       ======================= */
-    .section { padding: 40px 0 }
-    .section h3 { font-size: clamp(22px, 3.6vw, 32px); margin: 0 0 12px }
-    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px }
-    @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr) } }
-    @media (max-width: 640px) { .grid { grid-template-columns: 1fr } }
-    .tile { padding: 18px; display: grid; gap: 8px }
-    .tile h4 { margin: 0; font-size: 18px }
-    .tile p { margin: 0; color: var(--muted) }
+    /* projects */
+    .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px }
+    @media (max-width: 900px){ .grid{ grid-template-columns: repeat(2, 1fr) } }
+    @media (max-width: 640px){ .grid{ grid-template-columns: 1fr } }
+    .tile { padding: 18px; display:grid; gap:6px; transform: translateZ(0) }
+    .tile h4 { margin:0; font-size: 18px }
+    .tile p { margin:0; color: var(--muted) }
 
-    /* =======================
-       FOOTER
-       ======================= */
-    footer { border-top: 1px solid var(--line); padding: 26px 0; color: var(--muted); font-size: 14px }
+    /* footer */
+    footer { border-top:1px solid var(--line); padding: 24px 0; color: var(--muted); font-size: 14px; text-align:center }
 
-    /* =======================
-       Reduced motion support
-       ======================= */
-    @media (prefers-reduced-motion: reduce) {
-      .step, .btn, .tile { transition: none !important }
-    }
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce){ .btn, .step, .tile { transition:none !important } .cursor{ display:none } }
   </style>
 </head>
 <body>
-  <!-- =====================
-       HEADER / NAV (EDIT ME)
-       ===================== -->
-  <header class="site-header">
-    <div class="container nav">
-      <div class="brand">
-        <span class="dot" aria-hidden="true"></span>
-        <h1>EDIT ME • Your Name</h1>
-      </div>
-      <nav class="links" aria-label="Primary">
-        <a href="#work">Work</a>
-        <a href="#projects">Projects</a>
-        <a href="#about">About</a>
-        <!-- No email (per your preference). Add it back if you want. -->
-        <a class="btn" href="https://github.com/EDIT_ME_GITHUB" target="_blank" rel="noopener">GitHub</a>
-        <a class="btn" href="https://www.linkedin.com/in/EDIT_ME_LINKEDIN/" target="_blank" rel="noopener">LinkedIn</a>
-      </nav>
-    </div>
-  </header>
+  <div class="progress" id="progress"></div>
+  <div class="cursor" id="cursor"></div>
 
-  <!-- =====================
-       HERO with pinned Spline (EDIT ME)
-       ===================== -->
-  <section class="hero" id="work">
-    <div class="inner">
-      <div class="hero-copy card">
-        <h2>EDIT ME: Kartikeya Babhuta</h2>
-        <p class="muted">EDIT ME: Electrical Engineer • EV Power Electronics • FSAE</p>
-        <div class="buttons">
-          <a class="btn" href="#projects">View Projects</a>
-          <a class="btn" href="https://github.com/EDIT_ME_GITHUB" target="_blank" rel="noopener">GitHub</a>
-          <a class="btn" href="https://www.linkedin.com/in/EDIT_ME_LINKEDIN/" target="_blank" rel="noopener">LinkedIn</a>
+  <!-- 3D BACKDROP CANVAS -->
+  <canvas class="webgl" id="scene"></canvas>
+
+  <!-- CONTENT LAYER -->
+  <div class="layer">
+    <header>
+      <div class="container nav">
+        <div class="brand"><span class="dot" aria-hidden="true"></span><h1>🚧 EDIT ME • Your Name</h1></div>
+        <nav class="links" aria-label="Primary">
+          <a href="#work" class="magnet">Work</a>
+          <a href="#projects" class="magnet">Projects</a>
+          <a href="#about" class="magnet">About</a>
+          <a class="btn magnet" href="https://github.com/EDIT_ME_GITHUB" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn magnet" href="https://www.linkedin.com/in/EDIT_ME_LINKEDIN/" target="_blank" rel="noopener">LinkedIn</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero" id="work">
+      <div class="inner">
+        <div class="hero-copy card">
+          <h2 class="split">🚧 EDIT ME: Kartikeya Babhuta</h2>
+          <p class="muted">🚧 EDIT ME: Electrical Engineer • EV Power Electronics • FSAE</p>
+          <div class="buttons">
+            <a class="btn magnet" href="#projects">View Projects</a>
+            <a class="btn magnet" href="https://github.com/EDIT_ME_GITHUB" target="_blank" rel="noopener">GitHub</a>
+            <a class="btn magnet" href="https://www.linkedin.com/in/EDIT_ME_LINKEDIN/" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
         </div>
+        <div class="hero-panel card"></div>
       </div>
+    </section>
 
-      <!-- Pinned 3D Spline scene. Replace the URL below with your scene link from Spline.
-           In Spline: File → Export → Web → Copy the scene URL. -->
-      <div class="spline-wrap card" aria-label="3D scene">
-        <spline-viewer id="splineHero" loading="auto" events="true" url="EDIT_ME_SPLINE_SCENE_URL"></spline-viewer>
-        <div class="spline-overlay" aria-hidden="true"></div>
+    <section class="container scrolly">
+      <div class="pin card" id="pin"></div>
+      <div class="steps" id="steps">
+        <article class="step card" data-step="1"><h3 class="split">EV7 — First Full Operation</h3><p class="muted">Directed validation & integration of HV/LV systems to achieve the team’s first fully operational EV.</p></article>
+        <article class="step card" data-step="2"><h3 class="split">HV Safety Test Board</h3><p class="muted">Analog contactor sequencing, IMD logic, isolation monitoring, surge/OV/OC protection.</p></article>
+        <article class="step card" data-step="3"><h3 class="split">SuperBox Research (MARC)</h3><p class="muted">Interface PCBs & HIL for integrated OBC–Traction–Boost–APM converter prototype.</p></article>
+        <article class="step card" data-step="4"><h3 class="split">Wireless BMS (600 V)</h3><p class="muted">Capstone: PCB architecture lead; RF comms teammate; 600 V pack integration.</p></article>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- =====================
-       SCROLLYTELLING (Apple-ish)
-       - Left: steps that activate as you scroll
-       - Right: sticky/pinned second Spline scene (or reuse the same scene)
-       ===================== -->
-  <section class="scrolly container" aria-label="Highlights">
-    <div class="pin card" aria-hidden="false">
-      <!-- Option A: Reuse the same hero scene (duplicate id not needed if not scripting it). -->
-      <spline-viewer id="splinePin" url="EDIT_ME_SPLINE_SCENE_URL_2"></spline-viewer>
-    </div>
+    <section class="container" id="projects">
+      <h3 style="font-size:clamp(22px,3.6vw,32px);margin:0 0 12px" class="split">Selected Projects</h3>
+      <div class="grid" id="projectGrid"></div>
+    </section>
 
-    <div class="steps" id="steps">
-      <article class="step card" data-step="1">
-        <h3>EV7 – First Full Operation</h3>
-        <p class="muted">Led validation & integration of HV/LV systems to achieve the team’s first fully operational EV.</p>
-      </article>
-      <article class="step card" data-step="2">
-        <h3>HV Safety Test Board</h3>
-        <p class="muted">Analog contactor sequencing, IMD/iso monitoring, surge/OV/OC protection for safe bench testing.</p>
-      </article>
-      <article class="step card" data-step="3">
-        <h3>SuperBox Research (MARC)</h3>
-        <p class="muted">Interface PCBs & HIL for integrated OBC–Traction–Boost–APM power converter prototype.</p>
-      </article>
-      <article class="step card" data-step="4">
-        <h3>Wireless BMS (Capstone)</h3>
-        <p class="muted">600 V pack architecture; collaboration across RF comms and mechanical integration.</p>
-      </article>
-    </div>
-  </section>
+    <section class="container" id="about">
+      <h3 style="font-size:clamp(22px,3.6vw,32px);margin:0 0 12px" class="split">About</h3>
+      <div class="card" style="padding:18px">
+        <p class="muted" style="margin:0">🚧 EDIT ME: I’m an Electrical Engineering student focused on EV power electronics and high‑voltage test systems. I like fast, careful iteration—from bench measurements to PCB spins—tying decisions to test data.</p>
+      </div>
+    </section>
 
-  <!-- =====================
-       PROJECTS GRID (EDIT ME)
-       ===================== -->
-  <section class="container section" id="projects">
-    <h3>Selected Projects</h3>
-    <div class="grid">
-      <a class="tile card" href="#" target="_blank" rel="noopener">
-        <h4>Interface PCB for HIL</h4>
-        <p>Bridged converter eval board to Typhoon HIL; defined pinout, isolation, and safety paths.</p>
-      </a>
-      <a class="tile card" href="#" target="_blank" rel="noopener">
-        <h4>SiC Double‑Pulse Test Bench</h4>
-        <p>Characterized switching at ~600–850 V; safe probing with IsoVu & HV differential probes.</p>
-      </a>
-      <a class="tile card" href="#" target="_blank" rel="noopener">
-        <h4>HV Safety Test Board</h4>
-        <p>Analog sequencing, comparators, isolation amplifiers, OV/OC protection & indicators.</p>
-      </a>
-      <a class="tile card" href="#" target="_blank" rel="noopener">
-        <h4>EV7 Electrical Integration</h4>
-        <p>Directed end‑to‑end integration and validation for a fully operational FSAE EV.</p>
-      </a>
-      <a class="tile card" href="#" target="_blank" rel="noopener">
-        <h4>Wireless BMS (600 V)</h4>
-        <p>Capstone project; PCB architecture lead; RF teammate on comms; systems integration.</p>
-      </a>
-      <a class="tile card" href="#" target="_blank" rel="noopener">
-        <h4>SuperBox Interface</h4>
-        <p>PCBs & HIL for integrated OBC–Traction–Boost–APM research prototype.</p>
-      </a>
-    </div>
-  </section>
+    <footer><div class="container">© <span id="year"></span> 🚧 EDIT ME • Your Name — Built with Three.js + GSAP.</div></footer>
+  </div>
 
-  <!-- =====================
-       ABOUT (EDIT ME)
-       ===================== -->
-  <section class="container section" id="about">
-    <h3>About</h3>
-    <div class="card" style="padding:18px">
-      <p class="muted" style="margin:0">
-        EDIT ME: I’m an Electrical Engineering student focused on EV power electronics
-        and high‑voltage test systems. I like fast, careful iteration—from bench
-        measurements to PCB spins—tying decisions to test data.
-      </p>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container">© <span id="year"></span> EDIT ME • Your Name. Built with Spline + vanilla web tech.</div>
-  </footer>
-
-  <!-- =======================
-       SCRIPT: tiny, readable, and optional.
-       - IntersectionObserver to activate steps on scroll
-       - Gentle parallax for hero gradient
-       - (Optional) Spline messaging hooks are left as comments for you to extend
-       ======================= -->
   <script>
-    // Year in footer (small nicety)
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // IntersectionObserver: mark the current step as active
-    const steps = Array.from(document.querySelectorAll('.step'));
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          steps.forEach(s => s.classList.remove('active'));
-          e.target.classList.add('active');
+    // PROJECTS DATA — EDIT ME
+    const projectData = [
+      { title: 'Interface PCB for HIL', blurb: 'Bridged converter eval board to Typhoon HIL; defined pinout, isolation, safety paths.', href: '#' },
+      { title: 'SiC Double‑Pulse Test Bench', blurb: 'Characterized switching at ~600–850 V; safe probing with IsoVu & HV diff probes.', href: '#' },
+      { title: 'HV Safety Test Board', blurb: 'Analog sequencing, comparators, isolation amplifiers, OV/OC protection & indicators.', href: '#' },
+      { title: 'EV7 Electrical Integration', blurb: 'End‑to‑end integration & validation for a fully operational FSAE EV.', href: '#' },
+      { title: 'Wireless BMS (600 V)', blurb: 'Capstone: PCB architecture lead; RF comms teammate; 600 V pack integration.', href: '#' },
+      { title: 'SuperBox Interface', blurb: 'PCBs & HIL for integrated OBC–Traction–Boost–APM research prototype.', href: '#' }
+    ];
+    document.getElementById('projectGrid').innerHTML = projectData.map(p => `
+      <a class="tile card magnet" ${p.href ? `href="${p.href}" target="_blank" rel="noopener"` : ''}>
+        <h4>${p.title}</h4><p>${p.blurb}</p>
+      </a>`).join('');
 
-          // OPTIONAL: If you want to send messages to Spline to trigger state changes,
-          // you can do it here per step. For advanced usage, see Spline docs.
-          // Example pseudocode (requires a scene set up to listen to events):
-          // const spline = document.getElementById('splinePin');
-          // spline.emitEvent('start', 'Step' + e.target.dataset.step);
-        }
+    // ===== Three.js scene =====
+    const canvas = document.getElementById('scene');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 7);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.6); scene.add(ambient);
+    const dir = new THREE.DirectionalLight(0xffffff, 1.0); dir.position.set(5,5,5); scene.add(dir);
+    const geo = new THREE.TorusKnotGeometry(1.2, 0.36, 220, 32);
+    const mat = new THREE.MeshPhysicalMaterial({ color: 0x8b5cf6, metalness: 0.2, roughness: 0.15, transmission: 0.7, thickness: 0.6, clearcoat: 0.6, sheen: 0.4, sheenRoughness: 0.5, clearcoatRoughness: 0.1 });
+    const knot = new THREE.Mesh(geo, mat); scene.add(knot);
+    const pcount = 2000; const pgeo = new THREE.BufferGeometry(); const positions = new Float32Array(pcount*3);
+    for (let i=0;i<pcount;i++){ positions[i*3] = (Math.random()-0.5)*40; positions[i*3+1] = (Math.random()-0.5)*40; positions[i*3+2] = (Math.random()-0.5)*40; }
+    pgeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const pmaterial = new THREE.PointsMaterial({ color: 0x22c55e, size: 0.02, transparent: true, opacity: 0.7 });
+    const points = new THREE.Points(pgeo, pmaterial); scene.add(points);
+    window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+
+    // ===== Smooth scroll + GSAP ScrollTrigger =====
+    gsap.registerPlugin(ScrollTrigger);
+    const lenis = new Lenis({ smoothWheel: true, lerp: 0.08, smoothTouch: false, normalizeWheel: true });
+    function raf(time){ lenis.raf(time); ScrollTrigger.update(); requestAnimationFrame(raf); } requestAnimationFrame(raf);
+
+    // Progress bar
+    const progress = document.getElementById('progress');
+    ScrollTrigger.create({ start: 0, end: 'max', onUpdate: self => progress.style.width = (self.progress*100)+'%' });
+
+    // 3D choreography tied to scroll
+    const tl = gsap.timeline({ defaults: { ease: 'none' } });
+    tl.to(knot.rotation, { y: '+=' + Math.PI * 0.5, duration: 2 })
+      .to(camera.position, { z: 5.5, duration: 2 }, '<')
+      .to(knot.rotation, { x: '+=' + Math.PI * 0.25, duration: 2 }, '<')
+      .to(knot.rotation, { y: '+=' + Math.PI, x: '+=' + Math.PI * 0.25, duration: 3 })
+      .to(camera.position, { x: 0.7, y: 0.2, duration: 3 }, '<');
+    ScrollTrigger.create({ animation: tl, trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: true });
+    ScrollTrigger.create({ trigger: '#pin', start: 'top top+=80', end: 'bottom 60%', pin: true, pinSpacing: true });
+
+    // Activate steps
+    gsap.utils.toArray('.step').forEach(el => {
+      ScrollTrigger.create({ trigger: el, start: 'top 70%', end: 'bottom 30%', onEnter: () => el.classList.add('active'), onLeaveBack: () => el.classList.remove('active') });
+    });
+
+    // Split‑text reveals (no plugin) — simple per‑char fade‑up
+    function splitAndReveal(selector){
+      document.querySelectorAll(selector).forEach(el => {
+        const text = el.textContent; el.textContent = '';
+        const frag = document.createDocumentFragment();
+        for (const ch of text) { const span = document.createElement('span'); span.textContent = ch; span.style.display='inline-block'; span.style.opacity=0; span.style.transform='translateY(12px)'; frag.appendChild(span); }
+        el.appendChild(frag);
+        gsap.to(el.querySelectorAll('span'), { opacity: 1, y: 0, duration: .6, ease: 'power2.out', stagger: 0.02, scrollTrigger: { trigger: el, start: 'top 80%' } });
       });
-    }, { threshold: 0.6 });
-    steps.forEach(step => io.observe(step));
+    }
+    splitAndReveal('.split');
 
-    // Gentle parallax on scroll (background gradients)
-    const parallax = () => {
-      const y = window.scrollY || document.documentElement.scrollTop;
-      document.body.style.backgroundPosition = `0px ${-y * 0.05}px, 0px ${-y * 0.02}px, 0 0`;
-    };
-    window.addEventListener('scroll', parallax, { passive: true });
+    // Magnetic cursor & buttons — inspired by GSAP community techniques
+    const cursor = document.getElementById('cursor');
+    window.addEventListener('mousemove', e => { cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`; });
+    const magnets = document.querySelectorAll('.magnet');
+    magnets.forEach(el => {
+      const strength = 0.35; const hoverScale = 1.03;
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const relX = e.clientX - rect.left - rect.width/2;
+        const relY = e.clientY - rect.top - rect.height/2;
+        gsap.to(el, { x: relX * strength, y: relY * strength, rotate: relX * 0.02, duration: 0.2 });
+        cursor.classList.add('-active');
+      });
+      el.addEventListener('mouseleave', () => { gsap.to(el, { x:0, y:0, rotate:0, duration: 0.4, ease:'power3.out' }); cursor.classList.remove('-active'); });
+      el.addEventListener('mouseenter', () => { el.style.transformOrigin = 'center'; gsap.to(el, { scale: hoverScale, duration: .2 }); });
+      el.addEventListener('mouseleave', () => { gsap.to(el, { scale: 1, duration: .3 }); });
+    });
 
-    // Spline viewer tips:
-    // - You can have a single scene and animate inside Spline with timeline triggers.
-    // - Or use two different scene URLs (hero vs. scrolly) as shown.
-    // - In Spline, you can name objects and listen for events via the viewer API.
+    // Animation loop
+    let t = 0; const speed = 0.003;
+    function tick(){ t += speed; if (!prefersReducedMotion){ knot.rotation.y += 0.003; knot.rotation.x += 0.0015; points.rotation.y -= 0.0006; } renderer.render(scene, camera); requestAnimationFrame(tick); }
+    tick();
   </script>
 </body>
 </html>
