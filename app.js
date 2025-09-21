@@ -175,17 +175,42 @@ Array.from(document.querySelectorAll('a[href^=\"#\"]')).forEach(a => {
     if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
 });
-// ===== Typewriter effect for subtitle =====
-const subtitleText = "Electrical Engineering @ McMaster University";
+// ===== Typewriter effect for subtitle (cycling) =====
+const subtitles = [
+  "Electrical Engineering @ McMaster University",
+  "Research Intern @ McMaster Automotive Resource Centre"
+];
 const subtitleEl = document.getElementById("typed-subtitle");
 
-let idx = 0;
+let idx = 0;          // index of character
+let sentence = 0;     // index of which sentence
+let deleting = false; // are we deleting?
+
 function typeSubtitle() {
-  if (idx < subtitleText.length) {
-    subtitleEl.textContent += subtitleText.charAt(idx);
+  const current = subtitles[sentence];
+  const displayed = subtitleEl.textContent;
+
+  if (!deleting && idx < current.length) {
+    // Typing forward
+    subtitleEl.textContent = current.slice(0, idx + 1);
     idx++;
-    setTimeout(typeSubtitle, 60); // typing speed in ms
+    setTimeout(typeSubtitle, 60);
+  } else if (!deleting && idx === current.length) {
+    // Pause at full sentence
+    deleting = true;
+    setTimeout(typeSubtitle, 1500); // hold full text
+  } else if (deleting && idx > 0) {
+    // Deleting backwards
+    subtitleEl.textContent = current.slice(0, idx - 1);
+    idx--;
+    setTimeout(typeSubtitle, 40);
+  } else if (deleting && idx === 0) {
+    // Switch sentence and start typing next
+    deleting = false;
+    sentence = (sentence + 1) % subtitles.length;
+    setTimeout(typeSubtitle, 500);
   }
 }
+
 typeSubtitle();
 
