@@ -8,73 +8,88 @@
   --muted-light: #475569;
 }
 
-body {
+html, body {
   margin: 0;
+  padding: 0;
+  height: 100%;
   font-family: "Inter", sans-serif;
   background: var(--bg-dark);
   color: var(--text-light);
-  min-height: 100vh;
   overflow-x: hidden;
 }
 
+body.light-theme {
+  background: var(--bg-light);
+  color: var(--text-dark);
+}
+
+/* Tesla coil canvas background */
+#tesla-canvas {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none; /* so it does not interfere with clicks */
+}
+
+/* Container wraps your content for max width and padding */
 .container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 2rem;
+  position: relative; /* so content layers above canvas */
+  z-index: 1;
 }
 
+/* Header styling */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 20px;
+  padding: 1.5rem 0;
 }
 
+/* Theme toggle button */
 .btn {
   background-color: var(--primary-color);
   border: none;
-  color: white;
-  padding: 10px 16px;
   border-radius: 6px;
+  padding: 0.5rem 1.25rem;
+  color: white;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
 }
 
+.btn:hover {
+  background-color: var(--secondary-color);
+}
+
+/* Typed subtitle styling */
 #typed-subtitle {
   font-size: 1.5rem;
   border-right: 2px solid var(--text-light);
-  display: inline-block;
   white-space: nowrap;
-  margin-top: 60px;
-  line-height: 1.3;
+  overflow: hidden;
+  display: inline-block;
   animation: blink-caret 0.7s step-end infinite;
+  margin-top: 4rem;
 }
 
 #subtitle-icon {
   margin-right: 8px;
 }
 
+/* Blink caret animation */
 @keyframes blink-caret {
   50% {
     border-color: transparent;
   }
 }
 
-/* Light theme overrides */
-body.light-theme {
-  background: var(--bg-light);
-  color: var(--text-dark);
-}
-
-/* Make Vanta background fill screen */
-#vanta-bg {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0; left: 0;
-  z-index: -1;
-}
-
-/* Responsive */
+/* Responsive adjustments */
 @media (max-width: 600px) {
   #typed-subtitle {
     font-size: 1.2rem;
