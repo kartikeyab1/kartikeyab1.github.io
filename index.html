@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="color-scheme" content="dark light" />
-  <meta name="description" content="Portfolio of Kartikeya Babhuta" />
+  <meta name="description" content="Portfolio of Kartikeya Babhuta — Power electronics, HV systems, PCB design & validation." />
   <meta name="theme-color" content="#0ea5e9" />
   <title>Kartikeya Babhuta</title>
 
@@ -13,148 +13,172 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- Favicon -->
- <link rel="icon" 
-  href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E
-  %3Ccircle cx='50' cy='50' r='48' fill='teal'/%3E
-  %3Ctext x='50' y='60' font-size='32' text-anchor='middle' fill='white'%3EKB%3C/text%3E
-  %3C/svg%3E"
-/>
+  <!-- Favicon: teal circle with KB -->
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E
+      %3Ccircle cx='50' cy='50' r='48' fill='teal'/%3E
+      %3Ctext x='50' y='60' font-size='32' text-anchor='middle' fill='white'%3EKB%3C/text%3E
+    %3C/svg%3E" />
 
-  <!-- Styles -->
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <!-- Fullscreen WebGL canvas under content -->
+  <!-- Background canvas (stars/parallax) -->
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
   <div class="vignette" aria-hidden="true"></div>
 
-  <!-- Sticky header navigation -->
+  <!-- Header -->
   <header>
-    <nav>
+    <nav class="nav">
       <a class="brand" href="#top" aria-label="Home">
         <span class="dot"></span>
         <h1>Kartikeya Babhuta</h1>
       </a>
+
+      <!-- Desktop links -->
       <div class="nav-links">
         <a href="#about">About</a>
         <a href="#projects">Projects</a>
         <a href="#experience">Experience</a>
         <a href="#contact">Contact</a>
-        <button class="theme-toggle" id="themeToggle" title="Toggle theme">Toggle Theme</button>
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme">Theme</button>
       </div>
+
+      <!-- Mobile menu button -->
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </nav>
+
+    <!-- Mobile drawer -->
+    <div class="drawer" id="drawer" aria-hidden="true">
+      <a href="#about" class="drawer-link">About</a>
+      <a href="#projects" class="drawer-link">Projects</a>
+      <a href="#experience" class="drawer-link">Experience</a>
+      <a href="#contact" class="drawer-link">Contact</a>
+    </div>
   </header>
 
- <!-- Hero -->
-<main id="top" class="hero container">
-  <div class="hero-card reveal">
-    <span class="hero-badge">
-      <span class="pulse"></span> Available for an 8-month internship (Jan–Aug 2026)
-    </span>
-   <!-- Flex container for photo + name -->
-    <h2 style="margin:0;">Kartikeya Babhuta</h2>
-   
-    <!-- Your typed subtitle -->
-    <p id="typed-subtitle">
-  <span id="subtitle-icon" aria-hidden="true" style="display:inline-block;margin-right:8px;">⚡</span>
-  <span id="subtitle-text"></span>
-</p>
-<div class="cta icons-only">
-  <a class="btn-icon" href="https://www.linkedin.com/in/kbabhuta" target="_blank" rel="noopener" aria-label="LinkedIn">
-    <img src="./src/assets/logos/linkedin.svg" alt="LinkedIn Icon" />
-  </a>
-  <a class="btn-icon" href="#projects" aria-label="Projects">
-    <img src="./src/assets/logos/button.svg" alt="Projects Icon" />
-  </a>
-  <a class="btn-icon" href="https://kartikeyab1.github.io/" target="_blank" rel="noopener" aria-label="GitHub">
-    <img src="./src/assets/logos/github.svg" alt="GitHub Icon" />
-  </a>
-  <a class="btn-icon" href="https://www.notion.so/Kartikeya-Babhuta-b8fd9a2dbc1340db9e8df1c3fe323e25?source=copy_link" target="_blank" rel="noopener" aria-label="Notion">
-    <img src="./src/assets/logos/notion.svg" alt="Notion Icon" />
-  </a>
-</div>
-  </div>
-</main>
+  <!-- Hero -->
+  <main id="top" class="hero container">
+    <div class="hero-card reveal">
+      <span class="hero-badge">
+        <span class="pulse"></span> Available for 8-month internship (Jan–Aug 2026)
+      </span>
 
+      <!-- Name + (optional) portrait to the right -->
+      <div class="hero-row">
+        <div class="hero-col">
+          <h2 class="hero-name">Kartikeya Babhuta</h2>
+
+          <!-- Typed subtitle with icon that swaps per line -->
+          <p id="typed-subtitle" class="hero-sub">
+            <span id="subtitle-icon" aria-hidden="true" class="lead-icon">⚡</span>
+            <span id="subtitle-text"></span>
+          </p>
+
+          <!-- Icon buttons (point these to your asset folder if you prefer) -->
+          <div class="cta icons-only">
+            <a class="btn-icon" href="https://www.linkedin.com/in/kbabhuta" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <img src="./src/assets/logos/linkedin.svg" alt="LinkedIn logo" />
+            </a>
+            <a class="btn-icon" href="#projects" aria-label="Projects">
+              <img src="./src/assets/logos/projects.svg" alt="Projects grid icon" />
+            </a>
+            <a class="btn-icon" href="https://kartikeyab1.github.io/" target="_blank" rel="noopener" aria-label="GitHub">
+              <img src="./src/assets/logos/github.svg" alt="GitHub logo" />
+            </a>
+            <a class="btn-icon" href="https://www.notion.so/Kartikeya-Babhuta-b8fd9a2dbc1340db9e8df1c3fe323e25?source=copy_link" target="_blank" rel="noopener" aria-label="Notion">
+              <img src="./src/assets/logos/notion.svg" alt="Notion logo" />
+            </a>
+          </div>
+        </div>
+
+        <!-- Big picture (right). Replace the src path with your own image -->
+        <div class="hero-col hero-photo">
+          <img src="./src/assets/logos/me.jpg" alt="Kartikeya portrait" class="portrait" />
+        </div>
+      </div>
+    </div>
+  </main>
 
   <!-- About -->
   <section id="about" class="container">
     <h2 class="section-title">About</h2>
-    <p class="section-sub">I’m Kartikeya, an Electrical Engineering student with a passion for electronics design and validation. 
-      I specialize in high-voltage battery systems, Power Electronics, PCB layout, and test-driven validation. 
-      My experience spans designing safety-critical circuits, integrating HV/LV systems, and spending an unreasonable amount of time chasing down gremlins with a scope. 
-     Outside my technical adventures, I enjoy a fair game of pool, ping-pong or chess - activities that sharpen the focus and problem-solving mindset I bring to every project.
-  </p>
+    <p class="section-sub">
+      I’m Kartikeya, an Electrical Engineering student with a passion for electronics design and validation.
+      I specialize in high-voltage battery systems, power electronics, PCB layout, and test-driven validation.
+      My experience spans designing safety-critical circuits, integrating HV/LV systems, and (probably too happily)
+      hunting down elusive gremlins with an oscilloscope until they behave. Outside my technical adventures, I enjoy pool,
+      ping-pong, and chess — all of which sharpen the focus and problem-solving mindset I bring to every project.
+    </p>
 
     <div class="grid">
       <article class="card sm-6 reveal">
         <h3>Core Skills</h3>
         <div class="chips">
           <span class="chip">Power Electronics</span>
-          <span class="chip">Electronics Design and Validation</span>
+          <span class="chip">Electronics Design & Validation</span>
           <span class="chip">PCB Layout</span>
-          <span class="chip">High Voltage Systems</span>
-          <span class="chip">Instrumentation & Test Equipment</span>
-          <span class="chip">Formula SAE</span>
+          <span class="chip">High-Voltage Systems</span>
+          <span class="chip">Instrumentation & Test</span>
+          <span class="chip">Formula SAE (FSAE)</span>
         </div>
       </article>
-
       <article class="card sm-6 reveal">
         <h3>Tools</h3>
         <div class="chips">
           <span class="chip">Altium Designer</span>
           <span class="chip">MATLAB / Simulink</span>
-          <span class="chip">PSPICE / LTSpice</span>
-          <span class="chip">Oscilloscopes</span>
-          <span class="chip">Impedance Analyzer</span>
-          <span class="chip">DC Supplies and Loads</span>
-          <span class="chip">Multimeter</span>
-          <span class="chip">Megohmmeter</span>
+          <span class="chip">LTspice / PSPICE</span>
+          <span class="chip">Tektronix & Keysight</span>
+          <span class="chip">Typhoon HIL</span>
+          <span class="chip">Git</span>
         </div>
       </article>
     </div>
   </section>
 
-  <!-- Projects -->
+  <!-- Projects (video on hover/tap) -->
   <section id="projects" class="container">
     <h2 class="section-title">Projects</h2>
-    <p class="section-sub">A few builds I’m proud of. Swap in your own screenshots (replace the <em>thumb</em> boxes with images).</p>
+    <p class="section-sub">Hover (desktop) or tap (mobile) a card to preview a short loop.</p>
 
     <div class="grid">
-      <article class="card sm-6 reveal">
+      <!-- Each card can have a video preview (muted/loop) -->
+      <article class="card sm-6 reveal proj" data-video="./src/assets/videos/hv-safety.mp4" data-poster="./src/assets/videos/hv-safety.jpg">
         <h3>HV Safety Test Board</h3>
-        <p>Analog-only control for contactors with sequenced precharge, IMD interlocks, and isolated sensing (AMC1411).</p>
-        <div class="chips"><span class="chip">600V</span><span class="chip">AMC1411</span><span class="chip">TPS1H200A-Q1</span><span class="chip">555 Timers</span></div>
-        <div class="thumb">Replace with an image</div>
+        <p>Sequenced precharge, IMD interlocks & isolated sensing.</p>
+        <div class="chips"><span class="chip">600V</span><span class="chip">Isolation</span><span class="chip">Reliability</span></div>
+        <div class="thumb">Preview</div>
       </article>
 
-      <article class="card sm-6 reveal">
+      <article class="card sm-6 reveal proj" data-video="./src/assets/videos/ev7.mp4" data-poster="./src/assets/videos/ev7.jpg">
         <h3>EV7 Systems Integration</h3>
-        <p>Directed validation & integration of HV/LV subsystems to achieve the team’s first fully operational FSAE EV.</p>
-        <div class="chips"><span class="chip">144s NMC</span><span class="chip">Contactor Logic</span><span class="chip">Fault Handling</span></div>
-        <div class="thumb">Replace with an image</div>
+        <p>HV/LV integration & validation for a first operational FSAE EV.</p>
+        <div class="chips"><span class="chip">FSAE</span><span class="chip">Contactor Logic</span><span class="chip">Faults</span></div>
+        <div class="thumb">Preview</div>
       </article>
 
-      <article class="card sm-4 reveal">
+      <article class="card sm-4 reveal proj" data-video="./src/assets/videos/hil.mp4" data-poster="./src/assets/videos/hil.jpg">
         <h3>HIL Interface PCB</h3>
-        <p>Bridged converter eval board to Typhoon HIL; clean measurement and safety interlocks baked in.</p>
-        <div class="chips"><span class="chip">Altium</span><span class="chip">HIL</span><span class="chip">Testability</span></div>
-        <div class="thumb">Replace with an image</div>
+        <p>Bridged eval boards to Typhoon HIL with clean instrumentation.</p>
+        <div class="chips"><span class="chip">HIL</span><span class="chip">Testability</span></div>
+        <div class="thumb">Preview</div>
       </article>
 
-      <article class="card sm-4 reveal">
+      <article class="card sm-4 reveal proj" data-video="./src/assets/videos/apm.mp4" data-poster="./src/assets/videos/apm.jpg">
         <h3>APM Interleaved Buck</h3>
-        <p>Co-authored IECON’25 paper on optimized design for a 3.6 kW APM two-stage architecture.</p>
-        <div class="chips"><span class="chip">3.6 kW</span><span class="chip">Interleaved</span><span class="chip">Optimization</span></div>
-        <div class="thumb">Replace with an image</div>
+        <p>Optimized 3.6 kW two-stage architecture study.</p>
+        <div class="chips"><span class="chip">3.6 kW</span><span class="chip">Interleaved</span></div>
+        <div class="thumb">Preview</div>
       </article>
 
-      <article class="card sm-4 reveal">
+      <article class="card sm-4 reveal proj" data-video="./src/assets/videos/lv-pack.mp4" data-poster="./src/assets/videos/lv-pack.jpg">
         <h3>LV Battery Pack</h3>
-        <p>Custom 6S 2170 pack with proper isolation, BMS, and service-friendly harnessing.</p>
-        <div class="chips"><span class="chip">2170</span><span class="chip">BMS</span><span class="chip">Serviceability</span></div>
-        <div class="thumb">Replace with an image</div>
+        <p>6S 2170 pack with BMS, isolation & serviceability.</p>
+        <div class="chips"><span class="chip">2170</span><span class="chip">BMS</span></div>
+        <div class="thumb">Preview</div>
       </article>
     </div>
   </section>
@@ -162,17 +186,16 @@
   <!-- Experience -->
   <section id="experience" class="container">
     <h2 class="section-title">Experience</h2>
-    <p class="section-sub">Recent roles and highlights.</p>
     <ol class="timeline">
       <li class="t-item card reveal">
         <span class="t-dot"></span>
         <h3>Electrical Director · MAC Formula Electric</h3>
-        <p>Led integration/validation of HV and LV systems; first fully operational EV for the team; instituted HV safety processes and DFT practices.</p>
+        <p>Lead HV/LV integration & validation; instituted HV safety & DFT practices.</p>
       </li>
       <li class="t-item card reveal">
         <span class="t-dot"></span>
-        <h3>Research Intern · McMaster Automotive Resource Centre</h3>
-        <p>Prototyped and validated power electronics subsystems; developed HIL interface strategies and instrumentation-ready PCBs.</p>
+        <h3>Research Intern · McMaster Automotive Resource Centre (MARC)</h3>
+        <p>Prototyped & validated power-electronics subsystems; HIL-friendly PCBs.</p>
       </li>
     </ol>
   </section>
@@ -180,33 +203,27 @@
   <!-- Contact -->
   <section id="contact" class="container">
     <h2 class="section-title">Contact</h2>
-    <p class="section-sub">Let’s chat about internships, collaborations, or cool hardware you want to bring to life.</p>
+    <p class="section-sub">Let’s chat about internships, collaborations, or the next hardware build.</p>
 
     <div class="grid">
       <article class="card sm-6 reveal">
         <h3>Get in touch</h3>
         <p>Email: <a href="mailto:babhutak@mcmaster.ca" class="link">babhutak@mcmaster.ca</a></p>
-        <p>LinkedIn: <a href="https://www.linkedin.com/in/kartikeya-babhuta" target="_blank" rel="noopener" class="link">linkedin.com/in/kartikeya-babhuta</a></p>
+        <p>LinkedIn: <a href="https://www.linkedin.com/in/kartikeya-babhuta" class="link" target="_blank" rel="noopener">linkedin.com/in/kartikeya-babhuta</a></p>
       </article>
-
       <article class="card sm-6 reveal">
         <h3>Resume</h3>
-        <p>Keep a PDF named <em>resume.pdf</em> in your repo root and this link will point to it:</p>
+        <p>Place <em>resume.pdf</em> in the repo root:</p>
         <p><a href="./resume.pdf" class="link">Download resume.pdf</a></p>
       </article>
     </div>
   </section>
 
   <footer>
-    <small>© <span id="year"></span> Kartikeya Babhuta • Built with HTML, Three.js & GSAP</small>
+    <small>© <span id="year"></span> Kartikeya Babhuta • Built for desktop & iPhone</small>
   </footer>
 
-  <!-- Vendor libs via CDN (globals) -->
-  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-  <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-
-  <!-- Your app code -->
+  <!-- Scripts -->
   <script src="./app.js"></script>
 </body>
 </html>

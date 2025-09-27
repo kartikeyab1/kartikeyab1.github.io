@@ -1,221 +1,180 @@
-// ===== Utility: set current year =====
+// ===== Year =====
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// ===== Simple theme toggle (persist to localStorage) =====
+// ===== Theme toggle (persist) =====
 const toggle = document.getElementById('themeToggle');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-const savedTheme = localStorage.getItem('theme');
 const root = document.documentElement;
-
-function setTheme(mode) {
-  // Light tweaks shift the palette subtly; keep contrast high
-  if (mode === 'light') {
-    root.style.setProperty('--bg', '#f8fafc');
-    root.style.setProperty('--bg-2', '#f1f5f9');
-    root.style.setProperty('--soft', '#e2e8f0');
-    root.style.setProperty('--text', '#0b1220');
-    root.style.setProperty('--muted', '#475569');
-    root.style.setProperty('--card', 'rgba(255,255,255,0.7)');
+const savedTheme = localStorage.getItem('theme');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+function setTheme(mode){
+  if(mode === 'light'){
+    root.style.setProperty('--bg','#f8fafc');
+    root.style.setProperty('--bg-2','#f1f5f9');
+    root.style.setProperty('--soft','#e2e8f0');
+    root.style.setProperty('--text','#0b1220');
+    root.style.setProperty('--muted','#475569');
+    root.style.setProperty('--card','rgba(255,255,255,0.7)');
     document.body.style.background =
       'radial-gradient(1200px 800px at 70% 10%, #eef6ff 0%, #f8fafc 40%, #eef2ff 100%)';
-  } else {
-    // reset to defaults by removing overrides
-    root.style.removeProperty('--bg');
-    root.style.removeProperty('--bg-2');
-    root.style.removeProperty('--soft');
-    root.style.removeProperty('--text');
-    root.style.removeProperty('--muted');
-    root.style.removeProperty('--card');
+  }else{
+    root.style.removeProperty('--bg'); root.style.removeProperty('--bg-2'); root.style.removeProperty('--soft');
+    root.style.removeProperty('--text'); root.style.removeProperty('--muted'); root.style.removeProperty('--card');
     document.body.style.background =
       'radial-gradient(1200px 800px at 70% 10%, #0a1826 0%, var(--bg) 40%, #060913 100%)';
   }
 }
-
-const initial = savedTheme || (prefersDark ? 'dark' : 'light');
-setTheme(initial);
-
-toggle.addEventListener('click', () => {
-  const next =
-    (localStorage.getItem('theme') || initial) === 'dark' ? 'light' : 'dark';
-  localStorage.setItem('theme', next);
-  setTheme(next);
+const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+setTheme(initialTheme);
+toggle?.addEventListener('click', ()=>{
+  const current = localStorage.getItem('theme') || initialTheme;
+  const next = current === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('theme', next); setTheme(next);
 });
 
-// ===== Reveal-on-scroll helper =====
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        observer.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.12 }
-);
+// ===== Mobile drawer =====
+const hamburger = document.getElementById('hamburger');
+const drawer = document.getElementById('drawer');
+function closeDrawer(){ drawer.classList.remove('show'); hamburger.classList.remove('open'); hamburger.setAttribute('aria-expanded','false'); drawer.setAttribute('aria-hidden','true'); }
+hamburger?.addEventListener('click', ()=>{
+  const open = !drawer.classList.contains('show');
+  drawer.classList.toggle('show', open);
+  hamburger.classList.toggle('open', open);
+  hamburger.setAttribute('aria-expanded', String(open));
+  drawer.setAttribute('aria-hidden', String(!open));
+});
+drawer?.querySelectorAll('a').forEach(a=> a.addEventListener('click', closeDrawer));
+document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDrawer(); });
 
-document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-
-// ===== 3D BACKGROUND with Three.js =====
-const canvas = document.getElementById('bg-canvas');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
-camera.position.set(0, 0, 8);
-
-// Subtle fog for depth
-scene.fog = new THREE.FogExp2(0x071018, 0.08);
-
-// Responsive sizing
-function onResize() {
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  camera.aspect = w / h;
-  camera.updateProjectionMatrix();
-  renderer.setSize(w, h);
-}
-window.addEventListener('resize', onResize);
-onResize();
-
-// Lights
-const light = new THREE.DirectionalLight(0x7fdcff, 1.1);
-light.position.set(2, 3, 2);
-scene.add(light);
-scene.add(new THREE.AmbientLight(0x5577aa, 0.6));
-
-// Procedural starfield (instanced points)
-const starCount = 1200;
-const starGeom = new THREE.BufferGeometry();
-const positions = new Float32Array(starCount * 3);
-for (let i = 0; i < starCount; i++) {
-  const r = 20 * Math.random() + 6;      // ring radius
-  const a = Math.random() * Math.PI * 2; // angle
-  positions[i * 3 + 0] = Math.cos(a) * r;
-  positions[i * 3 + 1] = (Math.random() - 0.5) * 8;
-  positions[i * 3 + 2] = Math.sin(a) * r;
-}
-starGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-const starMat = new THREE.PointsMaterial({ color: 0x66e4ff, size: 0.03, transparent: true, opacity: 0.85 });
-const stars = new THREE.Points(starGeom, starMat);
-scene.add(stars);
-
-// Centerpiece: glossy torus knot
-const tkGeom = new THREE.TorusKnotGeometry(1.2, 0.38, 222, 24);
-const tkMat = new THREE.MeshStandardMaterial({ color: 0x2bd4ff, metalness: 0.6, roughness: 0.25, envMapIntensity: 1.0 });
-const knot = new THREE.Mesh(tkGeom, tkMat);
-scene.add(knot);
-
-// Floating chips around the knot
-const chipGeom = new THREE.PlaneGeometry(0.45, 0.3);
-const chipMat = new THREE.MeshBasicMaterial({ color: 0xa78bfa, transparent: true, opacity: 0.7, side: THREE.DoubleSide });
-const chips = [];
-for (let i = 0; i < 10; i++) {
-  const chip = new THREE.Mesh(chipGeom, chipMat.clone());
-  chip.position.set((Math.random()-0.5)*6, (Math.random()-0.5)*4, (Math.random()-0.5)*6);
-  chip.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
-  chips.push(chip);
-  scene.add(chip);
-}
-
-// Render loop
-let t = 0;
-function animate() {
-  requestAnimationFrame(animate);
-  t += 0.01;
-  knot.rotation.x += 0.004;
-  knot.rotation.y += 0.006;
-  stars.rotation.y += 0.0008;
-  chips.forEach((c, i) => {
-    c.rotation.y += 0.01 + i * 0.0003;
-    c.position.y += Math.sin(t * 0.4 + i) * 0.0006;
+// ===== Reveal on scroll =====
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
   });
-  renderer.render(scene, camera);
-}
-animate();
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
 
-// ===== GSAP Scroll Animations =====
-gsap.registerPlugin(ScrollTrigger);
-
-// Pin hero for parallax
-ScrollTrigger.create({
-  trigger: '.hero', start: 'top top', end: '+=80%', pin: true, pinSpacing: true,
-});
-
-// Camera tween through sections
-const sections = gsap.utils.toArray('section');
-sections.forEach((sec, i) => {
-  const zTarget = 8 - i * 1.2; // move slightly closer each section
-  const yTarget = (i % 2 === 0) ? 0.2 : -0.2;
-
-  gsap.to(camera.position, {
-    scrollTrigger: { trigger: sec, start: 'top 70%', end: 'bottom 30%', scrub: 0.8 },
-    z: zTarget, y: yTarget, ease: 'power2.out'
-  });
-
-  // Subtle hue shift on the knot
-  gsap.to(knot.material.color, {
-    scrollTrigger: { trigger: sec, start: 'top 80%', end: 'bottom 20%', scrub: 0.6 },
-    r: 0.2 + 0.2 * Math.sin(i), g: 0.8 - 0.1 * i, b: 1.0 - 0.1 * i,
-  });
-});
-
-// Light sweep down the page
-gsap.to(light.position, {
-  scrollTrigger: { trigger: '#projects', start: 'top center', end: 'bottom center', scrub: true },
-  x: 3, y: 2, z: 1
-});
-
-// Smooth internal anchor scroll
-Array.from(document.querySelectorAll('a[href^=\"#\"]')).forEach(a => {
-  a.addEventListener('click', (e) => {
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-  });
-});
-// ===== Typewriter effect with stable leading icons =====
+// ===== Typed subtitle with icon swap (emoji-safe) =====
 const subtitles = [
-  { icon: "⚡", text: "Electrical Engineering @ McMaster University" },
-  { icon: "🏎️", text: "Research Intern @ McMaster Automotive Resource Centre" }
+  { icon:'⚡', text:'Electrical Engineering @ McMaster University' },
+  { icon:'🏎️', text:'Research Intern @ McMaster Automotive Resource Centre (MARC)' },
 ];
-
-const iconEl = document.getElementById("subtitle-icon");
-const textEl = document.getElementById("subtitle-text");
-
-let sentence = 0;   // which subtitle
-let idx = 0;        // character index
-let deleting = false;
-
-function cycleSubtitle() {
-  const current = subtitles[sentence].text;
-  iconEl.textContent = subtitles[sentence].icon; // set the icon for this sentence
-
-  if (!deleting && idx < current.length) {
-    // typing forward
-    textEl.textContent = current.slice(0, idx + 1);
-    idx++;
-    setTimeout(cycleSubtitle, 60);
-  } else if (!deleting && idx === current.length) {
-    // pause when complete
-    deleting = true;
-    setTimeout(cycleSubtitle, 1500);
-  } else if (deleting && idx > 0) {
-    // deleting backward
-    textEl.textContent = current.slice(0, idx - 1);
-    idx--;
-    setTimeout(cycleSubtitle, 40);
-  } else if (deleting && idx === 0) {
-    // switch sentence
-    deleting = false;
-    sentence = (sentence + 1) % subtitles.length;
-    setTimeout(cycleSubtitle, 500);
+const iconEl = document.getElementById('subtitle-icon');
+const textEl = document.getElementById('subtitle-text');
+let sIdx = 0, cIdx = 0, deleting = false;
+function runType(){
+  const current = subtitles[sIdx].text;
+  iconEl.textContent = subtitles[sIdx].icon;
+  if(!deleting && cIdx < current.length){
+    textEl.textContent = current.slice(0, ++cIdx);
+    setTimeout(runType, 60);
+  } else if(!deleting && cIdx === current.length){
+    deleting = true; setTimeout(runType, 1500);
+  } else if(deleting && cIdx > 0){
+    textEl.textContent = current.slice(0, --cIdx);
+    setTimeout(runType, 40);
+  } else {
+    deleting = false; sIdx = (sIdx+1) % subtitles.length;
+    setTimeout(runType, 500);
   }
 }
-cycleSubtitle();
+runType();
 
+// ===== Background stars (lightweight 2D canvas, mobile friendly) =====
+const bg = document.getElementById('bg-canvas');
+const ctx = bg.getContext('2d', { alpha: true });
+function resizeCanvas(){ bg.width = window.innerWidth; bg.height = window.innerHeight; }
+window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
+const STAR_COUNT = Math.min(120, Math.floor(window.innerWidth/12));
+const stars = [];
+for(let i=0;i<STAR_COUNT;i++){
+  stars.push({
+    x: Math.random()*bg.width,
+    y: Math.random()*bg.height,
+    z: Math.random()*1 + .2, // parallax depth
+    r: Math.random()*1.4 + .4,
+    s: Math.random()*0.4 + 0.2 // sparkle
+  });
+}
+let mx=0,my=0;
+window.addEventListener('pointermove', e=>{
+  mx = (e.clientX / window.innerWidth - 0.5) * 8;
+  my = (e.clientY / window.innerHeight - 0.5) * 8;
+},{passive:true});
 
-typeSubtitle();
+function renderStars(){
+  ctx.clearRect(0,0,bg.width,bg.height);
+  for(const st of stars){
+    const x = st.x + mx*st.z, y = st.y + my*st.z;
+    ctx.globalAlpha = 0.7 + Math.sin((performance.now()/600)+st.x)*0.3*st.s;
+    ctx.fillStyle = '#cfeaff';
+    ctx.beginPath(); ctx.arc(x, y, st.r, 0, Math.PI*2); ctx.fill();
+  }
+  requestAnimationFrame(renderStars);
+}
+renderStars();
 
+// ===== Project video previews (hover on desktop, tap on mobile) =====
+function createVideoEl(card){
+  const src = card.dataset.video; if(!src) return null;
+  const poster = card.dataset.poster || '';
+  const v = document.createElement('video');
+  v.src = src; v.poster = poster; v.muted = true; v.loop = true; v.playsInline = true;
+  v.autoplay = false; v.preload = 'metadata';
+  v.className = 'thumb-video';
+  v.style.width = '100%'; v.style.aspectRatio = '16/9'; v.style.borderRadius = '14px';
+  v.style.marginTop = '12px'; v.style.border = '1px solid rgba(255,255,255,0.08)';
+  return v;
+}
+
+// CSS for video (injected so we don’t edit your CSS file more)
+const style = document.createElement('style');
+style.textContent = `.thumb-video{display:block; box-shadow:0 10px 30px rgba(0,0,0,.35)} .proj:hover{transform:translateY(-2px)}`;
+document.head.appendChild(style);
+
+const projectCards = document.querySelectorAll('.proj');
+projectCards.forEach(card=>{
+  const placeholder = card.querySelector('.thumb');
+  const video = createVideoEl(card);
+  if(!video) return;
+
+  // Swap placeholder -> video on first hover/tap
+  let loaded = false;
+  function ensureVideo(){
+    if(loaded) return;
+    placeholder?.replaceWith(video);
+    loaded = true;
+  }
+
+  // Desktop hover
+  card.addEventListener('mouseenter', ()=>{ ensureVideo(); video.play().catch(()=>{}); });
+  card.addEventListener('mouseleave', ()=>{ if(loaded){ video.pause(); video.currentTime = 0; } });
+
+  // Mobile tap toggles play/pause
+  card.addEventListener('click', ()=>{
+    ensureVideo();
+    if(video.paused){ video.play().catch(()=>{}); } else { video.pause(); }
+  });
+});
+
+// ===== Scrollspy (highlight nav link) =====
+const navLinks = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+const spy = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id = '#' + e.target.id;
+      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === id));
+    }
+  });
+},{rootMargin:'-45% 0px -50% 0px', threshold:0});
+sections.forEach(sec=> spy.observe(sec));
+
+// ===== Smooth internal anchor scroll =====
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const id = a.getAttribute('href'); const target = document.querySelector(id);
+    if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth', block:'start'}); }
+  });
+});
