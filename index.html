@@ -9,11 +9,11 @@
   <title>Kartikeya Babhuta</title>
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- Favicon (teal circle with KB) -->
+  <!-- Favicon -->
   <link rel="icon"
     href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E
       %3Ccircle cx='50' cy='50' r='48' fill='teal'/%3E
@@ -23,11 +23,11 @@
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <!-- Background canvas (stars + lightning) -->
+  <!-- background -->
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
   <div class="vignette" aria-hidden="true"></div>
 
-  <!-- Header -->
+  <!-- header -->
   <header>
     <nav class="nav">
       <a class="brand" href="#top" aria-label="Home">
@@ -35,7 +35,6 @@
         <h1>Kartikeya Babhuta</h1>
       </a>
 
-      <!-- Desktop links -->
       <div class="nav-links">
         <a href="#about">About</a>
         <a href="#projects">Projects</a>
@@ -44,13 +43,11 @@
         <button class="theme-toggle" id="themeToggle" title="Toggle theme">Theme</button>
       </div>
 
-      <!-- Mobile menu button -->
       <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </nav>
 
-    <!-- Mobile drawer -->
     <div class="drawer" id="drawer" aria-hidden="true">
       <a href="#about" class="drawer-link">About</a>
       <a href="#projects" class="drawer-link">Projects</a>
@@ -59,23 +56,22 @@
     </div>
   </header>
 
-  <!-- Hero -->
+  <!-- hero -->
   <main id="top" class="hero container">
     <div class="hero-card reveal">
       <span class="hero-badge"><span class="pulse"></span> Available for 8-month internship (Jan–Aug 2026)</span>
 
       <div class="hero-row">
-        <!-- LEFT: name + typed + icons -->
         <div class="hero-col">
           <h2 class="hero-name">Kartikeya Babhuta</h2>
 
-          <!-- Typed subtitle with stable icon -->
+          <!-- typed line -->
           <p id="typed-subtitle" class="hero-sub">
             <span id="subtitle-icon" aria-hidden="true" class="lead-icon">⚡</span>
             <span id="subtitle-text"></span>
           </p>
 
-          <!-- Icon buttons (use your repo paths) -->
+          <!-- icons (will auto-fallback if a file is missing) -->
           <div class="cta icons-only">
             <a class="btn-icon" href="https://www.linkedin.com/in/kbabhuta" target="_blank" rel="noopener" aria-label="LinkedIn">
               <img class="icon-src" data-fallback="linkedin" src="./src/assets/logos/linkedin.svg" alt="LinkedIn logo" />
@@ -92,43 +88,15 @@
           </div>
         </div>
 
-        <!-- RIGHT: Tesla coil (behind) + portrait (front) -->
+        <!-- big portrait on right (optional; delete if you don’t want it) -->
         <div class="hero-col hero-photo">
-          <!-- Decorative Tesla coil -->
-          <div class="coil" aria-hidden="true">
-            <svg viewBox="0 0 120 220" width="160" height="280">
-              <!-- base -->
-              <rect x="35" y="170" width="50" height="40" rx="8" fill="rgba(148,163,184,.15)" stroke="rgba(255,255,255,.08)"/>
-              <!-- secondary coil -->
-              <rect x="56" y="90" width="8" height="80" rx="4" fill="#6ee7f9"/>
-              <!-- primary turns -->
-              <g opacity=".45">
-                <ellipse cx="60" cy="155" rx="30" ry="10" fill="none" stroke="#22d3ee"/>
-                <ellipse cx="60" cy="147" rx="28" ry="9"  fill="none" stroke="#22d3ee"/>
-                <ellipse cx="60" cy="139" rx="26" ry="8"  fill="none" stroke="#22d3ee"/>
-                <ellipse cx="60" cy="131" rx="24" ry="7"  fill="none" stroke="#22d3ee"/>
-                <ellipse cx="60" cy="123" rx="22" ry="6"  fill="none" stroke="#22d3ee"/>
-              </g>
-              <!-- toroid -->
-              <ellipse cx="60" cy="84" rx="34" ry="12" fill="url(#metal)" stroke="rgba(255,255,255,.15)"/>
-              <defs>
-                <radialGradient id="metal" cx="50%" cy="40%">
-                  <stop offset="0%" stop-color="#bcd0e8"/>
-                  <stop offset="60%" stop-color="#7a8ca8"/>
-                  <stop offset="100%" stop-color="#465670"/>
-                </radialGradient>
-              </defs>
-            </svg>
-          </div>
-
-          <!-- Portrait -->
-          <img src="./src/assets/logos/me.jpg" alt="Kartikeya portrait" class="portrait" loading="lazy" decoding="async" />
+          <img src="./src/assets/me.JPG" alt="Kartikeya portrait" class="portrait" loading="lazy" decoding="async" />
         </div>
       </div>
     </div>
   </main>
 
-  <!-- About -->
+  <!-- about -->
   <section id="about" class="container">
     <h2 class="section-title">About</h2>
     <p class="section-sub">
@@ -166,7 +134,7 @@
     </div>
   </section>
 
-  <!-- Projects (video previews optional) -->
+  <!-- projects (videos optional) -->
   <section id="projects" class="container">
     <h2 class="section-title">Projects</h2>
     <p class="section-sub">Hover (desktop) or tap (mobile) a card to preview a short loop.</p>
@@ -209,7 +177,7 @@
     </div>
   </section>
 
-  <!-- Experience -->
+  <!-- experience -->
   <section id="experience" class="container">
     <h2 class="section-title">Experience</h2>
     <ol class="timeline">
@@ -226,7 +194,7 @@
     </ol>
   </section>
 
-  <!-- Contact -->
+  <!-- contact -->
   <section id="contact" class="container">
     <h2 class="section-title">Contact</h2>
     <p class="section-sub">Let’s chat about internships, collaborations, or the next hardware build.</p>
@@ -249,7 +217,7 @@
     <small>© <span id="year"></span> Kartikeya Babhuta</small>
   </footer>
 
-  <!-- Scripts -->
+  <!-- your scripts (defer guarantees DOM exists) -->
   <script src="./app.js" defer></script>
 </body>
 </html>

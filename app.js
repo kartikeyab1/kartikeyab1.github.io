@@ -1,8 +1,8 @@
-// ===== Year =====
+// ===== year =====
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// ===== Theme toggle (persist) =====
+// ===== theme toggle =====
 const toggle = document.getElementById('themeToggle');
 const root = document.documentElement;
 const savedTheme = localStorage.getItem('theme');
@@ -24,18 +24,21 @@ function setTheme(mode){
       'radial-gradient(1200px 800px at 70% 10%, #0a1826 0%, var(--bg) 40%, #060913 100%)';
   }
 }
-const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
-setTheme(initialTheme);
+const initial = savedTheme || (prefersDark ? 'dark' : 'light');
+setTheme(initial);
 toggle?.addEventListener('click', ()=>{
-  const current = localStorage.getItem('theme') || initialTheme;
-  const next = current === 'dark' ? 'light' : 'dark';
+  const now = localStorage.getItem('theme') || initial;
+  const next = now === 'dark' ? 'light' : 'dark';
   localStorage.setItem('theme', next); setTheme(next);
 });
 
-// ===== Mobile drawer =====
+// ===== mobile drawer =====
 const hamburger = document.getElementById('hamburger');
 const drawer = document.getElementById('drawer');
-function closeDrawer(){ drawer.classList.remove('show'); hamburger.classList.remove('open'); hamburger.setAttribute('aria-expanded','false'); drawer.setAttribute('aria-hidden','true'); }
+function closeDrawer(){
+  drawer.classList.remove('show'); hamburger.classList.remove('open');
+  hamburger.setAttribute('aria-expanded','false'); drawer.setAttribute('aria-hidden','true');
+}
 hamburger?.addEventListener('click', ()=>{
   const open = !drawer.classList.contains('show');
   drawer.classList.toggle('show', open);
@@ -46,229 +49,80 @@ hamburger?.addEventListener('click', ()=>{
 drawer?.querySelectorAll('a').forEach(a=> a.addEventListener('click', closeDrawer));
 document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDrawer(); });
 
-// ===== Reveal on scroll =====
+// ===== reveal-on-scroll =====
 const io = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-  });
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
 },{threshold:0.12});
 document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
 
-// ===== Typed subtitle with icon swap (emoji-safe) =====
+// ===== typed subtitle (icons separate so emoji never break) =====
 const subtitles = [
   { icon:'⚡', text:'Electrical Engineering @ McMaster University' },
   { icon:'🏎️', text:'Research Intern @ McMaster Automotive Resource Centre (MARC)' },
 ];
 const iconEl = document.getElementById('subtitle-icon');
 const textEl = document.getElementById('subtitle-text');
-let sIdx = 0, cIdx = 0, deleting = false;
-function runType(){
-  const current = subtitles[sIdx].text;
-  iconEl.textContent = subtitles[sIdx].icon;
-  if(!deleting && cIdx < current.length){
-    textEl.textContent = current.slice(0, ++cIdx);
-    setTimeout(runType, 60);
-  } else if(!deleting && cIdx === current.length){
-    deleting = true; setTimeout(runType, 1500);
-  } else if(deleting && cIdx > 0){
-    textEl.textContent = current.slice(0, --cIdx);
-    setTimeout(runType, 40);
-  } else {
-    deleting = false; sIdx = (sIdx+1) % subtitles.length;
-    // spark towards the subtitle line on switch
-    if (typeof strikeToElement === 'function') {
-      const subline = document.getElementById('typed-subtitle');
-      if (subline) strikeToElement(subline);
-    }
-    setTimeout(runType, 500);
-  }
+let s = 0, i = 0, del = false;
+function typeLoop(){
+  const cur = subtitles[s].text;
+  iconEl.textContent = subtitles[s].icon;
+  if(!del && i < cur.length){ textEl.textContent = cur.slice(0, ++i); setTimeout(typeLoop, 60); }
+  else if(!del && i === cur.length){ del = true; setTimeout(typeLoop, 1500); }
+  else if(del && i > 0){ textEl.textContent = cur.slice(0, --i); setTimeout(typeLoop, 40); }
+  else { del = false; s = (s+1)%subtitles.length; setTimeout(typeLoop, 500); }
 }
-runType();
+typeLoop();
 
-// ===== Background stars + Tesla coil lightning (2D canvas) =====
+// ===== background stars (2D, super safe) =====
 const bg = document.getElementById('bg-canvas');
-const ctx = bg.getContext('2d', { alpha: true });
-
-function resizeCanvas(){
-  bg.width = window.innerWidth;
-  bg.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
-// Stars
-const STAR_COUNT = Math.min(120, Math.floor(window.innerWidth/12));
-const stars = [];
-for (let i = 0; i < STAR_COUNT; i++){
-  stars.push({
-    x: Math.random()*bg.width,
-    y: Math.random()*bg.height,
-    z: Math.random()*1 + .2,
-    r: Math.random()*1.4 + .4,
-    s: Math.random()*0.4 + 0.2
-  });
-}
+const ctx = bg.getContext('2d', { alpha:true });
+function resize(){ bg.width = window.innerWidth; bg.height = window.innerHeight; }
+window.addEventListener('resize', resize); resize();
+const STARS = Math.min(120, Math.floor(window.innerWidth/12));
+const stars = Array.from({length:STARS}, ()=>({
+  x: Math.random()*bg.width, y: Math.random()*bg.height,
+  z: Math.random()*1 + .2, r: Math.random()*1.4 + .4, s: Math.random()*0.4 + 0.2
+}));
 let mx=0,my=0;
-window.addEventListener('pointermove', e=>{
-  mx = (e.clientX / window.innerWidth - 0.5) * 8;
-  my = (e.clientY / window.innerHeight - 0.5) * 8;
-},{passive:true});
-
-// Lightning arcs
-const arcs = []; // {pts:[{x,y}], life, maxLife}
-let lastStrike = 0;
-
-function coilTip(){
-  const hero = document.querySelector('.hero-card');
-  const coil = document.querySelector('.coil svg');
-  if(!hero || !coil) return { x: bg.width*0.75, y: bg.height*0.28 }; // fallback
-  const cr = coil.getBoundingClientRect();
-  const tipX = cr.left + cr.width/2;
-  const tipY = cr.top + cr.height*0.38; // approx toroid top
-  const scaleX = bg.width / window.innerWidth;
-  const scaleY = bg.height / window.innerHeight;
-  return { x: tipX*scaleX, y: tipY*scaleY };
-}
-
-function spawnArc(sx, sy, tx, ty){
-  const segs = 18;
-  const pts = [];
-  for(let i=0;i<=segs;i++){
-    const t = i / segs;
-    const x = sx + (tx - sx) * t;
-    const y = sy + (ty - sy) * t;
-    const dx = tx - sx, dy = ty - sy;
-    const len = Math.hypot(dx, dy) || 1;
-    const nx = -dy/len, ny = dx/len;
-    const jitter = (Math.sin(t*Math.PI*2 + Math.random()*0.6) * (1 - Math.abs(0.5 - t)*2)) * (12 + Math.random()*14);
-    pts.push({ x: x + nx*jitter, y: y + ny*jitter });
-  }
-  arcs.push({ pts, life: 0, maxLife: 260 + Math.random()*120 });
-}
-
-function strikeToElement(el){
-  const tip = coilTip();
-  const r = el.getBoundingClientRect();
-  const cx = (r.left + r.right)/2, cy = (r.top + r.bottom)/2;
-  const sx = tip.x, sy = tip.y;
-  const scaleX = bg.width / window.innerWidth;
-  const scaleY = bg.height / window.innerHeight;
-  spawnArc(sx, sy, cx*scaleX, cy*scaleY);
-}
-window.strikeToElement = strikeToElement; // expose for typewriter
-
-// Main draw loop
-let lastTs = performance.now();
-(function draw(){
-  const now = performance.now();
-  const dt = now - lastTs; lastTs = now;
-
-  // Clear
+window.addEventListener('pointermove', e=>{ mx=(e.clientX/window.innerWidth-.5)*8; my=(e.clientY/window.innerHeight-.5)*8; }, {passive:true});
+(function anim(){
   ctx.clearRect(0,0,bg.width,bg.height);
-
-  // Stars with parallax & sparkle
   for(const st of stars){
     const x = st.x + mx*st.z, y = st.y + my*st.z;
-    ctx.globalAlpha = 0.7 + Math.sin((now/600)+st.x)*0.3*st.s;
+    ctx.globalAlpha = 0.7 + Math.sin((performance.now()/600)+st.x)*0.3*st.s;
     ctx.fillStyle = '#cfeaff';
     ctx.beginPath(); ctx.arc(x, y, st.r, 0, Math.PI*2); ctx.fill();
   }
-
-  // Ambient random strike every 2–4s
-  if (now - lastStrike > 2000 + Math.random()*2000){
-    const tip = coilTip();
-    const tx = bg.width * (0.35 + Math.random()*0.4);
-    const ty = bg.height * (0.12 + Math.random()*0.2);
-    spawnArc(tip.x, tip.y, tx, ty);
-    lastStrike = now;
-  }
-
-  // Draw lightning arcs (glow + core)
-  ctx.save();
-  ctx.globalCompositeOperation = 'lighter';
-  for (let i = arcs.length - 1; i >= 0; i--){
-    const a = arcs[i];
-    a.life += dt;
-    const t = Math.min(1, a.life / a.maxLife);
-    const alpha = (1 - t) * (0.9 + 0.1*Math.random());
-    const w = 2.2 * (1 - t) + 0.8;
-
-    // outer glow
-    ctx.lineWidth = w * 2.2;
-    ctx.strokeStyle = `rgba(46,206,255,${alpha*0.18})`;
-    ctx.beginPath();
-    ctx.moveTo(a.pts[0].x, a.pts[0].y);
-    for (let p = 1; p < a.pts.length; p++) ctx.lineTo(a.pts[p].x, a.pts[p].y);
-    ctx.stroke();
-
-    // core
-    ctx.lineWidth = w;
-    ctx.strokeStyle = `rgba(190,246,255,${alpha})`;
-    ctx.beginPath();
-    ctx.moveTo(a.pts[0].x, a.pts[0].y);
-    for (let p = 1; p < a.pts.length; p++) ctx.lineTo(a.pts[p].x, a.pts[p].y);
-    ctx.stroke();
-
-    if (t >= 1) arcs.splice(i,1);
-  }
-  ctx.restore();
-
-  requestAnimationFrame(draw);
+  requestAnimationFrame(anim);
 })();
 
-// Coil toroid flicker (subtle)
-(function flicker(){
-  const coilSvg = document.querySelector('.coil svg');
-  if (coilSvg){
-    const toroid = coilSvg.querySelector('ellipse');
-    if(toroid){
-      const boost = (Math.sin(performance.now()/120) + 1) * 0.04 + (Math.random()*0.02);
-      toroid.style.filter = `drop-shadow(0 0 ${8+boost*20}px rgba(34,211,238,${0.45+boost}))`;
-    }
-  }
-  requestAnimationFrame(flicker);
-})();
-
-// ===== Project video previews (hover on desktop, tap on mobile) =====
-function createVideoEl(card){
+// ===== project video previews (only if files exist) =====
+function createVideo(card){
   const src = card.dataset.video; if(!src) return null;
   const poster = card.dataset.poster || '';
   const v = document.createElement('video');
-  v.src = src; v.poster = poster; v.muted = true; v.loop = true; v.playsInline = true;
-  v.autoplay = false; v.preload = 'metadata';
+  v.src = src; v.poster = poster; v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'metadata';
   v.className = 'thumb-video';
   v.style.width = '100%'; v.style.aspectRatio = '16/9'; v.style.borderRadius = '14px';
   v.style.marginTop = '12px'; v.style.border = '1px solid rgba(255,255,255,0.08)';
   return v;
 }
-// minimal CSS for the preview video
 const style = document.createElement('style');
 style.textContent = `.thumb-video{display:block; box-shadow:0 10px 30px rgba(0,0,0,.35)} .proj:hover{transform:translateY(-2px)}`;
 document.head.appendChild(style);
 
 document.querySelectorAll('.proj').forEach(card=>{
-  const placeholder = card.querySelector('.thumb');
-  const video = createVideoEl(card);
-  if(!video) return; // no file yet — keep placeholder
-
-  // draw lightning when hovering this card
-  card.addEventListener('mouseenter', ()=> strikeToElement(card));
-  card.addEventListener('focus', ()=> strikeToElement(card));
-
-  let loaded = false;
-  function ensureVideo(){
-    if(loaded) return;
-    placeholder?.replaceWith(video);
-    loaded = true;
-  }
-  // Desktop hover
-  card.addEventListener('mouseenter', ()=>{ ensureVideo(); video.play().catch(()=>{}); });
-  card.addEventListener('mouseleave', ()=>{ if(loaded){ video.pause(); video.currentTime = 0; } });
-  // Mobile tap toggles play/pause
-  card.addEventListener('click', ()=>{ ensureVideo(); if(video.paused){ video.play().catch(()=>{}); } else { video.pause(); } });
+  const ph = card.querySelector('.thumb');
+  const vid = createVideo(card);
+  if(!vid) return; // no file yet — keep placeholder
+  let ready = false;
+  function ensure(){ if(ready) return; ph?.replaceWith(vid); ready = true; }
+  card.addEventListener('mouseenter', ()=>{ ensure(); vid.play().catch(()=>{}); });
+  card.addEventListener('mouseleave', ()=>{ if(ready){ vid.pause(); vid.currentTime = 0; } });
+  card.addEventListener('click', ()=>{ ensure(); if(vid.paused){ vid.play().catch(()=>{});} else { vid.pause(); } });
 });
 
-// ===== Scrollspy =====
+// ===== scrollspy =====
 const navLinks = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
 const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
 const spy = new IntersectionObserver((entries)=>{
@@ -281,15 +135,15 @@ const spy = new IntersectionObserver((entries)=>{
 },{rootMargin:'-45% 0px -50% 0px', threshold:0});
 sections.forEach(sec=> spy.observe(sec));
 
-// ===== Smooth anchor scroll =====
+// ===== smooth scroll =====
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click', e=>{
-    const id = a.getAttribute('href'); const target = document.querySelector(id);
-    if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth', block:'start'}); }
+    const id = a.getAttribute('href'); const t = document.querySelector(id);
+    if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth', block:'start'}); }
   });
 });
 
-// ===== Icon fallbacks (if a logo file is missing) =====
+// ===== icon fallbacks (if a /src/assets/logos/*.svg is missing) =====
 const FALLBACK_SVGS = {
   linkedin: `<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.5 8.5h4.9V24H.5V8.5zm7.5 0h4.7v2.1h.1c.7-1.3 2.5-2.7 5.1-2.7 5.4 0 6.4 3.5 6.4 8v8.1h-4.9v-7.2c0-1.7 0-3.8-2.3-3.8-2.3 0-2.7 1.8-2.7 3.7V24H8V8.5z"/></svg>`,
   projects: `<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"/></svg>`,
@@ -304,13 +158,7 @@ document.querySelectorAll('img.icon-src').forEach(img=>{
       wrapper.innerHTML = FALLBACK_SVGS[key];
       img.replaceWith(wrapper.firstChild);
     } else {
-      img.remove();
+      img.remove(); // last resort
     }
   }, { once:true });
-});
-
-// ===== Strike when hovering hero icons too =====
-document.querySelectorAll('.btn-icon').forEach(el=>{
-  el.addEventListener('mouseenter', ()=> strikeToElement(el));
-  el.addEventListener('focus', ()=> strikeToElement(el));
 });
