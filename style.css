@@ -23,27 +23,26 @@ body.light-theme {
   color: var(--text-dark);
 }
 
-/* Tesla coil canvas background */
+/* Tesla coil hexagon canvas background */
 #tesla-canvas {
   position: fixed;
-  top: 0; 
-  left: 0;
+  top: 0; left: 0;
   width: 100vw;
   height: 100vh;
   z-index: -1;
-  pointer-events: none; /* so it does not interfere with clicks */
+  pointer-events: none;
 }
 
-/* Container wraps your content for max width and padding */
+/* Container for content */
 .container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 2rem;
-  position: relative; /* so content layers above canvas */
+  position: relative;
   z-index: 1;
 }
 
-/* Header styling */
+/* Header style */
 .header {
   display: flex;
   justify-content: space-between;
@@ -67,8 +66,8 @@ body.light-theme {
   background-color: var(--secondary-color);
 }
 
-/* Typed subtitle styling */
-#typed-subtitle {
+/* Typed subtitle */
+.typed-subtitle {
   font-size: 1.5rem;
   border-right: 2px solid var(--text-light);
   white-space: nowrap;
@@ -82,16 +81,14 @@ body.light-theme {
   margin-right: 8px;
 }
 
-/* Blink caret animation */
 @keyframes blink-caret {
   50% {
     border-color: transparent;
   }
 }
 
-/* Responsive adjustments */
 @media (max-width: 600px) {
-  #typed-subtitle {
+  .typed-subtitle {
     font-size: 1.2rem;
   }
 }
