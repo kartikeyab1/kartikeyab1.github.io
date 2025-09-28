@@ -215,6 +215,68 @@
             animation: subtitleFade 20s infinite;
         }
 
+        /* Scroll indicator button at bottom of Page 1 */
+        .scrollIndicator {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            transition: transform .2s ease, background .2s ease, opacity .3s ease;
+        }
+
+        .scrollIndicator:hover {
+            transform: translateX(-50%) translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .scrollIndicator:active {
+            transform: translateX(-50%) translateY(0px) scale(0.98);
+        }
+
+        .scrollIndicator .chev,
+        .scrollIndicator .chev.second {
+            font-size: 16px;
+            line-height: 1;
+            opacity: .8;
+            display: block;
+            animation: chevBounce 1.8s ease-in-out infinite;
+        }
+
+        .scrollIndicator .chev.second {
+            margin-top: -4px;
+            opacity: .55;
+            animation-delay: .3s;
+        }
+
+        @keyframes chevBounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(4px);
+            }
+        }
+
+        /* Hide once user scrolls past landing */
+        body.scrolled-beyond-landing .scrollIndicator {
+            opacity: 0;
+            pointer-events: none;
+        }
+
         .subtitle-text:nth-child(1) {
             animation-delay: 0s;
         }
@@ -259,18 +321,6 @@
                 opacity: 1;
                 transform: scale(1);
             }
-        }
-
-        .scroll-indicator {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.5);
-            animation: bounce 2s ease-in-out infinite;
-            z-index: 11;
-            transition: opacity 0.3s;
         }
 
         @keyframes bounce {
@@ -1093,8 +1143,11 @@
         </div>
     </div>
 
-    <!-- Scroll indicator -->
-    <div class="scroll-indicator" id="scrollIndicator">Scroll down ↓</div>
+    <!-- Scroll Indicator Button -->
+    <button class="scrollIndicator" onclick="scrollToControlCenter()" aria-label="Scroll down">
+        <span class="chev">⌄</span>
+        <span class="chev second">⌄</span>
+    </button>
 
     <!-- Modal Overlay -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeAllModals()"></div>
@@ -1202,13 +1255,12 @@
                 const landing = document.getElementById('landingSection');
                 const controlCenter = document.getElementById('controlCenterSection');
                 const projects = document.getElementById('projectsSection');
-                const indicator = document.getElementById('scrollIndicator');
+                // const indicator = document.getElementById('scrollIndicator');
 
                 // Landing page transforms
                 if (scrollProgress < 2) {
                     landing.style.transform = `translateY(${-scrollY * 0.5}px)`;
                     landing.style.opacity = 1 - scrollProgress;
-                    indicator.style.opacity = 1 - scrollProgress * 2;
                 }
 
                 // Control center transforms
@@ -1228,15 +1280,6 @@
                     const projectsProgress = (scrollProgress - 4) * 0.5;
                     projects.style.transform = `translateY(${(3 - projectsProgress) * 100}vh)`;
                     projects.style.opacity = 1;
-                }
-
-                // Update indicator text
-                if (scrollProgress < 0.8) {
-                    indicator.textContent = 'Scroll down ↓';
-                } else if (scrollProgress >= 0.8 && scrollProgress < 1.8) {
-                    indicator.textContent = 'Keep scrolling ↓';
-                } else {
-                    indicator.style.opacity = 0;
                 }
 
                 lastScrollY = scrollY;
@@ -1319,6 +1362,31 @@
             }
             animate();
         }
+
+        // Scroll from Landing Section to Control Center Section
+        function scrollToControlCenter() {
+            const controlCenterSection = document.getElementById('controlCenterSection');
+            if (controlCenterSection) {
+                controlCenterSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                // fallback if section not found
+                window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+            }
+        }
+
+        // Hide the scroll indicator after leaving Page 1
+        (function () {
+            const vh = () => window.innerHeight || document.documentElement.clientHeight;
+            const onScroll = () => {
+                if (window.scrollY > vh() * 0.6) {
+                    document.body.classList.add('scrolled-beyond-landing');
+                } else {
+                    document.body.classList.remove('scrolled-beyond-landing');
+                }
+            };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+        })();
 
         // Quick controls
         function toggleAirplaneMode() {
