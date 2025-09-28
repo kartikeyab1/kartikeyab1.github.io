@@ -76,15 +76,13 @@
             height: auto;
             /* allow content (Portfolio) to extend the page */
             position: relative;
-            ;
         }
 
         .typewriter-center {
-            position: fixed;
-            left: 50%;
+            position: absolute;
             transform: translateX(-50%);
+            left: 50%;
             z-index: 12;
-
             padding: 8px 12px;
             border-radius: 8px;
             font-size: clamp(0.9rem, 2vw, 1.1rem);
@@ -94,6 +92,8 @@
             border: 1px solid rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
 
             white-space: nowrap;
             /* keep one line */
@@ -165,6 +165,7 @@
 
         /* Landing Page - Section 1 */
         .landing-section {
+            position:absolute;
             z-index: 10;
         }
 
@@ -197,7 +198,9 @@
             border-radius: 20px;
             padding: 20px 40px;
             min-height: 50px;
-            min-width: 560px;
+            width: 90%;
+            max-width: 560px;
+            margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -217,46 +220,46 @@
 
         /* Scroll indicator button at bottom of Page 1 */
         .scrollIndicator {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
+            position: absolute;
+            bottom: 35px;
             transform: translateX(-50%);
-            z-index: 100;
+            z-index: 25;
             width: 44px;
             height: 44px;
-            border-radius: 999px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 0;
             display: grid;
             place-items: center;
             cursor: pointer;
             transition: transform .2s ease, background .2s ease, opacity .3s ease;
+            animation: chevBounceContainer 1.8s ease-in-out infinite;
         }
 
         .scrollIndicator:hover {
             transform: translateX(-50%) translateY(-2px);
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.12);
         }
 
         .scrollIndicator:active {
             transform: translateX(-50%) translateY(0px) scale(0.98);
         }
 
-        .scrollIndicator .chev,
-        .scrollIndicator .chev.second {
+        .scrollIndicator .chev {
+            color: #ffff;
             font-size: 16px;
             line-height: 1;
-            opacity: .8;
-            display: block;
-            animation: chevBounce 1.8s ease-in-out infinite;
-        }
-
-        .scrollIndicator .chev.second {
-            margin-top: -4px;
-            opacity: .55;
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+            opacity: .9;
+            margin-top: -10px;
             animation-delay: .3s;
+            animation: chevBounce 1.8s ease-in-out infinite;
         }
 
         @keyframes chevBounce {
@@ -267,9 +270,22 @@
             }
 
             50% {
-                transform: translateY(4px);
+                transform: translateY(0.25px);
             }
         }
+
+        @keyframes chevBounceContainer {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
 
         /* Hide once user scrolls past landing */
         body.scrolled-beyond-landing .scrollIndicator {
@@ -933,6 +949,12 @@
         <div class="section landing-section" id="landingSection">
             <img src='src/assets/Pictures/me.JPG' alt="Kartikeya Babhuta" class="hero-image" id="heroImage">
             <h1 class="hero-name" id="heroName">Kartikeya Babhuta</h1>
+            <!-- Scroll Indicator Button -->
+            <button class="scrollIndicator" onclick="scrollToControlCenter()" aria-label="Scroll down">
+                <span class="chev">⌄</span>
+                <span class="chev">⌄</span>
+                <span class="chev">⌄</span>
+            </button>
             <div class="subtitle-container">
                 <div class="subtitle-text">⚡ Electrical Engineering @ McMaster University</div>
                 <div class="subtitle-text">👨🏻‍💻 Research Intern @ McMaster Automotive Resource Centre</div>
@@ -1143,12 +1165,6 @@
         </div>
     </div>
 
-    <!-- Scroll Indicator Button -->
-    <button class="scrollIndicator" onclick="scrollToControlCenter()" aria-label="Scroll down">
-        <span class="chev">⌄</span>
-        <span class="chev second">⌄</span>
-    </button>
-
     <!-- Modal Overlay -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeAllModals()"></div>
 
@@ -1255,7 +1271,7 @@
                 const landing = document.getElementById('landingSection');
                 const controlCenter = document.getElementById('controlCenterSection');
                 const projects = document.getElementById('projectsSection');
-                // const indicator = document.getElementById('scrollIndicator');
+                // const indicator = document.getElementById('scrollIndicator'); commended when changing scroll indicator to button
 
                 // Landing page transforms
                 if (scrollProgress < 2) {
@@ -1378,7 +1394,7 @@
         (function () {
             const vh = () => window.innerHeight || document.documentElement.clientHeight;
             const onScroll = () => {
-                if (window.scrollY > vh() * 0.6) {
+                if (window.scrollY > vh() * 0.95) {
                     document.body.classList.add('scrolled-beyond-landing');
                 } else {
                     document.body.classList.remove('scrolled-beyond-landing');
