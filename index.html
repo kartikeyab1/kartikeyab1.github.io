@@ -1066,9 +1066,9 @@
         // Paginated Wheel Scrolling
         (function initWheelPagination() {
         // Two gestures (scrolls) per page step
-        const GESTURES_PER_PAGE = 2;
+        const GESTURES_PER_PAGE = 10;
         // Small per-gesture delta to ignore micro-scroll noise (tune if needed)
-        const DELTA_THRESHOLD = 60;
+        const DELTA_THRESHOLD = 100;
         // Combine trackpad micro events into one "gesture"
         const GESTURE_COOLDOWN = 300; // ms
 
