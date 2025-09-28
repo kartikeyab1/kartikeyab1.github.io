@@ -1053,7 +1053,6 @@
             initializeMusic();
             initTimePickers();
             setupScrollBehavior();
-            initWheelPagination()
 
             
             // Set hero name
@@ -1062,104 +1061,6 @@
             // Auto-cycle songs
             setInterval(nextSong, 8000);
         });
-
-        // Paginated Wheel Scrolling
-        (function initWheelPagination() {
-        // Two gestures (scrolls) per page step
-        const GESTURES_PER_PAGE = 1;
-        // Small per-gesture delta to ignore micro-scroll noise (tune if needed)
-        const DELTA_THRESHOLD = 100;
-        // Combine trackpad micro events into one "gesture"
-        const GESTURE_COOLDOWN = 300; // ms
-
-        let pageIndex = 0;   // 0: landing, 1: control center, 2: portfolio
-        let locking = false; // block re-entries during smooth snap
-
-        let accum = 0;
-        let gestures = 0;
-        let lastDir = 0;
-        let lastTs = 0;
-
-        const offsets = () => [0, window.innerHeight, window.innerHeight * 2];
-
-        function snapTo(i) {
-            locking = true;
-            window.scrollTo({ top: offsets()[i], behavior: 'smooth' });
-            setTimeout(() => (locking = false), 500);
-        }
-
-        function resetCounters() {
-            accum = 0;
-            gestures = 0;
-            lastDir = 0;
-            lastTs = 0;
-        }
-
-        window.addEventListener(
-            'wheel',
-            (e) => {
-            // Let portfolio page scroll naturally
-            if (pageIndex === 2) return;
-
-            // Intercept default scrolling on first two pages
-            e.preventDefault();
-            if (locking) return;
-
-            const dir = Math.sign(e.deltaY);
-            if (dir === 0) return;
-
-            const now = Date.now();
-
-            // If direction flips, start counting fresh
-            if (lastDir !== 0 && dir !== lastDir) resetCounters();
-            lastDir = dir;
-
-            // New gesture window if too slow
-            if (now - lastTs > GESTURE_COOLDOWN) {
-                accum = 0;
-                gestures = Math.min(gestures, GESTURES_PER_PAGE - 1);
-            }
-            lastTs = now;
-
-            accum += Math.abs(e.deltaY);
-
-            // One gesture detected
-            if (accum >= DELTA_THRESHOLD) {
-                accum = 0;
-                gestures += 1;
-
-                if (gestures >= GESTURES_PER_PAGE) {
-                const next = Math.max(0, Math.min(2, pageIndex + dir));
-                if (next !== pageIndex) {
-                    pageIndex = next;
-                    snapTo(pageIndex);
-                }
-                resetCounters();
-                }
-            }
-            },
-            { passive: false }
-        );
-
-        // Keep pageIndex in sync if user jumps/keys/anchors
-        window.addEventListener(
-            'scroll',
-            () => {
-            const y = window.pageYOffset;
-            const h = window.innerHeight;
-            const idx = y < h * 0.5 ? 0 : y < h * 1.5 ? 1 : 2;
-            if (idx !== pageIndex) {
-                pageIndex = idx;
-                resetCounters();
-            }
-            },
-            { passive: true }
-        );
-
-        window.addEventListener('resize', () => {
-            if (pageIndex < 2) snapTo(pageIndex);
-        });
-        })();
 
         // Scroll-based navigation
         function setupScrollBehavior() {
