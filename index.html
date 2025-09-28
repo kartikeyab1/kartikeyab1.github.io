@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -47,10 +48,21 @@
         }
 
         /* Focus mode hues */
-        body.focus-dnd { --hue-rotate: 280deg; }
-        body.focus-sleep { --hue-rotate: 330deg; }
-        body.focus-work { --hue-rotate: 210deg; }
-        body.focus-personal { --hue-rotate: 140deg; }
+        body.focus-dnd {
+            --hue-rotate: 280deg;
+        }
+
+        body.focus-sleep {
+            --hue-rotate: 330deg;
+        }
+
+        body.focus-work {
+            --hue-rotate: 210deg;
+        }
+
+        body.focus-personal {
+            --hue-rotate: 140deg;
+        }
 
         /* Airplane mode */
         body.airplane-mode {
@@ -59,9 +71,12 @@
 
         /* Main scroll container */
         .scroll-container {
-              min-height: 300vh;  /* keep at least 3 screens for your intro animations */
-              height: auto;       /* allow content (Portfolio) to extend the page */
-              position: relative;;
+            min-height: 300vh;
+            /* keep at least 3 screens for your intro animations */
+            height: auto;
+            /* allow content (Portfolio) to extend the page */
+            position: relative;
+            ;
         }
 
         /* Starfield - Fixed background */
@@ -72,6 +87,27 @@
             width: 100%;
             height: 100vh;
             z-index: 0;
+        }
+
+        /* DVD-style bouncing text */
+        #dvdLayer {
+            position: fixed;
+            inset: 0;
+            z-index: 5;
+            /* starfield is 0, landing is 10 — so this sits behind content */
+            pointer-events: none;
+            /* never blocks clicks */
+        }
+
+        #dvdText {
+            position: absolute;
+            white-space: nowrap;
+            font-weight: 700;
+            font-size: clamp(0.2rem, 1vw, 1rem);
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif color: rgba(255, 255, 255, 0.35);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+            user-select: none;
+            will-change: transform;
         }
 
         /* Section wrapper for scroll-based positioning */
@@ -104,11 +140,11 @@
         }
 
         .hero-image {
-            width: min(90vw, 400px); 
-            max-height: 300px;       
-            object-fit: cover;      
-            border-radius: 20px;     
-            margin-bottom: 1.5rem;    
+            width: min(90vw, 400px);
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
         }
 
         .subtitle-container {
@@ -138,15 +174,38 @@
             animation: subtitleFade 20s infinite;
         }
 
-        .subtitle-text:nth-child(1) { animation-delay: 0s; }
-        .subtitle-text:nth-child(2) { animation-delay: 5s; }
-        .subtitle-text:nth-child(3) { animation-delay: 10s; }
-        .subtitle-text:nth-child(4) { animation-delay: 15s; }
+        .subtitle-text:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .subtitle-text:nth-child(2) {
+            animation-delay: 5s;
+        }
+
+        .subtitle-text:nth-child(3) {
+            animation-delay: 10s;
+        }
+
+        .subtitle-text:nth-child(4) {
+            animation-delay: 15s;
+        }
 
         @keyframes subtitleFade {
-            0%, 9% { opacity: 0; }
-            11%, 30% { opacity: 1; }
-            31%, 100% { opacity: 0; }
+
+            0%,
+            9% {
+                opacity: 0;
+            }
+
+            11%,
+            30% {
+                opacity: 1;
+            }
+
+            31%,
+            100% {
+                opacity: 0;
+            }
         }
 
         @keyframes fadeInScale {
@@ -154,6 +213,7 @@
                 opacity: 0;
                 transform: scale(0.9);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
@@ -173,8 +233,15 @@
         }
 
         @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(-10px);
+            }
         }
 
         /* Control Center - Section 2 */
@@ -338,7 +405,7 @@
         .ios-slider {
             flex: 1;
             -webkit-appearance: none;
-            appearance: none; 
+            appearance: none;
             height: 32px;
             border-radius: 16px;
             background: rgba(255, 255, 255, 0.15);
@@ -348,7 +415,7 @@
 
         .ios-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            appearance: none; 
+            appearance: none;
             width: 30px;
             height: 30px;
             border-radius: 50%;
@@ -757,9 +824,15 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Starfield Background -->
-    <canvas id="starfield"></canvas>
+    <canvas id="starfield">Kartikeya</canvas>
+
+    <!-- DVD Bouncing Text Layer (behind content) -->
+    <div id="dvdLayer">
+        <span id="dvdText"></span>
+    </div>
 
     <!-- Scroll Container -->
     <div class="scroll-container">
@@ -778,9 +851,6 @@
         <!-- Control Center Section -->
         <div class="section control-center-section" id="controlCenterSection">
             <div class="control-center-content">
-                <h2 style="text-align:center; font-size:20px; font-weight:500; margin-bottom:15px; opacity:1;">
-                    Available for Jan – Aug 2026 Internships
-                </h2>
                 <!-- Now Playing -->
                 <div class="now-playing">
                     <div class="album-art" id="albumArt">🎵</div>
@@ -806,8 +876,8 @@
                 <div class="slider-tile">
                     <div class="slider-row">
                         <span class="slider-icon">☀️</span>
-                        <input type="range" class="ios-slider" id="brightnessSlider" 
-                               min="30" max="100" value="100" oninput="adjustBrightness(this.value)">
+                        <input type="range" class="ios-slider" id="brightnessSlider" min="30" max="100" value="100"
+                            oninput="adjustBrightness(this.value)">
                     </div>
                 </div>
 
@@ -868,7 +938,7 @@
                 <!-- Skills -->
                 <div class="skills-section" id="skills">
                     <div class="section-title">Skills & Technologies</div>
-                    
+
                     <div class="skills-category">
                         <div class="category-label">Frontend</div>
                         <div class="skills-grid">
@@ -933,11 +1003,11 @@
                 <!-- Projects -->
                 <div id="projects">
                     <div class="section-title">Featured Projects</div>
-                    
+
                     <div class="project-card">
                         <div class="project-title">AI-Powered Task Manager</div>
                         <div class="project-desc">
-                            Smart task management app that uses machine learning to prioritize tasks, 
+                            Smart task management app that uses machine learning to prioritize tasks,
                             predict completion times, and provide personalized productivity insights.
                         </div>
                         <div class="tech-tags">
@@ -951,7 +1021,7 @@
                     <div class="project-card">
                         <div class="project-title">E-Commerce Platform</div>
                         <div class="project-desc">
-                            Full-stack marketplace with real-time inventory, secure payments, 
+                            Full-stack marketplace with real-time inventory, secure payments,
                             and an intuitive admin dashboard for vendors.
                         </div>
                         <div class="tech-tags">
@@ -965,7 +1035,7 @@
                     <div class="project-card">
                         <div class="project-title">Social Analytics Dashboard</div>
                         <div class="project-desc">
-                            Real-time social media analytics tool with sentiment analysis, 
+                            Real-time social media analytics tool with sentiment analysis,
                             trend detection, and automated reporting features.
                         </div>
                         <div class="tech-tags">
@@ -1060,16 +1130,17 @@
         };
 
         // Initialize
-        window.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('DOMContentLoaded', function () {
             initStarfield();
             initializeMusic();
             initTimePickers();
             setupScrollBehavior();
+            initBouncingText('dvdText');
 
-            
+
             // Set hero name
             document.getElementById('heroName').textContent = CONFIG.yourName;
-            
+
             // Auto-cycle songs
             setInterval(nextSong, 8000);
         });
@@ -1078,26 +1149,26 @@
         function setupScrollBehavior() {
             let lastScrollY = 0;
             let scrollTimeout;
-            
+
             // Handle scroll events
-            window.addEventListener('scroll', function(e) {
+            window.addEventListener('scroll', function (e) {
                 const scrollY = window.pageYOffset;
                 const windowHeight = window.innerHeight;
                 const scrollProgress = scrollY / windowHeight;
-                
+
                 // Update sections based on scroll position
                 const landing = document.getElementById('landingSection');
                 const controlCenter = document.getElementById('controlCenterSection');
                 const projects = document.getElementById('projectsSection');
                 const indicator = document.getElementById('scrollIndicator');
-                
+
                 // Landing page transforms
                 if (scrollProgress < 2) {
                     landing.style.transform = `translateY(${-scrollY * 0.5}px)`;
                     landing.style.opacity = 1 - scrollProgress;
                     indicator.style.opacity = 1 - scrollProgress * 2;
                 }
-                
+
                 // Control center transforms
                 if (scrollProgress >= 2 && scrollProgress < 4) {
                     const ccProgress = (scrollProgress - 2) * 0.5;
@@ -1109,14 +1180,14 @@
                     const fadeProgress = (scrollProgress - 4) * 0.5;
                     controlCenter.style.opacity = 1 - fadeProgress;
                 }
-                
+
                 // Projects section transforms
                 if (scrollProgress >= 4) {
                     const projectsProgress = (scrollProgress - 4) * 0.5;
                     projects.style.transform = `translateY(${(3 - projectsProgress) * 100}vh)`;
                     projects.style.opacity = 1;
                 }
-                
+
                 // Update indicator text
                 if (scrollProgress < 0.8) {
                     indicator.textContent = 'Scroll down ↓';
@@ -1125,10 +1196,10 @@
                 } else {
                     indicator.style.opacity = 0;
                 }
-                
+
                 lastScrollY = scrollY;
             });
-            
+
             // Smooth scroll for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
@@ -1157,19 +1228,93 @@
                 behavior: 'smooth'
             });
         }
+        // Bouncing text effect
+        function initBouncingText(textId) {
+            const el = document.getElementById(textId);
+            if (!el) return;
+
+            // Set the text
+            const textString = (window.CONFIG?.yourName || 'Available for Jan – Aug 2026 Internships').toUpperCase();
+            el.textContent = textString;
+
+            // A list of colors to cycle through (RGBA or plain colors)
+            const colors = [
+                '#00FFFF', // cyan
+                '#FF00FF', // magenta
+                '#00FF00', // lime
+                '#FFFF00', // yellow
+                '#FF0000', // red
+                '#00A2FF', // blue
+                '#FF7B00', // orange
+                '#9D00FF'  // purple
+            ];
+
+
+            let ew = el.offsetWidth || 200;
+            let eh = el.offsetHeight || 40;
+
+            let x = Math.random() * Math.max(1, (window.innerWidth - ew));
+            let y = Math.random() * Math.max(1, (window.innerHeight - eh));
+            let vx = (Math.random() * 0.18 + 0.12);
+            let vy = (Math.random() * 0.18 + 0.12);
+
+            function onResize() {
+                ew = el.offsetWidth || ew;
+                eh = el.offsetHeight || eh;
+                x = Math.min(x, Math.max(0, window.innerWidth - ew));
+                y = Math.min(y, Math.max(0, window.innerHeight - eh));
+            }
+            window.addEventListener('resize', onResize);
+
+            let prev;
+            function tick(ts) {
+                if (!prev) prev = ts;
+                const dt = Math.min(32, ts - prev);
+                prev = ts;
+
+                x += vx * dt;
+                y += vy * dt;
+
+                let bounced = false;
+
+                // Bounce + detect edge hits
+                if (x <= 0 || x + ew >= window.innerWidth) {
+                    vx *= -1;
+                    x = Math.max(0, Math.min(x, window.innerWidth - ew));
+                    bounced = true;
+                }
+                if (y <= 0 || y + eh >= window.innerHeight) {
+                    vy *= -1;
+                    y = Math.max(0, Math.min(y, window.innerHeight - eh));
+                    bounced = true;
+                }
+
+                // Change color on bounce
+                if (bounced) {
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    el.style.color = randomColor;
+                }
+
+                el.style.transform = `translate(${x}px, ${y}px)`;
+                requestAnimationFrame(tick);
+            }
+
+            requestAnimationFrame(tick);
+        }
+
 
         // Starfield animation
         function initStarfield() {
             const canvas = document.getElementById('starfield');
             const ctx = canvas.getContext('2d');
-            
+
             function resize() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
             }
             resize();
             window.addEventListener('resize', resize);
-            
+
             // Create stars
             for (let i = 0; i < 150; i++) {
                 state.stars.push({
@@ -1181,27 +1326,27 @@
                     twinkleSpeed: Math.random() * 0.02
                 });
             }
-            
+
             function animate() {
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
+
                 state.stars.forEach(star => {
                     ctx.beginPath();
                     ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
                     ctx.fill();
-                    
+
                     star.alpha += Math.sin(Date.now() * star.twinkleSpeed) * 0.01;
                     star.alpha = Math.max(0.2, Math.min(1, star.alpha));
-                    
+
                     star.y += star.speed;
                     if (star.y > canvas.height) {
                         star.y = 0;
                         star.x = Math.random() * canvas.width;
                     }
                 });
-                
+
                 requestAnimationFrame(animate);
             }
             animate();
@@ -1278,13 +1423,13 @@
         function initTimePickers() {
             const minutePicker = document.getElementById('minutePicker');
             const secondPicker = document.getElementById('secondPicker');
-            
+
             // Padding items
             for (let i = 0; i < 2; i++) {
                 minutePicker.innerHTML += '<div class="picker-item">&nbsp;</div>';
                 secondPicker.innerHTML += '<div class="picker-item">&nbsp;</div>';
             }
-            
+
             // Minutes
             for (let i = 0; i <= 59; i++) {
                 const item = document.createElement('div');
@@ -1293,7 +1438,7 @@
                 item.dataset.value = i;
                 minutePicker.appendChild(item);
             }
-            
+
             // Seconds
             for (let i = 0; i <= 59; i += 5) {
                 const item = document.createElement('div');
@@ -1302,27 +1447,27 @@
                 item.dataset.value = i;
                 secondPicker.appendChild(item);
             }
-            
+
             // Padding at end
             for (let i = 0; i < 2; i++) {
                 minutePicker.innerHTML += '<div class="picker-item">&nbsp;</div>';
                 secondPicker.innerHTML += '<div class="picker-item">&nbsp;</div>';
             }
-            
+
             // Set initial position
             minutePicker.scrollTop = 80;
             secondPicker.scrollTop = 0;
-            
+
             // Handle scroll
             [minutePicker, secondPicker].forEach(picker => {
-                picker.addEventListener('scroll', function() {
+                picker.addEventListener('scroll', function () {
                     const itemHeight = 40;
                     const selectedIndex = Math.round(this.scrollTop / itemHeight);
-                    
+
                     this.querySelectorAll('.picker-item').forEach((item, index) => {
                         item.classList.toggle('selected', index === selectedIndex + 2);
                     });
-                    
+
                     if (picker === minutePicker) {
                         state.selectedMinutes = Math.max(0, Math.min(59, selectedIndex));
                     } else {
@@ -1337,12 +1482,12 @@
                 showNotification('Please select a valid time');
                 return;
             }
-            
+
             state.timerSeconds = state.selectedMinutes * 60 + state.selectedSeconds;
             closeTimerModal();
-            
+
             showNotification(`⏱️ Timer set for ${state.selectedMinutes}:${state.selectedSeconds.toString().padStart(2, '0')}`);
-            
+
             state.timerInterval = setInterval(() => {
                 state.timerSeconds--;
                 if (state.timerSeconds <= 0) {
@@ -1356,21 +1501,21 @@
         function playTimerSound() {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             const notes = [523.25, 659.25, 783.99, 1046.50];
-            
+
             notes.forEach((freq, i) => {
                 setTimeout(() => {
                     const osc = audioContext.createOscillator();
                     const gain = audioContext.createGain();
-                    
+
                     osc.type = 'sine';
                     osc.frequency.value = freq;
                     osc.connect(gain);
                     gain.connect(audioContext.destination);
-                    
+
                     gain.gain.setValueAtTime(0, audioContext.currentTime);
                     gain.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.02);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
-                    
+
                     osc.start(audioContext.currentTime);
                     osc.stop(audioContext.currentTime + 0.4);
                 }, i * 150);
@@ -1392,19 +1537,19 @@
             clearFocusMode();
             state.currentFocus = mode;
             document.body.classList.add(`focus-${mode}`);
-            
+
             document.querySelectorAll('.focus-option').forEach(el => el.classList.remove('active'));
             if (event && event.target) {
                 event.target.closest('.focus-option').classList.add('active');
             }
-            
+
             const names = {
                 'dnd': 'Do Not Disturb',
                 'sleep': 'Sleep Focus',
                 'work': 'Work Focus',
                 'personal': 'Personal Focus'
             };
-            
+
             showNotification(`${names[mode]} enabled`);
             setTimeout(closeFocusModal, 500);
         }
@@ -1426,11 +1571,12 @@
             const notification = document.getElementById('notification');
             notification.textContent = message;
             notification.classList.add('show');
-            
+
             setTimeout(() => {
                 notification.classList.remove('show');
             }, 2500);
         }
     </script>
 </body>
+
 </html>
