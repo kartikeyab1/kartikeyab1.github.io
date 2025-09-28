@@ -432,21 +432,14 @@
 
         /* Projects Section - Section 3 */
         .projects-section {
-            /* z-index: 30;
+            z-index: 30;
             transform: translateY(200vh);
             background: var(--panel-bg);
             backdrop-filter: blur(60px);
             -webkit-backdrop-filter: blur(60px);
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch; */
-            position: relative;     /* was fixed via .section; override to flow normally */
-            z-index: 30;
-            transform: none;        /* no translateY so it occupies real page height */
-            background: var(--panel-bg);
-            backdrop-filter: blur(60px);
-            -webkit-backdrop-filter: blur(60px);
-            overflow: visible;      /* allow content to size the page */
-            min-height: 100vh;      /* at least one screen tall */
+            -webkit-overflow-scrolling: touch;
+
         }
 
         .projects-content {
@@ -1060,6 +1053,61 @@
             initializeMusic();
             initTimePickers();
             setupScrollBehavior();
+
+            // ADD: paginated wheel scrolling for first two pages
+(function addWheelPagination() {
+    const PAGE_COUNT = 3; // landing(0), control center(1), projects(2)
+    let pageIndex = 0;    // start on landing
+    let wheelAccum = 0;
+    const THRESHOLD = 1200; // how much wheel delta to move a page (tune up/down)
+    let locking = false;
+
+    const offsets = () => [0, window.innerHeight, window.innerHeight * 2];
+
+    function snapTo(index) {
+        locking = true;
+        window.scrollTo({ top: offsets()[index], behavior: 'smooth' });
+        setTimeout(() => { locking = false; }, 550); // unlock after scroll
+    }
+
+    // Keep pageIndex in sync if user drags scrollbar or jumps
+    function syncIndexByScroll() {
+        const y = window.pageYOffset;
+        const h = window.innerHeight;
+        if (y < h * 0.5) pageIndex = 0;
+        else if (y < h * 1.5) pageIndex = 1;
+        else pageIndex = 2;
+    }
+
+    window.addEventListener('resize', () => {
+        // Re-snap to current page on resize to avoid drift
+        snapTo(pageIndex);
+    });
+
+    window.addEventListener('scroll', () => {
+        // When the user naturally reaches projects area, allow free scrolling
+        syncIndexByScroll();
+    }, { passive: true });
+
+    window.addEventListener('wheel', (e) => {
+        // Only intercept paging for the first two screens
+        if (locking || pageIndex === 2) return; // let projects scroll freely
+        e.preventDefault();
+
+        wheelAccum += e.deltaY;
+
+        if (Math.abs(wheelAccum) >= THRESHOLD) {
+            const dir = Math.sign(wheelAccum);
+            const next = Math.max(0, Math.min(2, pageIndex + dir));
+            if (next !== pageIndex) {
+                pageIndex = next;
+                snapTo(pageIndex);
+            }
+            wheelAccum = 0;
+        }
+    }, { passive: false });
+})();
+
             
             // Set hero name
             document.getElementById('heroName').textContent = CONFIG.yourName;
