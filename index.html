@@ -92,15 +92,23 @@
         }
 
         .hero-name {
-            font-size: clamp(2.5rem, 7vw, 4.5rem);
-            font-weight: 700;
+            font-size: clamp(2.5rem, 10vw, 5rem);
+            font-weight: 650;
             background: linear-gradient(180deg, #fff 0%, #999 100%);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
-            letter-spacing: -0.03em;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.01em;
             animation: fadeInScale 1s ease;
+        }
+
+        .hero-image {
+            width: min(90vw, 400px); 
+            max-height: 300px;       
+            object-fit: cover;      
+            border-radius: 20px;     
+            margin-bottom: 1.5rem;    
         }
 
         .subtitle-container {
@@ -111,8 +119,8 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             padding: 20px 40px;
-            min-height: 80px;
-            min-width: 300px;
+            min-height: 50px;
+            min-width: 560px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -757,6 +765,7 @@
     <div class="scroll-container">
         <!-- Landing Section -->
         <div class="section landing-section" id="landingSection">
+            <img src='src/assets/Pictures/me.JPG' alt="Kartikeya Babhuta" class="hero-image" id="heroImage">
             <h1 class="hero-name" id="heroName">Kartikeya Babhuta</h1>
             <div class="subtitle-container">
                 <div class="subtitle-text">⚡ Electrical Engineering @ McMaster University</div>
