@@ -2,515 +2,686 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Portfolio - Control Center</title>
     <style>
-        /* Global Variables for theming */
+        /* Global Variables */
         :root {
             --bg-color: #000;
-            --panel-bg: rgba(28, 28, 30, 0.85);
-            --tile-bg: rgba(255, 255, 255, 0.1);
-            --tile-hover: rgba(255, 255, 255, 0.15);
-            --tile-active: rgba(59, 131, 246, 0.9);
+            --panel-bg: rgba(19, 19, 21, 0.78);
+            --tile-bg: rgba(255, 255, 255, 0.12);
+            --tile-hover: rgba(255, 255, 255, 0.18);
+            --tile-active: #3478F6;
             --text-primary: #fff;
-            --text-secondary: rgba(255, 255, 255, 0.7);
-            --blur: blur(80px);
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --blur: blur(60px);
             --brightness: 1;
             --hue-rotate: 0deg;
-            --border-color: rgba(255, 255, 255, 0.1);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --safe-area-inset-bottom: env(safe-area-inset-bottom, 20px);
         }
 
-        /* Light mode variables */
         body.light-mode {
             --bg-color: #f2f2f7;
-            --panel-bg: rgba(242, 242, 247, 0.9);
-            --tile-bg: rgba(0, 0, 0, 0.05);
-            --tile-hover: rgba(0, 0, 0, 0.08);
-            --tile-active: rgba(59, 131, 246, 0.9);
+            --panel-bg: rgba(242, 242, 247, 0.78);
+            --tile-bg: rgba(255, 255, 255, 0.64);
+            --tile-hover: rgba(255, 255, 255, 0.8);
             --text-primary: #000;
             --text-secondary: rgba(0, 0, 0, 0.6);
-            --border-color: rgba(0, 0, 0, 0.1);
+            --border-color: rgba(0, 0, 0, 0.08);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: #000;
             color: var(--text-primary);
-            overflow-x: hidden;
-            min-height: 100vh;
-            transition: all 0.5s ease;
-            filter: brightness(var(--brightness)) hue-rotate(var(--hue-rotate));
-            position: relative;
-        }
-
-        /* Starfield background */
-        #starfield {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        /* Landing Page */
-        .landing-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1;
-            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-            transition: opacity 0.6s ease;
-        }
-
-        .landing-page.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .hero-content {
-            text-align: center;
-            animation: fadeInUp 1s ease;
-        }
-
-        .hero-name {
-            font-size: clamp(3rem, 8vw, 5rem);
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1rem, 3vw, 1.5rem);
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 300;
-            height: 2em;
-            position: relative;
             overflow: hidden;
-        }
-
-        .subtitle-text {
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            animation: slideUp 12s infinite;
-        }
-
-        @keyframes slideUp {
-            0%, 25% { transform: translateY(0); opacity: 1; }
-            33%, 58% { transform: translateY(-100%); opacity: 0; }
-            66%, 91% { transform: translateY(-200%); opacity: 0; }
-            100% { transform: translateY(-300%); opacity: 0; }
-        }
-
-        .subtitle-text:nth-child(2) { animation-delay: 3s; }
-        .subtitle-text:nth-child(3) { animation-delay: 6s; }
-        .subtitle-text:nth-child(4) { animation-delay: 9s; }
-
-        .cta-message {
-            margin-top: 3rem;
-            padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 100px;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.05); opacity: 1; }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            filter: brightness(var(--brightness)) hue-rotate(var(--hue-rotate));
+            transition: filter 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            overscroll-behavior: none;
         }
 
         /* Focus mode hues */
-        body.focus-dnd { --hue-rotate: 270deg; }
-        body.focus-sleep { --hue-rotate: 320deg; }
-        body.focus-work { --hue-rotate: 200deg; }
-        body.focus-personal { --hue-rotate: 120deg; }
+        body.focus-dnd { --hue-rotate: 280deg; }
+        body.focus-sleep { --hue-rotate: 330deg; }
+        body.focus-work { --hue-rotate: 210deg; }
+        body.focus-personal { --hue-rotate: 140deg; }
 
         /* Airplane mode */
         body.airplane-mode #starfield {
             background: url('https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?w=1920') center/cover !important;
         }
 
-        /* Control Center */
+        /* Starfield */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Landing Page Container */
+        .landing-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .landing-container.swiped-up {
+            transform: translateY(-100vh);
+        }
+
+        .hero-name {
+            font-size: clamp(2.5rem, 7vw, 4.5rem);
+            font-weight: 700;
+            background: linear-gradient(180deg, #fff 0%, #999 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            letter-spacing: -0.03em;
+            animation: fadeInScale 1s ease;
+        }
+
+        /* Glassmorphic subtitle container */
+        .subtitle-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px 40px;
+            min-height: 80px;
+            min-width: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInScale 1.2s ease;
+        }
+
+        .subtitle-text {
+            font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            line-height: 1.5;
+            opacity: 0;
+            position: absolute;
+            animation: subtitleFade 20s infinite;
+        }
+
+        .subtitle-text:nth-child(1) { animation-delay: 0s; }
+        .subtitle-text:nth-child(2) { animation-delay: 5s; }
+        .subtitle-text:nth-child(3) { animation-delay: 10s; }
+        .subtitle-text:nth-child(4) { animation-delay: 15s; }
+
+        @keyframes subtitleFade {
+            0%, 20% { opacity: 0; }
+            25%, 45% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Swipe indicator */
+        .swipe-indicator {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        /* Control Center Panel */
         .control-center {
             position: fixed;
             top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 420px;
+            left: 0;
+            right: 0;
+            height: auto;
+            max-height: 90vh;
             background: var(--panel-bg);
             backdrop-filter: var(--blur);
             -webkit-backdrop-filter: var(--blur);
-            border-radius: 24px;
-            padding: 24px;
-            transition: top 0.5s cubic-bezier(0.4, 0, 0, 1);
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border-color);
+            border-radius: 24px 24px 0 0;
+            padding: 12px;
+            padding-bottom: calc(12px + var(--safe-area-inset-bottom));
+            transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
             z-index: 100;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+            overscroll-behavior: contain;
         }
 
         .control-center.open {
-            top: 5%;
+            transform: translateY(-100%);
         }
 
-        .control-center::-webkit-scrollbar {
-            width: 0;
+        /* Handle bar */
+        .handle-bar {
+            width: 36px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            margin: 8px auto 16px;
         }
 
-        /* Grid layouts */
-        .tile-group {
-            margin-bottom: 16px;
+        /* Control center content wrapper */
+        .cc-content {
+            max-width: 380px;
+            margin: 0 auto;
         }
 
-        .tiles-row {
+        /* Now Playing */
+        .now-playing {
+            background: linear-gradient(135deg, rgba(255, 59, 48, 0.12), rgba(255, 149, 0, 0.12));
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 12px;
             display: flex;
+            align-items: center;
             gap: 12px;
-            margin-bottom: 12px;
+            min-height: 64px;
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .tiles-grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .tiles-grid-2 {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        /* Tile styles */
-        .tile {
-            background: var(--tile-bg);
-            border-radius: 18px;
-            padding: 16px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            color: var(--text-primary);
+        .album-art {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 72px;
-            position: relative;
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--border-color);
-            flex: 1;
-        }
-
-        .tile:hover {
-            background: var(--tile-hover);
-            transform: scale(0.98);
-        }
-
-        .tile:active {
-            transform: scale(0.95);
-        }
-
-        .tile.active {
-            background: var(--tile-active);
-            color: white;
-        }
-
-        .tile.small {
-            min-height: 72px;
-            padding: 12px;
-        }
-
-        .tile.medium {
-            min-height: 90px;
-        }
-
-        .tile.large {
-            min-height: 120px;
-            grid-column: span 2;
-        }
-
-        .tile.full-width {
-            grid-column: 1 / -1;
-        }
-
-        /* Icon and label styling */
-        .tile-icon {
-            font-size: 24px;
-            margin-bottom: 6px;
-            transition: transform 0.2s ease;
-        }
-
-        .tile:hover .tile-icon {
-            transform: scale(1.1);
-        }
-
-        .tile-label {
-            font-size: 11px;
-            font-weight: 500;
-            opacity: 0.7;
-            text-align: center;
-            margin-top: 4px;
-        }
-
-        /* Now Playing tile */
-        .now-playing {
-            background: linear-gradient(135deg, rgba(255, 59, 48, 0.15), rgba(255, 149, 0, 0.15));
-            flex-direction: row;
-            justify-content: space-between;
-            padding: 20px;
-            min-height: 80px;
+            font-size: 20px;
+            flex-shrink: 0;
         }
 
         .now-playing-info {
             flex: 1;
-            text-align: left;
+            min-width: 0;
         }
 
         .now-playing-title {
+            font-size: 14px;
             font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .now-playing-artist {
-            font-size: 13px;
+            font-size: 12px;
             opacity: 0.6;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .now-playing-icon {
-            font-size: 28px;
-            animation: musicPulse 2s infinite;
-        }
-
-        @keyframes musicPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        /* Brightness and Volume sliders */
-        .slider-tile {
-            padding: 16px;
-        }
-
-        .slider-container {
+        .playback-controls {
             display: flex;
-            align-items: center;
-            gap: 12px;
-            width: 100%;
-        }
-
-        .slider-icon {
-            font-size: 20px;
-        }
-
-        .slider {
-            flex: 1;
-            -webkit-appearance: none;
-            height: 28px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.2);
-            outline: none;
-            position: relative;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Focus modes */
-        .focus-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            padding: 8px;
-        }
-
-        .focus-mode {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.05);
-            cursor: pointer;
-            transition: all 0.2s;
-            min-height: 70px;
-        }
-
-        .focus-mode:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: scale(0.98);
-        }
-
-        .focus-mode.active {
-            background: var(--tile-active);
-        }
-
-        .focus-icon {
-            font-size: 24px;
-            margin-bottom: 6px;
-        }
-
-        .focus-label {
-            font-size: 11px;
-            font-weight: 500;
-            opacity: 0.8;
-        }
-
-        /* Timer input */
-        .timer-input-container {
-            display: none;
-            margin-top: 10px;
             gap: 8px;
             align-items: center;
         }
 
-        .timer-input-container.active {
+        .playback-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
             display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .timer-input {
+        .playback-btn:active {
+            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Quick controls grid - iPhone style 2x2 */
+        .quick-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+            aspect-ratio: 2/1;
+        }
+
+        /* Control tiles */
+        .control-tile {
+            background: var(--tile-bg);
+            border-radius: 16px;
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 26px;
+            min-height: 72px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .control-tile:active {
+            transform: scale(0.96);
+        }
+
+        .control-tile.active {
+            background: var(--tile-active);
+        }
+
+        .control-tile.active::before {
+            content: '';
+            position: absolute;
+            inset: 0;
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: 6px 10px;
-            color: var(--text-primary);
-            font-size: 14px;
-            width: 60px;
+            animation: shimmer 0.3s ease;
+        }
+
+        @keyframes shimmer {
+            from { opacity: 0; }
+            50% { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Slider tiles */
+        .slider-tile {
+            background: var(--tile-bg);
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border-color);
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .slider-icon {
+            font-size: 18px;
+            width: 20px;
             text-align: center;
         }
 
-        .timer-display {
-            font-size: 20px;
-            font-weight: 300;
-            margin-top: 8px;
-            font-variant-numeric: tabular-nums;
-            display: none;
+        .ios-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 32px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.15);
+            outline: none;
+            position: relative;
         }
 
-        .timer-display.active {
-            display: block;
-        }
-
-        .timer-btn {
-            padding: 4px 12px;
-            background: var(--tile-active);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 12px;
+        .ios-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
             cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
         }
 
-        /* Secondary pages */
-        .secondary-page {
-            position: fixed;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: var(--panel-bg);
+        /* Menu buttons for Timer and Focus */
+        .menu-btn {
+            background: var(--tile-bg);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
             backdrop-filter: blur(40px);
-            z-index: 200;
-            transition: top 0.5s cubic-bezier(0.4, 0, 0, 1);
-            overflow-y: auto;
-            padding: 80px 20px 40px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .secondary-page.open {
-            top: 0;
+        .menu-btn:active {
+            transform: scale(0.98);
+            background: var(--tile-hover);
         }
 
-        .page-header {
+        .menu-btn-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-btn-icon {
+            font-size: 20px;
+        }
+
+        .menu-btn-text {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .menu-btn-arrow {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 14px;
+        }
+
+        /* Portfolio grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .portfolio-tile {
+            background: var(--tile-bg);
+            border-radius: 16px;
+            padding: 16px;
+            min-height: 84px;
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .portfolio-tile:active {
+            transform: scale(0.96);
+            background: var(--tile-hover);
+        }
+
+        .portfolio-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .portfolio-label {
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0.7;
+        }
+
+        /* Modal overlay */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: var(--panel-bg);
-            backdrop-filter: blur(40px);
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-            z-index: 201;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
 
-        .back-btn {
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 20px;
-            color: var(--text-primary);
-            cursor: pointer;
-            font-size: 14px;
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Modal panels */
+        .modal-panel {
+            position: fixed;
+            bottom: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 360px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(80px);
+            -webkit-backdrop-filter: blur(80px);
+            border-radius: 24px;
+            padding: 20px;
+            z-index: 201;
+            transition: bottom 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-panel.active {
+            bottom: 20px;
+        }
+
+        .modal-header {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Timer picker */
+        .time-picker {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            mask-image: linear-gradient(transparent, black 30%, black 70%, transparent);
+            -webkit-mask-image: linear-gradient(transparent, black 30%, black 70%, transparent);
+        }
+
+        .picker-column {
+            width: 80px;
+            height: 100%;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .picker-column::-webkit-scrollbar {
+            display: none;
+        }
+
+        .picker-item {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            scroll-snap-align: center;
+            font-size: 20px;
+            font-weight: 500;
+            opacity: 0.3;
             transition: all 0.2s;
         }
 
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .picker-item.selected {
+            opacity: 1;
+            font-size: 24px;
+        }
+
+        .picker-separator {
+            font-size: 24px;
+            font-weight: 600;
+            opacity: 0.5;
+        }
+
+        .picker-label {
+            font-size: 14px;
+            opacity: 0.5;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        /* Focus modes */
+        .focus-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .focus-option {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid var(--border-color);
+        }
+
+        .focus-option:active {
+            transform: scale(0.96);
+        }
+
+        .focus-option.active {
+            background: var(--tile-active);
+            border-color: var(--tile-active);
+        }
+
+        .focus-option-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .focus-option-label {
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        /* Action button */
+        .action-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--tile-active);
+            border: none;
+            border-radius: 14px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.2s;
+        }
+
+        .action-btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        .cancel-btn {
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 8px;
+        }
+
+        /* Projects page */
+        .projects-page {
+            position: fixed;
+            top: 100vh;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--panel-bg);
+            backdrop-filter: blur(60px);
+            z-index: 150;
+            transition: transform 0.6s cubic-bezier(0.32, 0.72, 0, 1);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+        }
+
+        .projects-page.active {
+            transform: translateY(-100vh);
+        }
+
+        .page-header {
+            position: sticky;
+            top: 0;
+            background: var(--panel-bg);
+            backdrop-filter: blur(60px);
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 10;
         }
 
         .page-title {
-            font-size: 24px;
-            font-weight: 600;
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 4px;
         }
 
-        /* Skills grid */
-        .skills-container {
+        .page-subtitle {
+            font-size: 14px;
+            opacity: 0.6;
+        }
+
+        .content-container {
+            padding: 20px;
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
         }
 
-        .skill-category {
+        /* Skills section */
+        .skills-section {
             margin-bottom: 32px;
         }
 
-        .category-title {
-            font-size: 18px;
+        .section-title {
+            font-size: 20px;
             font-weight: 600;
             margin-bottom: 16px;
             opacity: 0.9;
@@ -518,81 +689,78 @@
 
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
             gap: 12px;
         }
 
-        .skill-tile {
+        .skill-card {
             background: var(--tile-bg);
-            border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 16px;
+            padding: 16px 8px;
             text-align: center;
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border-color);
             transition: all 0.2s;
         }
 
-        .skill-tile:hover {
+        .skill-card:hover {
+            transform: translateY(-4px);
             background: var(--tile-hover);
-            transform: translateY(-2px);
         }
 
         .skill-icon {
             font-size: 28px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .skill-name {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
+            opacity: 0.8;
         }
 
-        /* Projects grid */
-        .projects-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
+        /* Project cards */
         .project-card {
             background: var(--tile-bg);
-            border: 1px solid var(--border-color);
             border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border-color);
             transition: all 0.3s;
         }
 
         .project-card:hover {
-            background: var(--tile-hover);
             transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
         }
 
         .project-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
             margin-bottom: 8px;
         }
 
-        .project-description {
+        .project-desc {
             font-size: 14px;
-            opacity: 0.8;
-            margin-bottom: 12px;
+            opacity: 0.7;
             line-height: 1.5;
+            margin-bottom: 12px;
         }
 
-        .project-tech {
+        .tech-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
 
         .tech-tag {
             padding: 4px 10px;
-            background: rgba(59, 131, 246, 0.2);
-            border-radius: 12px;
-            font-size: 12px;
-            color: #3b82f6;
+            background: rgba(52, 120, 246, 0.2);
+            border-radius: 10px;
+            font-size: 11px;
+            color: #3478F6;
+            font-weight: 500;
         }
 
         /* Notification */
@@ -602,14 +770,15 @@
             left: 50%;
             transform: translate(-50%, -50%) scale(0.8);
             background: var(--panel-bg);
-            padding: 24px 32px;
-            border-radius: 20px;
-            backdrop-filter: blur(40px);
+            padding: 20px 28px;
+            border-radius: 18px;
+            backdrop-filter: blur(60px);
             opacity: 0;
             pointer-events: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
-            font-size: 16px;
+            z-index: 300;
+            font-size: 15px;
+            font-weight: 500;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border-color);
         }
@@ -619,24 +788,16 @@
             transform: translate(-50%, -50%) scale(1);
         }
 
-        /* Toggle button */
-        .toggle-btn {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 36px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 3px;
-            cursor: pointer;
-            transition: all 0.3s;
-            z-index: 50;
-        }
-
-        .toggle-btn:hover {
-            background: rgba(255, 255, 255, 0.5);
-            width: 50px;
+        /* Responsive */
+        @media (max-width: 375px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .quick-controls {
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -645,286 +806,267 @@
     <canvas id="starfield"></canvas>
 
     <!-- Landing Page -->
-    <div class="landing-page" id="landingPage">
-        <div class="hero-content">
-            <h1 class="hero-name">Your Name</h1>
-            <div class="hero-subtitle">
-                <span class="subtitle-text">Full-Stack Developer & Creative Thinker</span>
-                <span class="subtitle-text">Building Digital Experiences with Passion</span>
-                <span class="subtitle-text">Turning Ideas into Beautiful Reality</span>
-                <span class="subtitle-text">Code • Design • Innovation</span>
-            </div>
-            <div class="cta-message">
-                Press ESC to explore my universe ✨
-            </div>
+    <div class="landing-container" id="landingContainer">
+        <h1 class="hero-name" id="heroName">Your Name</h1>
+        <div class="subtitle-container">
+            <div class="subtitle-text">Full-Stack Developer crafting digital experiences that inspire</div>
+            <div class="subtitle-text">Bridging creativity and code to build tomorrow's web</div>
+            <div class="subtitle-text">Passionate about pixel-perfect design and blazing-fast performance</div>
+            <div class="subtitle-text">Let's turn your vision into reality, one line at a time</div>
         </div>
+        <div class="swipe-indicator">Swipe down to begin ↓</div>
     </div>
-
-    <!-- Toggle button -->
-    <div class="toggle-btn" onclick="toggleControlCenter()"></div>
 
     <!-- Control Center -->
     <div class="control-center" id="controlCenter">
-        <!-- Now Playing -->
-        <div class="tile large now-playing">
-            <div class="now-playing-info">
-                <div class="now-playing-title" id="songTitle">Loading...</div>
-                <div class="now-playing-artist" id="songArtist">...</div>
-            </div>
-            <div class="now-playing-icon">♫</div>
-        </div>
-
-        <!-- Quick Controls -->
-        <div class="tiles-grid-4">
-            <!-- Airplane Mode -->
-            <div class="tile small" id="airplaneMode" onclick="toggleAirplaneMode()">
-                <div class="tile-icon">✈️</div>
-                <div class="tile-label">Airplane</div>
-            </div>
-
-            <!-- Bluetooth -->
-            <div class="tile small" id="bluetooth" onclick="toggleBluetooth()">
-                <div class="tile-icon">ᛒ</div>
-                <div class="tile-label">Bluetooth</div>
-            </div>
-
-            <!-- Flashlight -->
-            <div class="tile small" id="flashlight" onclick="toggleFlashlight()">
-                <div class="tile-icon">🔦</div>
-                <div class="tile-label">Light Mode</div>
-            </div>
-
-            <!-- Timer -->
-            <div class="tile small" onclick="toggleTimerInput()">
-                <div class="tile-icon">⏱️</div>
-                <div class="tile-label">Timer</div>
-            </div>
-        </div>
-
-        <!-- Timer Input (hidden by default) -->
-        <div class="timer-input-container" id="timerInputContainer">
-            <input type="number" class="timer-input" id="minutesInput" placeholder="Min" min="0" max="999">
-            <span>:</span>
-            <input type="number" class="timer-input" id="secondsInput" placeholder="Sec" min="0" max="59">
-            <button class="timer-btn" onclick="startTimer()">Start</button>
-            <div class="timer-display" id="timerDisplay">00:00</div>
-        </div>
-
-        <!-- Brightness Control -->
-        <div class="tile full-width slider-tile">
-            <div class="slider-container">
-                <span class="slider-icon">☀️</span>
-                <input type="range" class="slider" id="brightnessSlider" 
-                       min="30" max="100" value="100" oninput="adjustBrightness(this.value)">
-            </div>
-        </div>
-
-        <!-- Focus Modes -->
-        <div class="tile full-width">
-            <div class="tile-label" style="margin-bottom: 8px;">Focus</div>
-            <div class="focus-grid">
-                <div class="focus-mode" onclick="setFocusMode('dnd')">
-                    <div class="focus-icon">🌙</div>
-                    <div class="focus-label">Do Not Disturb</div>
+        <div class="handle-bar"></div>
+        <div class="cc-content">
+            <!-- Now Playing -->
+            <div class="now-playing">
+                <div class="album-art" id="albumArt">🎵</div>
+                <div class="now-playing-info">
+                    <div class="now-playing-title" id="songTitle">Loading...</div>
+                    <div class="now-playing-artist" id="songArtist">...</div>
                 </div>
-                <div class="focus-mode" onclick="setFocusMode('sleep')">
-                    <div class="focus-icon">😴</div>
-                    <div class="focus-label">Sleep</div>
-                </div>
-                <div class="focus-mode" onclick="setFocusMode('work')">
-                    <div class="focus-icon">💼</div>
-                    <div class="focus-label">Work</div>
-                </div>
-                <div class="focus-mode" onclick="setFocusMode('personal')">
-                    <div class="focus-icon">🏠</div>
-                    <div class="focus-label">Personal</div>
+                <div class="playback-controls">
+                    <button class="playback-btn" onclick="previousSong()">◁</button>
+                    <button class="playback-btn" onclick="nextSong()">▷</button>
                 </div>
             </div>
-        </div>
 
-        <!-- Portfolio Section -->
-        <div class="tiles-grid-2">
-            <div class="tile medium" onclick="openSkillsPage()">
-                <div class="tile-icon">💡</div>
-                <div class="tile-label">Skills</div>
+            <!-- Quick Controls 2x2 Grid -->
+            <div class="quick-controls">
+                <div class="control-tile" id="airplaneMode" onclick="toggleAirplaneMode()">✈️</div>
+                <div class="control-tile" id="bluetooth" onclick="toggleBluetooth()">ᛒ</div>
+                <div class="control-tile" id="flashlight" onclick="toggleFlashlight()">🔦</div>
+                <div class="control-tile" id="doNotDisturb" onclick="toggleDND()">🌙</div>
             </div>
 
-            <div class="tile medium" onclick="openProjectsPage()">
-                <div class="tile-icon">🚀</div>
-                <div class="tile-label">Projects</div>
+            <!-- Brightness Slider -->
+            <div class="slider-tile">
+                <div class="slider-row">
+                    <span class="slider-icon">☀️</span>
+                    <input type="range" class="ios-slider" id="brightnessSlider" 
+                           min="30" max="100" value="100" oninput="adjustBrightness(this.value)">
+                </div>
             </div>
 
-            <a href="https://linkedin.com/in/yourprofile" target="_blank" class="tile medium">
-                <div class="tile-icon">💼</div>
-                <div class="tile-label">LinkedIn</div>
-            </a>
+            <!-- Timer Menu Button -->
+            <div class="menu-btn" onclick="openTimerModal()">
+                <div class="menu-btn-left">
+                    <span class="menu-btn-icon">⏱️</span>
+                    <span class="menu-btn-text">Timer</span>
+                </div>
+                <span class="menu-btn-arrow">›</span>
+            </div>
 
-            <a href="resume.pdf" target="_blank" class="tile medium">
-                <div class="tile-icon">📄</div>
-                <div class="tile-label">Resume</div>
-            </a>
+            <!-- Focus Menu Button -->
+            <div class="menu-btn" onclick="openFocusModal()">
+                <div class="menu-btn-left">
+                    <span class="menu-btn-icon">🎯</span>
+                    <span class="menu-btn-text">Focus</span>
+                </div>
+                <span class="menu-btn-arrow">›</span>
+            </div>
 
-            <a href="https://notion.so/yourworkspace" target="_blank" class="tile medium">
-                <div class="tile-icon">📝</div>
-                <div class="tile-label">Notion</div>
-            </a>
-
-            <a href="mailto:your.email@example.com" class="tile medium">
-                <div class="tile-icon">✉️</div>
-                <div class="tile-label">Email</div>
-            </a>
+            <!-- Portfolio Grid -->
+            <div class="portfolio-grid">
+                <div class="portfolio-tile" onclick="openSkillsSection()">
+                    <div class="portfolio-icon">💡</div>
+                    <div class="portfolio-label">Skills</div>
+                </div>
+                <div class="portfolio-tile" onclick="openProjectsSection()">
+                    <div class="portfolio-icon">🚀</div>
+                    <div class="portfolio-label">Projects</div>
+                </div>
+                <a href="https://linkedin.com/in/yourprofile" target="_blank" class="portfolio-tile">
+                    <div class="portfolio-icon">💼</div>
+                    <div class="portfolio-label">LinkedIn</div>
+                </a>
+                <a href="resume.pdf" target="_blank" class="portfolio-tile">
+                    <div class="portfolio-icon">📄</div>
+                    <div class="portfolio-label">Resume</div>
+                </a>
+                <a href="https://notion.so/yourworkspace" target="_blank" class="portfolio-tile">
+                    <div class="portfolio-icon">📝</div>
+                    <div class="portfolio-label">Notion</div>
+                </a>
+                <a href="mailto:your.email@example.com" class="portfolio-tile">
+                    <div class="portfolio-icon">✉️</div>
+                    <div class="portfolio-label">Email</div>
+                </a>
+            </div>
         </div>
     </div>
 
-    <!-- Skills Page -->
-    <div class="secondary-page" id="skillsPage">
-        <div class="page-header">
-            <button class="back-btn" onclick="closeSkillsPage()">← Back</button>
-            <div class="page-title">Skills</div>
-            <div></div>
-        </div>
-        <div class="skills-container">
-            <div class="skill-category">
-                <div class="category-title">Frontend</div>
-                <div class="skills-grid">
-                    <div class="skill-tile">
-                        <div class="skill-icon">⚛️</div>
-                        <div class="skill-name">React</div>
-                    </div>
-                    <div class="skill-tile">
-                        <div class="skill-icon">🎨</div>
-                        <div class="skill-name">CSS3</div>
-                    </div>
-                    <div class="skill-tile">
-                        <div class="skill-icon">📱</div>
-                        <div class="skill-name">React Native</div>
-                    </div>
-                    <div class="skill-tile">
-                        <div class="skill-icon">💚</div>
-                        <div class="skill-name">Vue.js</div>
-                    </div>
-                    <div class="skill-tile">
-                        <div class="skill-icon">🎯</div>
-                        <div class="skill-name">TypeScript</div>
-                    </div>
-                    <div class="skill-tile">
-                        <div class="skill-icon">⚡</div>
-                        <div class="skill-name">Next.js</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="skill-category">
-                <div class="category-title">Backend</div>
-                <div class="skills-grid">
-                    <div class="skill-tile">
-                        <div class="skill-icon">🟢</div>
-                        <div class="skill-name">Node.js</div>
-                    </div>
-                    <div class="skill-tile">
-                        <div class="skill-icon">🐍</div>
-                        <div class="skill-name">Python</div>
-                    </div>
-                    <div class="skill-tile">
-                        <div class="skill-icon">🗄️</div>
-                        <div class="skill-name">PostgreSQL</div>
-                    </div>
-                    <div class="skill-tile">
-                        <div class="skill-icon">🍃</div>
-                        <div class="skill-name">MongoDB</div>
-                    </div>
-                    <div class="skill-tile">
-                        <div class="skill-icon">🔥</div>
-                        <div class="skill-name">Firebase</div>
-                    </div>
-                    <div class="skill-tile">
-                        <div class="skill-icon">📦</div>
-                        <div class="skill-name">Docker</div>
-                    </div>
-                </div>
-            </div>
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeAllModals()"></div>
 
-            <div class="skill-category">
-                <div class="category-title">Tools & Design</div>
-                <div class="skills-grid">
-                    <div class="skill-tile">
-                        <div class="skill-icon">🎨</div>
-                        <div class="skill-name">Figma</div>
-                    </div>
-                    <div class="skill-tile">
-                        <div class="skill-icon">🛠️</div>
-                        <div class="skill-name">Git</div>
-                    </div>
-                    <div class="skill-tile">
-                        <div class="skill-icon">☁️</div>
-                        <div class="skill-name">AWS</div>
-                    </div>
-                    <div class="skill-tile">
-                        <div class="skill-icon">🚀</div>
-                        <div class="skill-name">CI/CD</div>
-                    </div>
-                </div>
+    <!-- Timer Modal -->
+    <div class="modal-panel" id="timerModal">
+        <div class="modal-header">Set Timer</div>
+        <div class="picker-label">Select Duration</div>
+        <div class="time-picker">
+            <div class="picker-column" id="minutePicker">
+                <!-- Generated by JS -->
+            </div>
+            <span class="picker-separator">:</span>
+            <div class="picker-column" id="secondPicker">
+                <!-- Generated by JS -->
             </div>
         </div>
+        <button class="action-btn" onclick="startTimer()">Start Timer</button>
+        <button class="action-btn cancel-btn" onclick="closeTimerModal()">Cancel</button>
+    </div>
+
+    <!-- Focus Modal -->
+    <div class="modal-panel" id="focusModal">
+        <div class="modal-header">Focus Mode</div>
+        <div class="focus-options">
+            <div class="focus-option" onclick="setFocusMode('dnd')">
+                <div class="focus-option-icon">🌙</div>
+                <div class="focus-option-label">Do Not Disturb</div>
+            </div>
+            <div class="focus-option" onclick="setFocusMode('sleep')">
+                <div class="focus-option-icon">😴</div>
+                <div class="focus-option-label">Sleep</div>
+            </div>
+            <div class="focus-option" onclick="setFocusMode('work')">
+                <div class="focus-option-icon">💼</div>
+                <div class="focus-option-label">Work</div>
+            </div>
+            <div class="focus-option" onclick="setFocusMode('personal')">
+                <div class="focus-option-icon">🏠</div>
+                <div class="focus-option-label">Personal</div>
+            </div>
+        </div>
+        <button class="action-btn cancel-btn" onclick="closeFocusModal()">Done</button>
     </div>
 
     <!-- Projects Page -->
-    <div class="secondary-page" id="projectsPage">
+    <div class="projects-page" id="projectsPage">
         <div class="page-header">
-            <button class="back-btn" onclick="closeProjectsPage()">← Back</button>
-            <div class="page-title">Projects</div>
-            <div></div>
+            <div class="page-title">Portfolio</div>
+            <div class="page-subtitle">Swipe down to go back</div>
         </div>
-        <div class="projects-container">
+        <div class="content-container">
+            <!-- Skills Section -->
+            <div class="skills-section">
+                <div class="section-title">Skills & Technologies</div>
+                
+                <div style="margin-bottom: 24px;">
+                    <div style="font-size: 14px; opacity: 0.7; margin-bottom: 12px;">Frontend</div>
+                    <div class="skills-grid">
+                        <div class="skill-card">
+                            <div class="skill-icon">⚛️</div>
+                            <div class="skill-name">React</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">💚</div>
+                            <div class="skill-name">Vue.js</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">🎯</div>
+                            <div class="skill-name">TypeScript</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">⚡</div>
+                            <div class="skill-name">Next.js</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">🎨</div>
+                            <div class="skill-name">Tailwind</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">📱</div>
+                            <div class="skill-name">React Native</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <div style="font-size: 14px; opacity: 0.7; margin-bottom: 12px;">Backend</div>
+                    <div class="skills-grid">
+                        <div class="skill-card">
+                            <div class="skill-icon">🟢</div>
+                            <div class="skill-name">Node.js</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">🐍</div>
+                            <div class="skill-name">Python</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">🗄️</div>
+                            <div class="skill-name">PostgreSQL</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">🍃</div>
+                            <div class="skill-name">MongoDB</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">🔥</div>
+                            <div class="skill-name">Firebase</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">📦</div>
+                            <div class="skill-name">Docker</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Section -->
+            <div class="section-title">Featured Projects</div>
+            
+            <div class="project-card">
+                <div class="project-title">AI-Powered Task Manager</div>
+                <div class="project-desc">
+                    Smart task management app that uses machine learning to prioritize tasks, 
+                    predict completion times, and provide personalized productivity insights.
+                </div>
+                <div class="tech-tags">
+                    <span class="tech-tag">Next.js</span>
+                    <span class="tech-tag">OpenAI</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">Tailwind</span>
+                </div>
+            </div>
+
             <div class="project-card">
                 <div class="project-title">E-Commerce Platform</div>
-                <div class="project-description">
-                    A modern, full-stack e-commerce solution with real-time inventory management, 
-                    secure payment processing, and an intuitive admin dashboard.
+                <div class="project-desc">
+                    Full-stack marketplace with real-time inventory, secure payments, 
+                    and an intuitive admin dashboard for vendors.
                 </div>
-                <div class="project-tech">
+                <div class="tech-tags">
                     <span class="tech-tag">React</span>
                     <span class="tech-tag">Node.js</span>
                     <span class="tech-tag">MongoDB</span>
-                    <span class="tech-tag">Stripe API</span>
+                    <span class="tech-tag">Stripe</span>
                 </div>
             </div>
 
             <div class="project-card">
-                <div class="project-title">AI Task Manager</div>
-                <div class="project-description">
-                    Smart task management application that uses AI to prioritize tasks, 
-                    suggest optimal work times, and provide productivity insights.
+                <div class="project-title">Social Analytics Dashboard</div>
+                <div class="project-desc">
+                    Real-time social media analytics tool with sentiment analysis, 
+                    trend detection, and automated reporting features.
                 </div>
-                <div class="project-tech">
-                    <span class="tech-tag">Next.js</span>
-                    <span class="tech-tag">OpenAI API</span>
-                    <span class="tech-tag">PostgreSQL</span>
-                    <span class="tech-tag">TailwindCSS</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-title">Social Media Dashboard</div>
-                <div class="project-description">
-                    Analytics dashboard for managing multiple social media accounts with 
-                    real-time metrics, post scheduling, and engagement tracking.
-                </div>
-                <div class="project-tech">
+                <div class="tech-tags">
                     <span class="tech-tag">Vue.js</span>
                     <span class="tech-tag">Python</span>
                     <span class="tech-tag">Redis</span>
-                    <span class="tech-tag">Chart.js</span>
+                    <span class="tech-tag">D3.js</span>
                 </div>
             </div>
 
             <div class="project-card">
                 <div class="project-title">Mobile Banking App</div>
-                <div class="project-description">
-                    Secure mobile banking solution with biometric authentication, 
-                    real-time transactions, and personalized financial insights.
+                <div class="project-desc">
+                    Secure banking application with biometric auth, real-time transactions, 
+                    and AI-driven financial insights.
                 </div>
-                <div class="project-tech">
+                <div class="tech-tags">
                     <span class="tech-tag">React Native</span>
                     <span class="tech-tag">Node.js</span>
                     <span class="tech-tag">AWS</span>
@@ -940,82 +1082,99 @@
     <script>
         // Configuration
         const CONFIG = {
-            // Your name for the landing page
+            // Your name
             yourName: "Your Name",
             
-            // Subtitles that cycle on landing page
-            subtitles: [
-                "Full-Stack Developer & Creative Thinker",
-                "Building Digital Experiences with Passion",
-                "Turning Ideas into Beautiful Reality",
-                "Code • Design • Innovation"
-            ],
-            
-            // Music playlist
+            // Music playlist with album art icons
             playlist: [
-                { title: "Cosmic Journey", artist: "Space Ambient" },
-                { title: "Stellar Dreams", artist: "Electronic Chill" },
-                { title: "Nebula Waves", artist: "Lo-Fi Universe" },
-                { title: "Galactic Flow", artist: "Synthwave Mix" },
-                { title: "Starlight Code", artist: "Dev Beats" }
+                { title: "Cosmic Journey", artist: "Space Ambient", icon: "🌌" },
+                { title: "Stellar Dreams", artist: "Electronic Chill", icon: "✨" },
+                { title: "Nebula Waves", artist: "Lo-Fi Universe", icon: "🌠" },
+                { title: "Galactic Flow", artist: "Synthwave Mix", icon: "🚀" },
+                { title: "Starlight Code", artist: "Dev Beats", icon: "💫" },
+                { title: "Aurora Borealis", artist: "Ambient Space", icon: "🌈" },
+                { title: "Interstellar", artist: "Hans Zimmer", icon: "🎬" }
             ],
             
-            // External links - UPDATE THESE
+            // External links
             linkedinUrl: "https://linkedin.com/in/yourprofile",
             notionUrl: "https://notion.so/yourworkspace",
             email: "your.email@example.com",
             resumeUrl: "resume.pdf"
         };
 
-        // State management
+        // State
         let state = {
             controlCenterOpen: false,
-            landingPageVisible: true,
+            landingVisible: true,
             darkMode: true,
             airplaneMode: false,
             bluetoothConnected: false,
+            dndEnabled: false,
             currentSongIndex: 0,
             currentFocus: null,
             timerRunning: false,
             timerSeconds: 0,
             timerInterval: null,
+            selectedMinutes: 5,
+            selectedSeconds: 0,
             stars: []
         };
 
-        // Initialize starfield
+        // Initialize
+        window.addEventListener('DOMContentLoaded', function() {
+            initStarfield();
+            initializeMusic();
+            initTimePickers();
+            setupSwipeGestures();
+            
+            // Set hero name
+            document.getElementById('heroName').textContent = CONFIG.yourName;
+            
+            // Auto-cycle songs
+            setInterval(nextSong, 8000);
+        });
+
+        // Starfield animation
         function initStarfield() {
             const canvas = document.getElementById('starfield');
             const ctx = canvas.getContext('2d');
             
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
             
             // Create stars
-            for (let i = 0; i < 200; i++) {
+            for (let i = 0; i < 150; i++) {
                 state.stars.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    radius: Math.random() * 1.5,
+                    radius: Math.random() * 1.2,
                     alpha: Math.random(),
-                    speed: Math.random() * 0.5
+                    speed: Math.random() * 0.3 + 0.1,
+                    twinkleSpeed: Math.random() * 0.02
                 });
             }
             
-            function animateStars() {
-                ctx.fillStyle = 'rgba(9, 10, 15, 0.05)';
+            function animate() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 
                 state.stars.forEach(star => {
+                    // Draw star
                     ctx.beginPath();
                     ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
                     ctx.fill();
                     
-                    // Twinkle effect
-                    star.alpha += (Math.random() - 0.5) * 0.01;
-                    star.alpha = Math.max(0.1, Math.min(1, star.alpha));
+                    // Twinkle
+                    star.alpha += Math.sin(Date.now() * star.twinkleSpeed) * 0.01;
+                    star.alpha = Math.max(0.2, Math.min(1, star.alpha));
                     
-                    // Slow drift
+                    // Move
                     star.y += star.speed;
                     if (star.y > canvas.height) {
                         star.y = 0;
@@ -1023,215 +1182,204 @@
                     }
                 });
                 
-                requestAnimationFrame(animateStars);
+                requestAnimationFrame(animate);
             }
-            
-            animateStars();
+            animate();
         }
 
-        // Initialize on page load
-        window.onload = function() {
-            // Set your name
-            document.querySelector('.hero-name').textContent = CONFIG.yourName;
+        // Swipe gesture handling with better scroll detection
+        function setupSwipeGestures() {
+            let touchStartY = 0;
+            let touchStartX = 0;
+            let touchStartTime = 0;
+            let isScrolling = false;
+            let initialScrollTop = 0;
             
-            // Initialize components
-            initStarfield();
-            initializePlaylist();
-            setInterval(cycleSong, 5000);
+            // For landing page swipes
+            const landingContainer = document.getElementById('landingContainer');
+            landingContainer.addEventListener('touchstart', function(e) {
+                touchStartY = e.touches[0].clientY;
+                touchStartX = e.touches[0].clientX;
+                touchStartTime = Date.now();
+            }, { passive: true });
             
-            // Handle window resize
-            window.addEventListener('resize', () => {
-                const canvas = document.getElementById('starfield');
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+            landingContainer.addEventListener('touchend', function(e) {
+                const touchEndY = e.changedTouches[0].clientY;
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndTime = Date.now();
+                
+                const swipeDistanceY = touchStartY - touchEndY;
+                const swipeDistanceX = Math.abs(touchStartX - touchEndX);
+                const swipeTime = touchEndTime - touchStartTime;
+                
+                // Quick swipe detection (less than 300ms and minimum 50px)
+                if (swipeTime < 300 && Math.abs(swipeDistanceY) > 50 && swipeDistanceX < 100) {
+                    if (state.landingVisible) {
+                        if (swipeDistanceY > 0) {
+                            // Swipe up - go to projects
+                            openProjectsDirectly();
+                        } else {
+                            // Swipe down - open control center
+                            openControlCenter();
+                        }
+                    }
+                }
             });
-        };
-
-        // Toggle Control Center
-        function toggleControlCenter() {
-            if (state.landingPageVisible) {
-                // Hide landing page first
-                document.getElementById('landingPage').classList.add('hidden');
-                state.landingPageVisible = false;
-                setTimeout(() => {
-                    state.controlCenterOpen = true;
-                    document.getElementById('controlCenter').classList.add('open');
-                }, 300);
-            } else {
-                state.controlCenterOpen = !state.controlCenterOpen;
-                document.getElementById('controlCenter').classList.toggle('open');
-            }
+            
+            // For control center swipes
+            const controlCenter = document.getElementById('controlCenter');
+            let ccStartY = 0;
+            
+            controlCenter.addEventListener('touchstart', function(e) {
+                ccStartY = e.touches[0].clientY;
+                initialScrollTop = controlCenter.scrollTop;
+                isScrolling = false;
+            }, { passive: true });
+            
+            controlCenter.addEventListener('touchmove', function(e) {
+                const currentY = e.touches[0].clientY;
+                const diff = ccStartY - currentY;
+                
+                // Check if user is scrolling within control center
+                if (controlCenter.scrollTop > 0 || diff > 0) {
+                    isScrolling = true;
+                }
+            }, { passive: true });
+            
+            controlCenter.addEventListener('touchend', function(e) {
+                const touchEndY = e.changedTouches[0].clientY;
+                const swipeDistance = ccStartY - touchEndY;
+                
+                // Only close if swiping up from top of control center
+                if (!isScrolling && swipeDistance > 50 && initialScrollTop === 0) {
+                    closeControlCenter();
+                }
+            });
+            
+            // For projects page swipes
+            const projectsPage = document.getElementById('projectsPage');
+            let projStartY = 0;
+            let projScrollTop = 0;
+            
+            projectsPage.addEventListener('touchstart', function(e) {
+                projStartY = e.touches[0].clientY;
+                projScrollTop = projectsPage.scrollTop;
+            }, { passive: true });
+            
+            projectsPage.addEventListener('touchend', function(e) {
+                const touchEndY = e.changedTouches[0].clientY;
+                const swipeDistance = projStartY - touchEndY;
+                
+                // Swipe down from top to close
+                if (swipeDistance < -50 && projScrollTop === 0) {
+                    closeProjectsPage();
+                }
+            });
+            
+            // Also add mouse support for desktop
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowDown') {
+                    if (state.landingVisible) {
+                        openControlCenter();
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    if (state.landingVisible) {
+                        openProjectsDirectly();
+                    } else if (state.controlCenterOpen) {
+                        closeControlCenter();
+                    }
+                } else if (e.key === 'Escape') {
+                    if (document.getElementById('projectsPage').classList.contains('active')) {
+                        closeProjectsPage();
+                    } else if (state.controlCenterOpen) {
+                        closeControlCenter();
+                    }
+                }
+            });
         }
 
-        // Keyboard controls
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                toggleControlCenter();
+        // Control Center
+        function openControlCenter() {
+            if (state.landingVisible) {
+                document.getElementById('landingContainer').classList.add('swiped-up');
+                state.landingVisible = false;
             }
-        });
-
-        // Flashlight - Toggle Dark/Light Mode
-        function toggleFlashlight() {
-            state.darkMode = !state.darkMode;
-            document.body.classList.toggle('light-mode');
-            const flashlight = document.getElementById('flashlight');
-            flashlight.classList.toggle('active');
+            state.controlCenterOpen = true;
+            document.getElementById('controlCenter').classList.add('open');
         }
 
-        // Airplane Mode
+        function closeControlCenter() {
+            state.controlCenterOpen = false;
+            document.getElementById('controlCenter').classList.remove('open');
+        }
+
+        // Projects page
+        function openProjectsDirectly() {
+            if (state.landingVisible) {
+                document.getElementById('landingContainer').classList.add('swiped-up');
+                state.landingVisible = false;
+            }
+            document.getElementById('projectsPage').classList.add('active');
+        }
+
+        function openSkillsSection() {
+            document.getElementById('projectsPage').classList.add('active');
+            // Scroll to skills
+            setTimeout(() => {
+                document.querySelector('.skills-section').scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+        }
+
+        function openProjectsSection() {
+            document.getElementById('projectsPage').classList.add('active');
+            // Scroll to projects
+            setTimeout(() => {
+                document.querySelector('.section-title').scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+        }
+
+        function closeProjectsPage() {
+            document.getElementById('projectsPage').classList.remove('active');
+        }
+
+        // Quick controls
         function toggleAirplaneMode() {
             state.airplaneMode = !state.airplaneMode;
             document.body.classList.toggle('airplane-mode');
             document.getElementById('airplaneMode').classList.toggle('active');
-            
-            if (state.airplaneMode) {
-                showNotification("✈️ Airplane Mode On");
-            } else {
-                showNotification("✈️ Airplane Mode Off");
-            }
+            showNotification(state.airplaneMode ? '✈️ Airplane Mode On' : '✈️ Airplane Mode Off');
         }
 
-        // Bluetooth
         function toggleBluetooth() {
             state.bluetoothConnected = !state.bluetoothConnected;
             document.getElementById('bluetooth').classList.toggle('active');
-            
-            const deviceName = getDeviceName();
-            const message = state.bluetoothConnected 
-                ? `Connected to ${deviceName}` 
-                : `Disconnected from ${deviceName}`;
-            
-            showNotification(message);
+            const device = navigator.platform || 'Device';
+            showNotification(state.bluetoothConnected ? `Connected to ${device}` : `Disconnected from ${device}`);
         }
 
-        // Get device name
-        function getDeviceName() {
-            const userAgent = navigator.userAgent;
-            if (/Mac/i.test(userAgent)) return "Mac";
-            if (/Windows/i.test(userAgent)) return "PC";
-            if (/iPhone/i.test(userAgent)) return "iPhone";
-            if (/iPad/i.test(userAgent)) return "iPad";
-            if (/Android/i.test(userAgent)) return "Android";
-            return "Device";
+        function toggleFlashlight() {
+            state.darkMode = !state.darkMode;
+            document.body.classList.toggle('light-mode');
+            document.getElementById('flashlight').classList.toggle('active');
         }
 
-        // Brightness adjustment
+        function toggleDND() {
+            state.dndEnabled = !state.dndEnabled;
+            document.getElementById('doNotDisturb').classList.toggle('active');
+            if (state.dndEnabled) {
+                setFocusMode('dnd');
+            } else {
+                clearFocusMode();
+            }
+        }
+
+        // Brightness
         function adjustBrightness(value) {
             document.documentElement.style.setProperty('--brightness', value / 100);
         }
 
-        // Focus modes
-        function setFocusMode(mode) {
-            // Remove all focus classes
-            document.body.classList.remove('focus-dnd', 'focus-sleep', 'focus-work', 'focus-personal');
-            
-            // Remove active state from all focus buttons
-            document.querySelectorAll('.focus-mode').forEach(el => {
-                el.classList.remove('active');
-            });
-            
-            // Toggle focus mode
-            if (state.currentFocus === mode) {
-                state.currentFocus = null;
-                showNotification("Focus mode disabled");
-            } else {
-                state.currentFocus = mode;
-                document.body.classList.add(`focus-${mode}`);
-                event.target.closest('.focus-mode').classList.add('active');
-                
-                const modeNames = {
-                    'dnd': 'Do Not Disturb',
-                    'sleep': 'Sleep Focus',
-                    'work': 'Work Focus',
-                    'personal': 'Personal Focus'
-                };
-                showNotification(`${modeNames[mode]} enabled`);
-            }
-        }
-
-        // Timer functionality
-        function toggleTimerInput() {
-            const container = document.getElementById('timerInputContainer');
-            container.classList.toggle('active');
-            
-            if (!container.classList.contains('active')) {
-                stopTimer();
-            }
-        }
-
-        function startTimer() {
-            const minutes = parseInt(document.getElementById('minutesInput').value) || 0;
-            const seconds = parseInt(document.getElementById('secondsInput').value) || 0;
-            
-            if (minutes === 0 && seconds === 0) {
-                showNotification("Please enter a valid time");
-                return;
-            }
-            
-            state.timerRunning = true;
-            state.timerSeconds = minutes * 60 + seconds;
-            document.getElementById('timerDisplay').classList.add('active');
-            
-            updateTimerDisplay();
-            state.timerInterval = setInterval(() => {
-                state.timerSeconds--;
-                updateTimerDisplay();
-                
-                if (state.timerSeconds <= 0) {
-                    stopTimer();
-                    playTimerSound();
-                    showNotification("⏰ Timer finished!");
-                }
-            }, 1000);
-        }
-
-        function stopTimer() {
-            state.timerRunning = false;
-            clearInterval(state.timerInterval);
-            document.getElementById('timerDisplay').classList.remove('active');
-            document.getElementById('minutesInput').value = '';
-            document.getElementById('secondsInput').value = '';
-        }
-
-        function updateTimerDisplay() {
-            const minutes = Math.floor(state.timerSeconds / 60);
-            const seconds = state.timerSeconds % 60;
-            document.getElementById('timerDisplay').textContent = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        function playTimerSound() {
-            // Apple-like notification sound
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            
-            // Create multiple oscillators for a richer sound
-            const frequencies = [523.25, 659.25, 783.99]; // C, E, G
-            
-            frequencies.forEach((freq, index) => {
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.type = 'sine';
-                oscillator.frequency.value = freq;
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-                gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-                
-                oscillator.start(audioContext.currentTime + index * 0.05);
-                oscillator.stop(audioContext.currentTime + 0.6);
-            });
-        }
-
-        // Music playlist
-        function initializePlaylist() {
-            updateNowPlaying();
-        }
-
-        function cycleSong() {
-            state.currentSongIndex = (state.currentSongIndex + 1) % CONFIG.playlist.length;
+        // Music controls
+        function initializeMusic() {
             updateNowPlaying();
         }
 
@@ -1239,26 +1387,180 @@
             const song = CONFIG.playlist[state.currentSongIndex];
             document.getElementById('songTitle').textContent = song.title;
             document.getElementById('songArtist').textContent = song.artist;
+            document.getElementById('albumArt').textContent = song.icon;
         }
 
-        // Secondary pages
-        function openSkillsPage() {
-            document.getElementById('skillsPage').classList.add('open');
+        function nextSong() {
+            state.currentSongIndex = (state.currentSongIndex + 1) % CONFIG.playlist.length;
+            updateNowPlaying();
         }
 
-        function closeSkillsPage() {
-            document.getElementById('skillsPage').classList.remove('open');
+        function previousSong() {
+            state.currentSongIndex = state.currentSongIndex === 0 ? CONFIG.playlist.length - 1 : state.currentSongIndex - 1;
+            updateNowPlaying();
         }
 
-        function openProjectsPage() {
-            document.getElementById('projectsPage').classList.add('open');
+        // Timer Modal
+        function openTimerModal() {
+            document.getElementById('modalOverlay').classList.add('active');
+            document.getElementById('timerModal').classList.add('active');
         }
 
-        function closeProjectsPage() {
-            document.getElementById('projectsPage').classList.remove('open');
+        function closeTimerModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.getElementById('timerModal').classList.remove('active');
         }
 
-        // Notification system
+        function initTimePickers() {
+            const minutePicker = document.getElementById('minutePicker');
+            const secondPicker = document.getElementById('secondPicker');
+            
+            // Add padding items for scroll effect
+            for (let i = 0; i < 2; i++) {
+                minutePicker.innerHTML += '<div class="picker-item">&nbsp;</div>';
+                secondPicker.innerHTML += '<div class="picker-item">&nbsp;</div>';
+            }
+            
+            // Minutes (0-59)
+            for (let i = 0; i <= 59; i++) {
+                const item = document.createElement('div');
+                item.className = 'picker-item';
+                item.textContent = i.toString().padStart(2, '0');
+                item.dataset.value = i;
+                minutePicker.appendChild(item);
+            }
+            
+            // Seconds (0-59)
+            for (let i = 0; i <= 59; i += 5) {
+                const item = document.createElement('div');
+                item.className = 'picker-item';
+                item.textContent = i.toString().padStart(2, '0');
+                item.dataset.value = i;
+                secondPicker.appendChild(item);
+            }
+            
+            // Add padding at end
+            for (let i = 0; i < 2; i++) {
+                minutePicker.innerHTML += '<div class="picker-item">&nbsp;</div>';
+                secondPicker.innerHTML += '<div class="picker-item">&nbsp;</div>';
+            }
+            
+            // Set initial scroll position
+            minutePicker.scrollTop = 80; // 5 minutes
+            secondPicker.scrollTop = 0;
+            
+            // Handle scroll selection
+            [minutePicker, secondPicker].forEach(picker => {
+                picker.addEventListener('scroll', function() {
+                    const itemHeight = 40;
+                    const scrollTop = this.scrollTop;
+                    const selectedIndex = Math.round(scrollTop / itemHeight);
+                    
+                    // Update visual selection
+                    this.querySelectorAll('.picker-item').forEach((item, index) => {
+                        item.classList.toggle('selected', index === selectedIndex + 2);
+                    });
+                    
+                    // Update state
+                    if (picker === minutePicker) {
+                        state.selectedMinutes = Math.max(0, Math.min(59, selectedIndex));
+                    } else {
+                        state.selectedSeconds = Math.max(0, Math.min(59, selectedIndex * 5));
+                    }
+                });
+            });
+        }
+
+        function startTimer() {
+            if (state.selectedMinutes === 0 && state.selectedSeconds === 0) {
+                showNotification('Please select a valid time');
+                return;
+            }
+            
+            state.timerSeconds = state.selectedMinutes * 60 + state.selectedSeconds;
+            state.timerRunning = true;
+            closeTimerModal();
+            
+            showNotification(`⏱️ Timer set for ${state.selectedMinutes}:${state.selectedSeconds.toString().padStart(2, '0')}`);
+            
+            state.timerInterval = setInterval(() => {
+                state.timerSeconds--;
+                if (state.timerSeconds <= 0) {
+                    clearInterval(state.timerInterval);
+                    state.timerRunning = false;
+                    playTimerSound();
+                    showNotification('⏰ Timer finished!');
+                }
+            }, 1000);
+        }
+
+        function playTimerSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const notes = [523.25, 659.25, 783.99, 1046.50]; // C, E, G, High C
+            
+            notes.forEach((freq, i) => {
+                setTimeout(() => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    
+                    osc.type = 'sine';
+                    osc.frequency.value = freq;
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    
+                    gain.gain.setValueAtTime(0, audioContext.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                    
+                    osc.start(audioContext.currentTime);
+                    osc.stop(audioContext.currentTime + 0.4);
+                }, i * 150);
+            });
+        }
+
+        // Focus Modal
+        function openFocusModal() {
+            document.getElementById('modalOverlay').classList.add('active');
+            document.getElementById('focusModal').classList.add('active');
+        }
+
+        function closeFocusModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.getElementById('focusModal').classList.remove('active');
+        }
+
+        function setFocusMode(mode) {
+            clearFocusMode();
+            state.currentFocus = mode;
+            document.body.classList.add(`focus-${mode}`);
+            
+            document.querySelectorAll('.focus-option').forEach(el => el.classList.remove('active'));
+            event.target.closest('.focus-option').classList.add('active');
+            
+            const names = {
+                'dnd': 'Do Not Disturb',
+                'sleep': 'Sleep Focus',
+                'work': 'Work Focus',
+                'personal': 'Personal Focus'
+            };
+            
+            showNotification(`${names[mode]} enabled`);
+            setTimeout(closeFocusModal, 500);
+        }
+
+        function clearFocusMode() {
+            document.body.classList.remove('focus-dnd', 'focus-sleep', 'focus-work', 'focus-personal');
+            document.querySelectorAll('.focus-option').forEach(el => el.classList.remove('active'));
+            state.currentFocus = null;
+        }
+
+        function closeAllModals() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.getElementById('timerModal').classList.remove('active');
+            document.getElementById('focusModal').classList.remove('active');
+        }
+
+        // Notifications
         function showNotification(message) {
             const notification = document.getElementById('notification');
             notification.textContent = message;
@@ -1268,28 +1570,6 @@
                 notification.classList.remove('show');
             }, 2500);
         }
-
-        // Touch/swipe support
-        let touchStartY = 0;
-        document.addEventListener('touchstart', function(e) {
-            touchStartY = e.touches[0].clientY;
-        });
-
-        document.addEventListener('touchend', function(e) {
-            const touchEndY = e.changedTouches[0].clientY;
-            const swipeDistance = touchStartY - touchEndY;
-            
-            // Swipe up from bottom to open
-            if (swipeDistance < -50 && touchStartY > window.innerHeight - 100) {
-                if (!state.controlCenterOpen) {
-                    toggleControlCenter();
-                }
-            }
-            // Swipe down to close
-            else if (swipeDistance > 50 && state.controlCenterOpen) {
-                toggleControlCenter();
-            }
-        });
     </script>
 </body>
 </html>
