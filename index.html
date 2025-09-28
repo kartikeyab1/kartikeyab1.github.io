@@ -79,6 +79,68 @@
             ;
         }
 
+        .typewriter-center {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 12;
+
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
+            white-space: nowrap;
+            /* keep one line */
+            overflow: hidden;
+            /* hide while typing */
+            border-right: 1px solid rgba(255, 255, 255, 0.6);
+            /* caret */
+            animation:
+                typing 5.5s steps(38, end) infinite,
+                /* 39 ≈ character count */
+                caretBlink .8s step-end infinite;
+        }
+
+        .typewriter-center.top {
+            top: 16px;
+        }
+
+        .typewriter-center.bottom {
+            bottom: 16px;
+        }
+
+        @keyframes typing {
+            0% {
+                width: 0
+            }
+
+            45% {
+                width: 37ch
+            }
+
+            /* adjust width to your text length */
+            55% {
+                width: 37ch
+            }
+
+            100% {
+                width: 0
+            }
+        }
+
+        @keyframes caretBlink {
+            40% {
+                border-color: transparent;
+            }
+        }
+
+
         /* Starfield - Fixed background */
         #starfield {
             position: fixed;
@@ -807,6 +869,8 @@
 <body>
     <!-- Starfield Background -->
     <canvas id="starfield">Kartikeya</canvas>
+
+    <div class="typewriter-center top">Available Jan – Aug 2026 for Internships</div>
 
     <!-- DVD Bouncing Text Layer (behind content) -->
     <div id="dvdLayer">
