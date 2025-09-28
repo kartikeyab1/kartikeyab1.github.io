@@ -54,7 +54,7 @@
 
         /* Airplane mode */
         body.airplane-mode {
-            background: url('https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?w=1920') center/cover fixed !important;
+            background: url('https://images.pexels.com/photos/433283/pexels-photo-433283.jpeg') center/cover fixed !important;
         }
 
         /* Main scroll container */
@@ -432,13 +432,21 @@
 
         /* Projects Section - Section 3 */
         .projects-section {
-            z-index: 30;
+            /* z-index: 30;
             transform: translateY(200vh);
             background: var(--panel-bg);
             backdrop-filter: blur(60px);
             -webkit-backdrop-filter: blur(60px);
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            -webkit-overflow-scrolling: touch; */
+            position: relative;     /* was fixed via .section; override to flow normally */
+            z-index: 30;
+            transform: none;        /* no translateY so it occupies real page height */
+            background: var(--panel-bg);
+            backdrop-filter: blur(60px);
+            -webkit-backdrop-filter: blur(60px);
+            overflow: visible;      /* allow content to size the page */
+            min-height: 100vh;      /* at least one screen tall */
         }
 
         .projects-content {
