@@ -18,7 +18,6 @@
             --brightness: 1;
             --hue-rotate: 0deg;
             --border-color: rgba(255, 255, 255, 0.08);
-            --safe-area-inset-bottom: env(safe-area-inset-bottom, 20px);
         }
 
         body.light-mode {
@@ -42,13 +41,9 @@
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background: #000;
             color: var(--text-primary);
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-            position: fixed;
+            overflow-x: hidden;
             filter: brightness(var(--brightness)) hue-rotate(var(--hue-rotate));
             transition: filter 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            overscroll-behavior: none;
         }
 
         /* Focus mode hues */
@@ -58,37 +53,41 @@
         body.focus-personal { --hue-rotate: 140deg; }
 
         /* Airplane mode */
-        body.airplane-mode #starfield {
-            background: url('https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?w=1920') center/cover !important;
+        body.airplane-mode {
+            background: url('https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?w=1920') center/cover fixed !important;
         }
 
-        /* Starfield */
+        /* Main scroll container */
+        .scroll-container {
+            height: 300vh; /* 3 screens tall */
+            position: relative;
+        }
+
+        /* Starfield - Fixed background */
         #starfield {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 100vh;
             z-index: 0;
         }
 
-        /* Landing Page Container */
-        .landing-container {
+        /* Section wrapper for scroll-based positioning */
+        .section {
             position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 10;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
         }
 
-        .landing-container.swiped-up {
-            transform: translateY(-100vh);
+        /* Landing Page - Section 1 */
+        .landing-section {
+            z-index: 10;
         }
 
         .hero-name {
@@ -96,13 +95,13 @@
             font-weight: 700;
             background: linear-gradient(180deg, #fff 0%, #999 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 2rem;
             letter-spacing: -0.03em;
             animation: fadeInScale 1s ease;
         }
 
-        /* Glassmorphic subtitle container */
         .subtitle-container {
             position: relative;
             background: rgba(255, 255, 255, 0.08);
@@ -152,62 +151,49 @@
             }
         }
 
-        /* Swipe indicator */
-        .swipe-indicator {
+        .scroll-indicator {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             font-size: 12px;
             color: rgba(255, 255, 255, 0.5);
-            animation: float 3s ease-in-out infinite;
+            animation: bounce 2s ease-in-out infinite;
+            z-index: 11;
+            transition: opacity 0.3s;
         }
 
-        @keyframes float {
+        @keyframes bounce {
             0%, 100% { transform: translateX(-50%) translateY(0); }
             50% { transform: translateX(-50%) translateY(-10px); }
         }
 
-        /* Control Center Panel */
-        .control-center {
-            position: fixed;
-            top: 100%;
-            left: 0;
-            right: 0;
-            height: auto;
-            max-height: 90vh;
+        /* Control Center - Section 2 */
+        .control-center-section {
+            z-index: 20;
+            transform: translateY(100vh);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .control-center-content {
+            width: 90%;
+            max-width: 420px;
             background: var(--panel-bg);
             backdrop-filter: var(--blur);
             -webkit-backdrop-filter: var(--blur);
-            border-radius: 24px 24px 0 0;
-            padding: 12px;
-            padding-bottom: calc(12px + var(--safe-area-inset-bottom));
-            transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
-            z-index: 100;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            max-height: 85vh;
             overflow-y: auto;
-            overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
-            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
-            overscroll-behavior: contain;
         }
 
-        .control-center.open {
-            transform: translateY(-100%);
-        }
-
-        /* Handle bar */
-        .handle-bar {
-            width: 36px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 3px;
-            margin: 8px auto 16px;
-        }
-
-        /* Control center content wrapper */
-        .cc-content {
-            max-width: 380px;
-            margin: 0 auto;
+        .control-center-content::-webkit-scrollbar {
+            width: 0;
         }
 
         /* Now Playing */
@@ -283,7 +269,7 @@
             background: rgba(255, 255, 255, 0.25);
         }
 
-        /* Quick controls grid - iPhone style 2x2 */
+        /* Quick controls grid */
         .quick-controls {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -293,7 +279,6 @@
             aspect-ratio: 2/1;
         }
 
-        /* Control tiles */
         .control-tile {
             background: var(--tile-bg);
             border-radius: 16px;
@@ -317,20 +302,6 @@
 
         .control-tile.active {
             background: var(--tile-active);
-        }
-
-        .control-tile.active::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(255, 255, 255, 0.1);
-            animation: shimmer 0.3s ease;
-        }
-
-        @keyframes shimmer {
-            from { opacity: 0; }
-            50% { opacity: 1; }
-            to { opacity: 0; }
         }
 
         /* Slider tiles */
@@ -358,6 +329,7 @@
         .ios-slider {
             flex: 1;
             -webkit-appearance: none;
+            appearance: none; 
             height: 32px;
             border-radius: 16px;
             background: rgba(255, 255, 255, 0.15);
@@ -367,6 +339,7 @@
 
         .ios-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
+            appearance: none; 
             width: 30px;
             height: 30px;
             border-radius: 50%;
@@ -375,7 +348,7 @@
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
         }
 
-        /* Menu buttons for Timer and Focus */
+        /* Menu buttons */
         .menu-btn {
             background: var(--tile-bg);
             border-radius: 16px;
@@ -454,6 +427,133 @@
             font-size: 12px;
             font-weight: 500;
             opacity: 0.7;
+        }
+
+        /* Projects Section - Section 3 */
+        .projects-section {
+            z-index: 30;
+            transform: translateY(200vh);
+            background: var(--panel-bg);
+            backdrop-filter: blur(60px);
+            -webkit-backdrop-filter: blur(60px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .projects-content {
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            opacity: 0.6;
+            margin-bottom: 32px;
+        }
+
+        /* Skills grid */
+        .skills-section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            opacity: 0.9;
+        }
+
+        .skills-category {
+            margin-bottom: 24px;
+        }
+
+        .category-label {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 12px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 12px;
+        }
+
+        .skill-card {
+            background: var(--tile-bg);
+            border-radius: 16px;
+            padding: 16px 8px;
+            text-align: center;
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-4px);
+            background: var(--tile-hover);
+        }
+
+        .skill-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .skill-name {
+            font-size: 11px;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        /* Project cards */
+        .project-card {
+            background: var(--tile-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .project-desc {
+            font-size: 14px;
+            opacity: 0.7;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tech-tag {
+            padding: 4px 10px;
+            background: rgba(52, 120, 246, 0.2);
+            border-radius: 10px;
+            font-size: 11px;
+            color: #3478F6;
+            font-weight: 500;
         }
 
         /* Modal overlay */
@@ -558,14 +658,7 @@
             opacity: 0.5;
         }
 
-        .picker-label {
-            font-size: 14px;
-            opacity: 0.5;
-            text-align: center;
-            margin-bottom: 8px;
-        }
-
-        /* Focus modes */
+        /* Focus options */
         .focus-options {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -603,7 +696,7 @@
             opacity: 0.8;
         }
 
-        /* Action button */
+        /* Action buttons */
         .action-btn {
             width: 100%;
             padding: 14px;
@@ -626,141 +719,6 @@
         .cancel-btn {
             background: rgba(255, 255, 255, 0.1);
             margin-top: 8px;
-        }
-
-        /* Projects page */
-        .projects-page {
-            position: fixed;
-            top: 100vh;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: var(--panel-bg);
-            backdrop-filter: blur(60px);
-            z-index: 150;
-            transition: transform 0.6s cubic-bezier(0.32, 0.72, 0, 1);
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            overscroll-behavior: contain;
-        }
-
-        .projects-page.active {
-            transform: translateY(-100vh);
-        }
-
-        .page-header {
-            position: sticky;
-            top: 0;
-            background: var(--panel-bg);
-            backdrop-filter: blur(60px);
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-            z-index: 10;
-        }
-
-        .page-title {
-            font-size: 34px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .page-subtitle {
-            font-size: 14px;
-            opacity: 0.6;
-        }
-
-        .content-container {
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* Skills section */
-        .skills-section {
-            margin-bottom: 32px;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            opacity: 0.9;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-            gap: 12px;
-        }
-
-        .skill-card {
-            background: var(--tile-bg);
-            border-radius: 16px;
-            padding: 16px 8px;
-            text-align: center;
-            backdrop-filter: blur(40px);
-            border: 1px solid var(--border-color);
-            transition: all 0.2s;
-        }
-
-        .skill-card:hover {
-            transform: translateY(-4px);
-            background: var(--tile-hover);
-        }
-
-        .skill-icon {
-            font-size: 28px;
-            margin-bottom: 6px;
-        }
-
-        .skill-name {
-            font-size: 11px;
-            font-weight: 500;
-            opacity: 0.8;
-        }
-
-        /* Project cards */
-        .project-card {
-            background: var(--tile-bg);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 16px;
-            backdrop-filter: blur(40px);
-            border: 1px solid var(--border-color);
-            transition: all 0.3s;
-        }
-
-        .project-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-        }
-
-        .project-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .project-desc {
-            font-size: 14px;
-            opacity: 0.7;
-            line-height: 1.5;
-            margin-bottom: 12px;
-        }
-
-        .tech-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .tech-tag {
-            padding: 4px 10px;
-            background: rgba(52, 120, 246, 0.2);
-            border-radius: 10px;
-            font-size: 11px;
-            color: #3478F6;
-            font-weight: 500;
         }
 
         /* Notification */
@@ -787,117 +745,229 @@
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
         }
-
-        /* Responsive */
-        @media (max-width: 375px) {
-            .portfolio-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-            
-            .quick-controls {
-                gap: 10px;
-            }
-        }
     </style>
 </head>
 <body>
     <!-- Starfield Background -->
     <canvas id="starfield"></canvas>
 
-    <!-- Landing Page -->
-    <div class="landing-container" id="landingContainer">
-        <h1 class="hero-name" id="heroName">Your Name</h1>
-        <div class="subtitle-container">
-            <div class="subtitle-text">Full-Stack Developer crafting digital experiences that inspire</div>
-            <div class="subtitle-text">Bridging creativity and code to build tomorrow's web</div>
-            <div class="subtitle-text">Passionate about pixel-perfect design and blazing-fast performance</div>
-            <div class="subtitle-text">Let's turn your vision into reality, one line at a time</div>
-        </div>
-        <div class="swipe-indicator">Swipe down to begin ↓</div>
-    </div>
-
-    <!-- Control Center -->
-    <div class="control-center" id="controlCenter">
-        <div class="handle-bar"></div>
-        <div class="cc-content">
-            <!-- Now Playing -->
-            <div class="now-playing">
-                <div class="album-art" id="albumArt">🎵</div>
-                <div class="now-playing-info">
-                    <div class="now-playing-title" id="songTitle">Loading...</div>
-                    <div class="now-playing-artist" id="songArtist">...</div>
-                </div>
-                <div class="playback-controls">
-                    <button class="playback-btn" onclick="previousSong()">◁</button>
-                    <button class="playback-btn" onclick="nextSong()">▷</button>
-                </div>
-            </div>
-
-            <!-- Quick Controls 2x2 Grid -->
-            <div class="quick-controls">
-                <div class="control-tile" id="airplaneMode" onclick="toggleAirplaneMode()">✈️</div>
-                <div class="control-tile" id="bluetooth" onclick="toggleBluetooth()">ᛒ</div>
-                <div class="control-tile" id="flashlight" onclick="toggleFlashlight()">🔦</div>
-                <div class="control-tile" id="doNotDisturb" onclick="toggleDND()">🌙</div>
-            </div>
-
-            <!-- Brightness Slider -->
-            <div class="slider-tile">
-                <div class="slider-row">
-                    <span class="slider-icon">☀️</span>
-                    <input type="range" class="ios-slider" id="brightnessSlider" 
-                           min="30" max="100" value="100" oninput="adjustBrightness(this.value)">
-                </div>
-            </div>
-
-            <!-- Timer Menu Button -->
-            <div class="menu-btn" onclick="openTimerModal()">
-                <div class="menu-btn-left">
-                    <span class="menu-btn-icon">⏱️</span>
-                    <span class="menu-btn-text">Timer</span>
-                </div>
-                <span class="menu-btn-arrow">›</span>
-            </div>
-
-            <!-- Focus Menu Button -->
-            <div class="menu-btn" onclick="openFocusModal()">
-                <div class="menu-btn-left">
-                    <span class="menu-btn-icon">🎯</span>
-                    <span class="menu-btn-text">Focus</span>
-                </div>
-                <span class="menu-btn-arrow">›</span>
-            </div>
-
-            <!-- Portfolio Grid -->
-            <div class="portfolio-grid">
-                <div class="portfolio-tile" onclick="openSkillsSection()">
-                    <div class="portfolio-icon">💡</div>
-                    <div class="portfolio-label">Skills</div>
-                </div>
-                <div class="portfolio-tile" onclick="openProjectsSection()">
-                    <div class="portfolio-icon">🚀</div>
-                    <div class="portfolio-label">Projects</div>
-                </div>
-                <a href="https://linkedin.com/in/yourprofile" target="_blank" class="portfolio-tile">
-                    <div class="portfolio-icon">💼</div>
-                    <div class="portfolio-label">LinkedIn</div>
-                </a>
-                <a href="resume.pdf" target="_blank" class="portfolio-tile">
-                    <div class="portfolio-icon">📄</div>
-                    <div class="portfolio-label">Resume</div>
-                </a>
-                <a href="https://notion.so/yourworkspace" target="_blank" class="portfolio-tile">
-                    <div class="portfolio-icon">📝</div>
-                    <div class="portfolio-label">Notion</div>
-                </a>
-                <a href="mailto:your.email@example.com" class="portfolio-tile">
-                    <div class="portfolio-icon">✉️</div>
-                    <div class="portfolio-label">Email</div>
-                </a>
+    <!-- Scroll Container -->
+    <div class="scroll-container">
+        <!-- Landing Section -->
+        <div class="section landing-section" id="landingSection">
+            <h1 class="hero-name" id="heroName">Your Name</h1>
+            <div class="subtitle-container">
+                <div class="subtitle-text">Full-Stack Developer crafting digital experiences that inspire</div>
+                <div class="subtitle-text">Bridging creativity and code to build tomorrow's web</div>
+                <div class="subtitle-text">Passionate about pixel-perfect design and blazing-fast performance</div>
+                <div class="subtitle-text">Let's turn your vision into reality, one line at a time</div>
             </div>
         </div>
+
+        <!-- Control Center Section -->
+        <div class="section control-center-section" id="controlCenterSection">
+            <div class="control-center-content">
+                <!-- Now Playing -->
+                <div class="now-playing">
+                    <div class="album-art" id="albumArt">🎵</div>
+                    <div class="now-playing-info">
+                        <div class="now-playing-title" id="songTitle">Loading...</div>
+                        <div class="now-playing-artist" id="songArtist">...</div>
+                    </div>
+                    <div class="playback-controls">
+                        <button class="playback-btn" onclick="previousSong()">◁</button>
+                        <button class="playback-btn" onclick="nextSong()">▷</button>
+                    </div>
+                </div>
+
+                <!-- Quick Controls -->
+                <div class="quick-controls">
+                    <div class="control-tile" id="airplaneMode" onclick="toggleAirplaneMode()">✈️</div>
+                    <div class="control-tile" id="bluetooth" onclick="toggleBluetooth()">ᛒ</div>
+                    <div class="control-tile" id="flashlight" onclick="toggleFlashlight()">🔦</div>
+                    <div class="control-tile" id="doNotDisturb" onclick="toggleDND()">🌙</div>
+                </div>
+
+                <!-- Brightness Slider -->
+                <div class="slider-tile">
+                    <div class="slider-row">
+                        <span class="slider-icon">☀️</span>
+                        <input type="range" class="ios-slider" id="brightnessSlider" 
+                               min="30" max="100" value="100" oninput="adjustBrightness(this.value)">
+                    </div>
+                </div>
+
+                <!-- Timer Menu -->
+                <div class="menu-btn" onclick="openTimerModal()">
+                    <div class="menu-btn-left">
+                        <span class="menu-btn-icon">⏱️</span>
+                        <span class="menu-btn-text">Timer</span>
+                    </div>
+                    <span class="menu-btn-arrow">›</span>
+                </div>
+
+                <!-- Focus Menu -->
+                <div class="menu-btn" onclick="openFocusModal()">
+                    <div class="menu-btn-left">
+                        <span class="menu-btn-icon">🎯</span>
+                        <span class="menu-btn-text">Focus</span>
+                    </div>
+                    <span class="menu-btn-arrow">›</span>
+                </div>
+
+                <!-- Portfolio Grid -->
+                <div class="portfolio-grid">
+                    <a href="#skills" class="portfolio-tile" onclick="scrollToProjects(event)">
+                        <div class="portfolio-icon">💡</div>
+                        <div class="portfolio-label">Skills</div>
+                    </a>
+                    <a href="#projects" class="portfolio-tile" onclick="scrollToProjects(event)">
+                        <div class="portfolio-icon">🚀</div>
+                        <div class="portfolio-label">Projects</div>
+                    </a>
+                    <a href="https://linkedin.com/in/yourprofile" target="_blank" class="portfolio-tile">
+                        <div class="portfolio-icon">💼</div>
+                        <div class="portfolio-label">LinkedIn</div>
+                    </a>
+                    <a href="resume.pdf" target="_blank" class="portfolio-tile">
+                        <div class="portfolio-icon">📄</div>
+                        <div class="portfolio-label">Resume</div>
+                    </a>
+                    <a href="https://notion.so/yourworkspace" target="_blank" class="portfolio-tile">
+                        <div class="portfolio-icon">📝</div>
+                        <div class="portfolio-label">Notion</div>
+                    </a>
+                    <a href="mailto:your.email@example.com" class="portfolio-tile">
+                        <div class="portfolio-icon">✉️</div>
+                        <div class="portfolio-label">Email</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <div class="section projects-section" id="projectsSection">
+            <div class="projects-content">
+                <div class="page-title">Portfolio</div>
+                <div class="page-subtitle">My skills and featured projects</div>
+
+                <!-- Skills -->
+                <div class="skills-section" id="skills">
+                    <div class="section-title">Skills & Technologies</div>
+                    
+                    <div class="skills-category">
+                        <div class="category-label">Frontend</div>
+                        <div class="skills-grid">
+                            <div class="skill-card">
+                                <div class="skill-icon">⚛️</div>
+                                <div class="skill-name">React</div>
+                            </div>
+                            <div class="skill-card">
+                                <div class="skill-icon">💚</div>
+                                <div class="skill-name">Vue.js</div>
+                            </div>
+                            <div class="skill-card">
+                                <div class="skill-icon">🎯</div>
+                                <div class="skill-name">TypeScript</div>
+                            </div>
+                            <div class="skill-card">
+                                <div class="skill-icon">⚡</div>
+                                <div class="skill-name">Next.js</div>
+                            </div>
+                            <div class="skill-card">
+                                <div class="skill-icon">🎨</div>
+                                <div class="skill-name">Tailwind</div>
+                            </div>
+                            <div class="skill-card">
+                                <div class="skill-icon">📱</div>
+                                <div class="skill-name">React Native</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="skills-category">
+                        <div class="category-label">Backend</div>
+                        <div class="skills-grid">
+                            <div class="skill-card">
+                                <div class="skill-icon">🟢</div>
+                                <div class="skill-name">Node.js</div>
+                            </div>
+                            <div class="skill-card">
+                                <div class="skill-icon">🐍</div>
+                                <div class="skill-name">Python</div>
+                            </div>
+                            <div class="skill-card">
+                                <div class="skill-icon">🗄️</div>
+                                <div class="skill-name">PostgreSQL</div>
+                            </div>
+                            <div class="skill-card">
+                                <div class="skill-icon">🍃</div>
+                                <div class="skill-name">MongoDB</div>
+                            </div>
+                            <div class="skill-card">
+                                <div class="skill-icon">🔥</div>
+                                <div class="skill-name">Firebase</div>
+                            </div>
+                            <div class="skill-card">
+                                <div class="skill-icon">📦</div>
+                                <div class="skill-name">Docker</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projects -->
+                <div id="projects">
+                    <div class="section-title">Featured Projects</div>
+                    
+                    <div class="project-card">
+                        <div class="project-title">AI-Powered Task Manager</div>
+                        <div class="project-desc">
+                            Smart task management app that uses machine learning to prioritize tasks, 
+                            predict completion times, and provide personalized productivity insights.
+                        </div>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Next.js</span>
+                            <span class="tech-tag">OpenAI</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                            <span class="tech-tag">Tailwind</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-title">E-Commerce Platform</div>
+                        <div class="project-desc">
+                            Full-stack marketplace with real-time inventory, secure payments, 
+                            and an intuitive admin dashboard for vendors.
+                        </div>
+                        <div class="tech-tags">
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">MongoDB</span>
+                            <span class="tech-tag">Stripe</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-title">Social Analytics Dashboard</div>
+                        <div class="project-desc">
+                            Real-time social media analytics tool with sentiment analysis, 
+                            trend detection, and automated reporting features.
+                        </div>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Vue.js</span>
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Redis</span>
+                            <span class="tech-tag">D3.js</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator" id="scrollIndicator">Scroll down ↓</div>
 
     <!-- Modal Overlay -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeAllModals()"></div>
@@ -905,15 +975,10 @@
     <!-- Timer Modal -->
     <div class="modal-panel" id="timerModal">
         <div class="modal-header">Set Timer</div>
-        <div class="picker-label">Select Duration</div>
         <div class="time-picker">
-            <div class="picker-column" id="minutePicker">
-                <!-- Generated by JS -->
-            </div>
+            <div class="picker-column" id="minutePicker"></div>
             <span class="picker-separator">:</span>
-            <div class="picker-column" id="secondPicker">
-                <!-- Generated by JS -->
-            </div>
+            <div class="picker-column" id="secondPicker"></div>
         </div>
         <button class="action-btn" onclick="startTimer()">Start Timer</button>
         <button class="action-btn cancel-btn" onclick="closeTimerModal()">Cancel</button>
@@ -943,160 +1008,20 @@
         <button class="action-btn cancel-btn" onclick="closeFocusModal()">Done</button>
     </div>
 
-    <!-- Projects Page -->
-    <div class="projects-page" id="projectsPage">
-        <div class="page-header">
-            <div class="page-title">Portfolio</div>
-            <div class="page-subtitle">Swipe down to go back</div>
-        </div>
-        <div class="content-container">
-            <!-- Skills Section -->
-            <div class="skills-section">
-                <div class="section-title">Skills & Technologies</div>
-                
-                <div style="margin-bottom: 24px;">
-                    <div style="font-size: 14px; opacity: 0.7; margin-bottom: 12px;">Frontend</div>
-                    <div class="skills-grid">
-                        <div class="skill-card">
-                            <div class="skill-icon">⚛️</div>
-                            <div class="skill-name">React</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">💚</div>
-                            <div class="skill-name">Vue.js</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">🎯</div>
-                            <div class="skill-name">TypeScript</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">⚡</div>
-                            <div class="skill-name">Next.js</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">🎨</div>
-                            <div class="skill-name">Tailwind</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">📱</div>
-                            <div class="skill-name">React Native</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 24px;">
-                    <div style="font-size: 14px; opacity: 0.7; margin-bottom: 12px;">Backend</div>
-                    <div class="skills-grid">
-                        <div class="skill-card">
-                            <div class="skill-icon">🟢</div>
-                            <div class="skill-name">Node.js</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">🐍</div>
-                            <div class="skill-name">Python</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">🗄️</div>
-                            <div class="skill-name">PostgreSQL</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">🍃</div>
-                            <div class="skill-name">MongoDB</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">🔥</div>
-                            <div class="skill-name">Firebase</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">📦</div>
-                            <div class="skill-name">Docker</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Projects Section -->
-            <div class="section-title">Featured Projects</div>
-            
-            <div class="project-card">
-                <div class="project-title">AI-Powered Task Manager</div>
-                <div class="project-desc">
-                    Smart task management app that uses machine learning to prioritize tasks, 
-                    predict completion times, and provide personalized productivity insights.
-                </div>
-                <div class="tech-tags">
-                    <span class="tech-tag">Next.js</span>
-                    <span class="tech-tag">OpenAI</span>
-                    <span class="tech-tag">PostgreSQL</span>
-                    <span class="tech-tag">Tailwind</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-title">E-Commerce Platform</div>
-                <div class="project-desc">
-                    Full-stack marketplace with real-time inventory, secure payments, 
-                    and an intuitive admin dashboard for vendors.
-                </div>
-                <div class="tech-tags">
-                    <span class="tech-tag">React</span>
-                    <span class="tech-tag">Node.js</span>
-                    <span class="tech-tag">MongoDB</span>
-                    <span class="tech-tag">Stripe</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-title">Social Analytics Dashboard</div>
-                <div class="project-desc">
-                    Real-time social media analytics tool with sentiment analysis, 
-                    trend detection, and automated reporting features.
-                </div>
-                <div class="tech-tags">
-                    <span class="tech-tag">Vue.js</span>
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">Redis</span>
-                    <span class="tech-tag">D3.js</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-title">Mobile Banking App</div>
-                <div class="project-desc">
-                    Secure banking application with biometric auth, real-time transactions, 
-                    and AI-driven financial insights.
-                </div>
-                <div class="tech-tags">
-                    <span class="tech-tag">React Native</span>
-                    <span class="tech-tag">Node.js</span>
-                    <span class="tech-tag">AWS</span>
-                    <span class="tech-tag">Plaid API</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Notification -->
     <div class="notification" id="notification"></div>
 
     <script>
         // Configuration
         const CONFIG = {
-            // Your name
             yourName: "Your Name",
-            
-            // Music playlist with album art icons
             playlist: [
                 { title: "Cosmic Journey", artist: "Space Ambient", icon: "🌌" },
                 { title: "Stellar Dreams", artist: "Electronic Chill", icon: "✨" },
                 { title: "Nebula Waves", artist: "Lo-Fi Universe", icon: "🌠" },
                 { title: "Galactic Flow", artist: "Synthwave Mix", icon: "🚀" },
-                { title: "Starlight Code", artist: "Dev Beats", icon: "💫" },
-                { title: "Aurora Borealis", artist: "Ambient Space", icon: "🌈" },
-                { title: "Interstellar", artist: "Hans Zimmer", icon: "🎬" }
+                { title: "Starlight Code", artist: "Dev Beats", icon: "💫" }
             ],
-            
-            // External links
             linkedinUrl: "https://linkedin.com/in/yourprofile",
             notionUrl: "https://notion.so/yourworkspace",
             email: "your.email@example.com",
@@ -1105,20 +1030,19 @@
 
         // State
         let state = {
-            controlCenterOpen: false,
-            landingVisible: true,
+            currentSection: 0,
             darkMode: true,
             airplaneMode: false,
             bluetoothConnected: false,
             dndEnabled: false,
             currentSongIndex: 0,
             currentFocus: null,
-            timerRunning: false,
             timerSeconds: 0,
             timerInterval: null,
             selectedMinutes: 5,
             selectedSeconds: 0,
-            stars: []
+            stars: [],
+            isScrolling: false
         };
 
         // Initialize
@@ -1126,7 +1050,7 @@
             initStarfield();
             initializeMusic();
             initTimePickers();
-            setupSwipeGestures();
+            setupScrollBehavior();
             
             // Set hero name
             document.getElementById('heroName').textContent = CONFIG.yourName;
@@ -1134,6 +1058,90 @@
             // Auto-cycle songs
             setInterval(nextSong, 8000);
         });
+
+        // Scroll-based navigation
+        function setupScrollBehavior() {
+            let lastScrollY = 0;
+            let scrollTimeout;
+            
+            // Handle scroll events
+            window.addEventListener('scroll', function(e) {
+                const scrollY = window.pageYOffset;
+                const windowHeight = window.innerHeight;
+                const scrollProgress = scrollY / windowHeight;
+                
+                // Update sections based on scroll position
+                const landing = document.getElementById('landingSection');
+                const controlCenter = document.getElementById('controlCenterSection');
+                const projects = document.getElementById('projectsSection');
+                const indicator = document.getElementById('scrollIndicator');
+                
+                // Landing page transforms
+                if (scrollProgress < 1) {
+                    landing.style.transform = `translateY(${-scrollY * 0.5}px)`;
+                    landing.style.opacity = 1 - scrollProgress;
+                    indicator.style.opacity = 1 - scrollProgress * 2;
+                }
+                
+                // Control center transforms
+                if (scrollProgress >= 0.5 && scrollProgress < 1.5) {
+                    const ccProgress = (scrollProgress - 0.5) * 2;
+                    controlCenter.style.transform = `translateY(${(1 - ccProgress) * 100}vh)`;
+                    controlCenter.style.opacity = 1;
+                } else if (scrollProgress < 0.5) {
+                    controlCenter.style.transform = 'translateY(100vh)';
+                } else if (scrollProgress >= 1.5) {
+                    const fadeProgress = (scrollProgress - 1.5) * 2;
+                    controlCenter.style.opacity = 1 - fadeProgress;
+                }
+                
+                // Projects section transforms
+                if (scrollProgress >= 1.5) {
+                    const projectsProgress = (scrollProgress - 1.5) * 2;
+                    projects.style.transform = `translateY(${(2 - projectsProgress) * 100}vh)`;
+                    projects.style.opacity = 1;
+                }
+                
+                // Update indicator text
+                if (scrollProgress < 0.8) {
+                    indicator.textContent = 'Scroll down ↓';
+                } else if (scrollProgress >= 0.8 && scrollProgress < 1.8) {
+                    indicator.textContent = 'Keep scrolling ↓';
+                } else {
+                    indicator.style.opacity = 0;
+                }
+                
+                lastScrollY = scrollY;
+            });
+            
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        // Scroll to projects section first
+                        window.scrollTo({
+                            top: window.innerHeight * 2,
+                            behavior: 'smooth'
+                        });
+                        // Then scroll to specific element
+                        setTimeout(() => {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 500);
+                    }
+                });
+            });
+        }
+
+        // Scroll to projects helper
+        function scrollToProjects(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: window.innerHeight * 2,
+                behavior: 'smooth'
+            });
+        }
 
         // Starfield animation
         function initStarfield() {
@@ -1164,17 +1172,14 @@
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 
                 state.stars.forEach(star => {
-                    // Draw star
                     ctx.beginPath();
                     ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
                     ctx.fill();
                     
-                    // Twinkle
                     star.alpha += Math.sin(Date.now() * star.twinkleSpeed) * 0.01;
                     star.alpha = Math.max(0.2, Math.min(1, star.alpha));
                     
-                    // Move
                     star.y += star.speed;
                     if (star.y > canvas.height) {
                         star.y = 0;
@@ -1185,161 +1190,6 @@
                 requestAnimationFrame(animate);
             }
             animate();
-        }
-
-        // Swipe gesture handling with better scroll detection
-        function setupSwipeGestures() {
-            let touchStartY = 0;
-            let touchStartX = 0;
-            let touchStartTime = 0;
-            let isScrolling = false;
-            let initialScrollTop = 0;
-            
-            // For landing page swipes
-            const landingContainer = document.getElementById('landingContainer');
-            landingContainer.addEventListener('touchstart', function(e) {
-                touchStartY = e.touches[0].clientY;
-                touchStartX = e.touches[0].clientX;
-                touchStartTime = Date.now();
-            }, { passive: true });
-            
-            landingContainer.addEventListener('touchend', function(e) {
-                const touchEndY = e.changedTouches[0].clientY;
-                const touchEndX = e.changedTouches[0].clientX;
-                const touchEndTime = Date.now();
-                
-                const swipeDistanceY = touchStartY - touchEndY;
-                const swipeDistanceX = Math.abs(touchStartX - touchEndX);
-                const swipeTime = touchEndTime - touchStartTime;
-                
-                // Quick swipe detection (less than 300ms and minimum 50px)
-                if (swipeTime < 300 && Math.abs(swipeDistanceY) > 50 && swipeDistanceX < 100) {
-                    if (state.landingVisible) {
-                        if (swipeDistanceY > 0) {
-                            // Swipe up - go to projects
-                            openProjectsDirectly();
-                        } else {
-                            // Swipe down - open control center
-                            openControlCenter();
-                        }
-                    }
-                }
-            });
-            
-            // For control center swipes
-            const controlCenter = document.getElementById('controlCenter');
-            let ccStartY = 0;
-            
-            controlCenter.addEventListener('touchstart', function(e) {
-                ccStartY = e.touches[0].clientY;
-                initialScrollTop = controlCenter.scrollTop;
-                isScrolling = false;
-            }, { passive: true });
-            
-            controlCenter.addEventListener('touchmove', function(e) {
-                const currentY = e.touches[0].clientY;
-                const diff = ccStartY - currentY;
-                
-                // Check if user is scrolling within control center
-                if (controlCenter.scrollTop > 0 || diff > 0) {
-                    isScrolling = true;
-                }
-            }, { passive: true });
-            
-            controlCenter.addEventListener('touchend', function(e) {
-                const touchEndY = e.changedTouches[0].clientY;
-                const swipeDistance = ccStartY - touchEndY;
-                
-                // Only close if swiping up from top of control center
-                if (!isScrolling && swipeDistance > 50 && initialScrollTop === 0) {
-                    closeControlCenter();
-                }
-            });
-            
-            // For projects page swipes
-            const projectsPage = document.getElementById('projectsPage');
-            let projStartY = 0;
-            let projScrollTop = 0;
-            
-            projectsPage.addEventListener('touchstart', function(e) {
-                projStartY = e.touches[0].clientY;
-                projScrollTop = projectsPage.scrollTop;
-            }, { passive: true });
-            
-            projectsPage.addEventListener('touchend', function(e) {
-                const touchEndY = e.changedTouches[0].clientY;
-                const swipeDistance = projStartY - touchEndY;
-                
-                // Swipe down from top to close
-                if (swipeDistance < -50 && projScrollTop === 0) {
-                    closeProjectsPage();
-                }
-            });
-            
-            // Also add mouse support for desktop
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowDown') {
-                    if (state.landingVisible) {
-                        openControlCenter();
-                    }
-                } else if (e.key === 'ArrowUp') {
-                    if (state.landingVisible) {
-                        openProjectsDirectly();
-                    } else if (state.controlCenterOpen) {
-                        closeControlCenter();
-                    }
-                } else if (e.key === 'Escape') {
-                    if (document.getElementById('projectsPage').classList.contains('active')) {
-                        closeProjectsPage();
-                    } else if (state.controlCenterOpen) {
-                        closeControlCenter();
-                    }
-                }
-            });
-        }
-
-        // Control Center
-        function openControlCenter() {
-            if (state.landingVisible) {
-                document.getElementById('landingContainer').classList.add('swiped-up');
-                state.landingVisible = false;
-            }
-            state.controlCenterOpen = true;
-            document.getElementById('controlCenter').classList.add('open');
-        }
-
-        function closeControlCenter() {
-            state.controlCenterOpen = false;
-            document.getElementById('controlCenter').classList.remove('open');
-        }
-
-        // Projects page
-        function openProjectsDirectly() {
-            if (state.landingVisible) {
-                document.getElementById('landingContainer').classList.add('swiped-up');
-                state.landingVisible = false;
-            }
-            document.getElementById('projectsPage').classList.add('active');
-        }
-
-        function openSkillsSection() {
-            document.getElementById('projectsPage').classList.add('active');
-            // Scroll to skills
-            setTimeout(() => {
-                document.querySelector('.skills-section').scrollIntoView({ behavior: 'smooth' });
-            }, 300);
-        }
-
-        function openProjectsSection() {
-            document.getElementById('projectsPage').classList.add('active');
-            // Scroll to projects
-            setTimeout(() => {
-                document.querySelector('.section-title').scrollIntoView({ behavior: 'smooth' });
-            }, 300);
-        }
-
-        function closeProjectsPage() {
-            document.getElementById('projectsPage').classList.remove('active');
         }
 
         // Quick controls
@@ -1373,7 +1223,6 @@
             }
         }
 
-        // Brightness
         function adjustBrightness(value) {
             document.documentElement.style.setProperty('--brightness', value / 100);
         }
@@ -1400,7 +1249,7 @@
             updateNowPlaying();
         }
 
-        // Timer Modal
+        // Timer functions
         function openTimerModal() {
             document.getElementById('modalOverlay').classList.add('active');
             document.getElementById('timerModal').classList.add('active');
@@ -1415,13 +1264,13 @@
             const minutePicker = document.getElementById('minutePicker');
             const secondPicker = document.getElementById('secondPicker');
             
-            // Add padding items for scroll effect
+            // Padding items
             for (let i = 0; i < 2; i++) {
                 minutePicker.innerHTML += '<div class="picker-item">&nbsp;</div>';
                 secondPicker.innerHTML += '<div class="picker-item">&nbsp;</div>';
             }
             
-            // Minutes (0-59)
+            // Minutes
             for (let i = 0; i <= 59; i++) {
                 const item = document.createElement('div');
                 item.className = 'picker-item';
@@ -1430,7 +1279,7 @@
                 minutePicker.appendChild(item);
             }
             
-            // Seconds (0-59)
+            // Seconds
             for (let i = 0; i <= 59; i += 5) {
                 const item = document.createElement('div');
                 item.className = 'picker-item';
@@ -1439,29 +1288,26 @@
                 secondPicker.appendChild(item);
             }
             
-            // Add padding at end
+            // Padding at end
             for (let i = 0; i < 2; i++) {
                 minutePicker.innerHTML += '<div class="picker-item">&nbsp;</div>';
                 secondPicker.innerHTML += '<div class="picker-item">&nbsp;</div>';
             }
             
-            // Set initial scroll position
-            minutePicker.scrollTop = 80; // 5 minutes
+            // Set initial position
+            minutePicker.scrollTop = 80;
             secondPicker.scrollTop = 0;
             
-            // Handle scroll selection
+            // Handle scroll
             [minutePicker, secondPicker].forEach(picker => {
                 picker.addEventListener('scroll', function() {
                     const itemHeight = 40;
-                    const scrollTop = this.scrollTop;
-                    const selectedIndex = Math.round(scrollTop / itemHeight);
+                    const selectedIndex = Math.round(this.scrollTop / itemHeight);
                     
-                    // Update visual selection
                     this.querySelectorAll('.picker-item').forEach((item, index) => {
                         item.classList.toggle('selected', index === selectedIndex + 2);
                     });
                     
-                    // Update state
                     if (picker === minutePicker) {
                         state.selectedMinutes = Math.max(0, Math.min(59, selectedIndex));
                     } else {
@@ -1478,7 +1324,6 @@
             }
             
             state.timerSeconds = state.selectedMinutes * 60 + state.selectedSeconds;
-            state.timerRunning = true;
             closeTimerModal();
             
             showNotification(`⏱️ Timer set for ${state.selectedMinutes}:${state.selectedSeconds.toString().padStart(2, '0')}`);
@@ -1487,7 +1332,6 @@
                 state.timerSeconds--;
                 if (state.timerSeconds <= 0) {
                     clearInterval(state.timerInterval);
-                    state.timerRunning = false;
                     playTimerSound();
                     showNotification('⏰ Timer finished!');
                 }
@@ -1496,7 +1340,7 @@
 
         function playTimerSound() {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const notes = [523.25, 659.25, 783.99, 1046.50]; // C, E, G, High C
+            const notes = [523.25, 659.25, 783.99, 1046.50];
             
             notes.forEach((freq, i) => {
                 setTimeout(() => {
@@ -1535,7 +1379,9 @@
             document.body.classList.add(`focus-${mode}`);
             
             document.querySelectorAll('.focus-option').forEach(el => el.classList.remove('active'));
-            event.target.closest('.focus-option').classList.add('active');
+            if (event && event.target) {
+                event.target.closest('.focus-option').classList.add('active');
+            }
             
             const names = {
                 'dnd': 'Do Not Disturb',
