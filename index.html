@@ -89,26 +89,6 @@
             z-index: 0;
         }
 
-        /* DVD-style bouncing text */
-        #dvdLayer {
-            position: fixed;
-            inset: 0;
-            z-index: 5;
-            /* starfield is 0, landing is 10 — so this sits behind content */
-            pointer-events: none;
-            /* never blocks clicks */
-        }
-
-        #dvdText {
-            position: absolute;
-            white-space: nowrap;
-            font-weight: 700;
-            font-size: clamp(0.2rem, 1.25vw, 1.1rem);
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif color;
-            user-select: none;
-            will-change: transform;
-        }
-
         /* Section wrapper for scroll-based positioning */
         .section {
             position: fixed;
@@ -908,7 +888,7 @@
                         <div class="portfolio-icon">🚀</div>
                         <div class="portfolio-label">Projects</div>
                     </a>
-                    <a href="https://linkedin.com/in/yourprofile" target="_blank" class="portfolio-tile">
+                    <a href="https://linkedin.com/in/kbabhuta" target="_blank" class="portfolio-tile">
                         <div class="portfolio-icon">💼</div>
                         <div class="portfolio-label">LinkedIn</div>
                     </a>
@@ -1134,7 +1114,6 @@
             initializeMusic();
             initTimePickers();
             setupScrollBehavior();
-            initBouncingText('dvdText');
 
 
             // Set hero name
@@ -1227,76 +1206,6 @@
                 behavior: 'smooth'
             });
         }
-        // Bouncing text effect
-        function initBouncingText(textId) {
-            const el = document.getElementById(textId);
-            if (!el) return;
-
-            // Set the text
-            const textString = (window.CONFIG?.yourName || 'Available for Jan – Aug 2026 Internships').toUpperCase();
-            el.textContent = textString;
-
-            const colors = [
-                'rgba(0, 255, 255, 0.2)',
-                'rgba(255, 0, 255, 0.2)',
-                'rgba(0, 255, 0, 0.2)',
-                'rgba(255, 255, 0, 0.2)'
-            ];
-
-            el.style.opacity = 0.4; // uniform opacity on the element
-            let ew = el.offsetWidth || 200;
-            let eh = el.offsetHeight || 40;
-
-            let x = Math.random() * Math.max(1, (window.innerWidth - ew));
-            let y = Math.random() * Math.max(1, (window.innerHeight - eh));
-            let vx = (Math.random() * 0.18 + 0.12);
-            let vy = (Math.random() * 0.18 + 0.12);
-
-            function onResize() {
-                ew = el.offsetWidth || ew;
-                eh = el.offsetHeight || eh;
-                x = Math.min(x, Math.max(0, window.innerWidth - ew));
-                y = Math.min(y, Math.max(0, window.innerHeight - eh));
-            }
-            window.addEventListener('resize', onResize);
-
-            let prev;
-            function tick(ts) {
-                if (!prev) prev = ts;
-                const dt = Math.min(32, ts - prev);
-                prev = ts;
-
-                x += vx * dt;
-                y += vy * dt;
-
-                let bounced = false;
-
-                // Bounce + detect edge hits
-                if (x <= 0 || x + ew >= window.innerWidth) {
-                    vx *= -1;
-                    x = Math.max(0, Math.min(x, window.innerWidth - ew));
-                    bounced = true;
-                }
-                if (y <= 0 || y + eh >= window.innerHeight) {
-                    vy *= -1;
-                    y = Math.max(0, Math.min(y, window.innerHeight - eh));
-                    bounced = true;
-                }
-
-                // Change color on bounce
-                if (bounced) {
-                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                    el.style.color = 'rgba(255,255,255,0.1)'; // faint base text;
-                    el.style.textShadow = `0 0 6px ${randomColor}, 0 0 14px ${randomColor}`;
-                }
-
-                el.style.transform = `translate(${x}px, ${y}px)`;
-                requestAnimationFrame(tick);
-            }
-
-            requestAnimationFrame(tick);
-        }
-
 
         // Starfield animation
         function initStarfield() {
