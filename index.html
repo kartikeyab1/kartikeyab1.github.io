@@ -103,9 +103,8 @@
             position: absolute;
             white-space: nowrap;
             font-weight: 700;
-            font-size: clamp(0.2rem, 1vw, 1rem);
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif color: rgba(255, 255, 255, 0.35);
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+            font-size: clamp(0.2rem, 1.25vw, 1.1rem);
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif color;
             user-select: none;
             will-change: transform;
         }
@@ -1237,19 +1236,14 @@
             const textString = (window.CONFIG?.yourName || 'Available for Jan – Aug 2026 Internships').toUpperCase();
             el.textContent = textString;
 
-            // A list of colors to cycle through (RGBA or plain colors)
             const colors = [
-                '#00FFFF', // cyan
-                '#FF00FF', // magenta
-                '#00FF00', // lime
-                '#FFFF00', // yellow
-                '#FF0000', // red
-                '#00A2FF', // blue
-                '#FF7B00', // orange
-                '#9D00FF'  // purple
+                'rgba(0, 255, 255, 0.2)',
+                'rgba(255, 0, 255, 0.2)',
+                'rgba(0, 255, 0, 0.2)',
+                'rgba(255, 255, 0, 0.2)'
             ];
 
-
+            el.style.opacity = 0.4; // uniform opacity on the element
             let ew = el.offsetWidth || 200;
             let eh = el.offsetHeight || 40;
 
@@ -1292,7 +1286,8 @@
                 // Change color on bounce
                 if (bounced) {
                     const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                    el.style.color = randomColor;
+                    el.style.color = 'rgba(255,255,255,0.1)'; // faint base text;
+                    el.style.textShadow = `0 0 6px ${randomColor}, 0 0 14px ${randomColor}`;
                 }
 
                 el.style.transform = `translate(${x}px, ${y}px)`;
