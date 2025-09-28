@@ -59,8 +59,9 @@
 
         /* Main scroll container */
         .scroll-container {
-            height: 300vh; /* 3 screens tall */
-            position: relative;
+              min-height: 300vh;  /* keep at least 3 screens for your intro animations */
+              height: auto;       /* allow content (Portfolio) to extend the page */
+              position: relative;;
         }
 
         /* Starfield - Fixed background */
@@ -755,7 +756,7 @@
     <div class="scroll-container">
         <!-- Landing Section -->
         <div class="section landing-section" id="landingSection">
-            <h1 class="hero-name" id="heroName">Your Name</h1>
+            <h1 class="hero-name" id="heroName">Kartikeya Babhuta</h1>
             <div class="subtitle-container">
                 <div class="subtitle-text">Full-Stack Developer crafting digital experiences that inspire</div>
                 <div class="subtitle-text">Bridging creativity and code to build tomorrow's web</div>
