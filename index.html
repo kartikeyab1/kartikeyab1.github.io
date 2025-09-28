@@ -1052,7 +1052,8 @@
             initStarfield();
             initializeMusic();
             initTimePickers();
-            setupScrollBehavior();
+            // setupScrollBehavior();
+            initWheelPagination()
 
             
             // Set hero name
@@ -1061,6 +1062,58 @@
             // Auto-cycle songs
             setInterval(nextSong, 8000);
         });
+
+                // Simple paginated scrolling
+        (function initWheelPagination() {
+        const PAGE_COUNT = 3; // landing, control center, portfolio
+        let pageIndex = 0; // current page index
+        let locking = false; // prevents multiple triggers during smooth scroll
+
+        function snapTo(index) {
+            locking = true;
+            window.scrollTo({
+            top: window.innerHeight * index,
+            behavior: 'smooth'
+            });
+            // unlock after animation
+            setTimeout(() => (locking = false), 600);
+        }
+
+        window.addEventListener(
+            'wheel',
+            (e) => {
+            // only handle on landing + control center (free scroll on portfolio)
+            if (locking || pageIndex === PAGE_COUNT - 1) return;
+
+            e.preventDefault();
+
+            const dir = Math.sign(e.deltaY);
+            if (dir === 0) return;
+
+            // move page index
+            const next = Math.max(0, Math.min(PAGE_COUNT - 1, pageIndex + dir));
+            if (next !== pageIndex) {
+                pageIndex = next;
+                snapTo(pageIndex);
+            }
+            },
+            { passive: false }
+        );
+
+        // keep index in sync on manual scroll
+        window.addEventListener(
+            'scroll',
+            () => {
+            const idx = Math.round(window.pageYOffset / window.innerHeight);
+            if (idx !== pageIndex) pageIndex = idx;
+            },
+            { passive: true }
+        );
+
+        window.addEventListener('resize', () => {
+            snapTo(pageIndex);
+        });
+        })();
 
         // Scroll-based navigation
         function setupScrollBehavior() {
