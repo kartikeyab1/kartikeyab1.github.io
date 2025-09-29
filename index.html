@@ -469,11 +469,25 @@
             min-height: 84px;
         }
 
+        .now-playing-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: inherit; /* use same text color */
+            text-decoration: none; /* remove underline */
+        }
+
+        .now-playing-title:hover {
+            text-decoration: underline; /* Hover effect */
+        }
+
         /* Light mode: black border around Now Playing tile */
         body.light-mode .now-playing {
             border: 1px solid #000;
-            background: rgba(0, 0, 0, 0.05);
-            /* optional subtle gray bg */
+            background: rgba(0, 0, 0, 0.05); /* Subtle gray bg */
         }
 
 
@@ -482,6 +496,7 @@
             height: 54px;
             border-radius: 12px;
             background: linear-gradient(135deg, #667eea, #764ba2);
+            object-fit: cover;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -655,7 +670,8 @@
 
         /* When active: tile turns white */
         .lockTile.lock-active {
-            background: #fff; /* white tile */
+            background: #fff;
+            /* white tile */
             transition: background 0.3s ease;
         }
 
@@ -942,9 +958,9 @@
 
                 <!-- Now Playing -->
                 <div class="now-playing">
-                    <div class="album-art" id="albumArt">🎵</div>
+                    <img class="album-art" id="albumArt" alt="Album Art" src="">
                     <div class="now-playing-info">
-                        <div class="now-playing-title" id="songTitle">Loading...</div>
+                        <a class="now-playing-title" id="songTitle" href="#" target="_blank">Loading...</a>
                         <div class="now-playing-artist" id="songArtist">...</div>
                     </div>
                     <div class="playback-controls">
@@ -1002,7 +1018,7 @@
                             <div class="control-icon">🌙</div>
                         </div>
                         <div class="control-tile warning" id="disco" onclick="toggleDisco()" aria-label="Disco">
-                            <div class="control-icon">⚠️</div>
+                            <div class="control-icon">💥</div>
                         </div>
                         <div class="control-tile" onclick="showNotification('🎯 Feature coming soon!')"
                             aria-label="Soon">
@@ -1072,11 +1088,30 @@
     <script>
         const CONFIG = {
             playlist: [
-                { title: "Cosmic Journey", artist: "Space Ambient", icon: "🌌" },
-                { title: "Stellar Dreams", artist: "Electronic Chill", icon: "✨" },
-                { title: "Nebula Waves", artist: "Lo-Fi Universe", icon: "🌠" },
-                { title: "Galactic Flow", artist: "Synthwave Mix", icon: "🚀" },
-                { title: "Starlight Code", artist: "Dev Beats", icon: "💫" }
+                {
+                    title: "Careful Consideration",
+                    artist: "Jon Björk",
+                    icon: "https://cdn.epidemicsound.com/release-cover-images/19305425-c626-4d96-82c2-1669e1e13566/3000x3000.png?format=webp&width=320&height=320&quality=80",
+                    link: "https://www.epidemicsound.com/music/tracks/01de9e71-9581-3d5e-bfbd-2a53b4789fb5/"
+                },
+                {
+                    title: "Macumba",
+                    artist: "Cornelio",
+                    icon: "https://cdn.epidemicsound.com/release-cover-images/b90efc69-75d0-40de-a2f9-1890377d4a8b/3000x3000.png?format=webp&width=320&height=320&quality=80",
+                    link: "https://www.epidemicsound.com/music/tracks/32bd86b2-0c6b-43f5-a595-efceb92303d0/"
+                },
+                {
+                    title: "Queen Bee",
+                    artist: "Wanda Shakes",
+                    icon: "https://cdn.epidemicsound.com/release-cover-images/10442f43-fcc9-4603-aaab-2c0e93fd834c/3000x3000.png?format=webp&width=320&height=320&quality=80",
+                    link: "https://www.epidemicsound.com/music/tracks/42782dd1-7825-309e-a2cd-1e2f84ae6e39/"
+                },
+                {
+                    title: "Oolong",
+                    artist: "Viriya",
+                    icon: "https://cdn.epidemicsound.com/release-cover-images/63f8e5f1-3441-48d3-a71c-7600b8991c58/3000x3000.png?format=webp&width=320&height=320&quality=80",
+                    link: "https://www.epidemicsound.com/music/tracks/2345fbca-2c93-4016-8969-05a655a2863b/"
+                }
             ]
         };
 
@@ -1249,9 +1284,12 @@
         function initializeMusic() { updateNowPlaying(); }
         function updateNowPlaying() {
             const s = CONFIG.playlist[state.currentSongIndex];
-            document.getElementById('songTitle').textContent = s.title;
+            const albumArtEl = document.getElementById('albumArt');
+            albumArtEl.src = s.icon;
+            const titleLink = document.getElementById('songTitle');
+            titleLink.textContent = s.title;
+            titleLink.href = s.link || '#'; // fallback if no link
             document.getElementById('songArtist').textContent = s.artist;
-            document.getElementById('albumArt').textContent = s.icon;
         }
         function nextSong() { state.currentSongIndex = (state.currentSongIndex + 1) % CONFIG.playlist.length; updateNowPlaying(); }
         function previousSong() { state.currentSongIndex = state.currentSongIndex ? state.currentSongIndex - 1 : CONFIG.playlist.length - 1; updateNowPlaying(); }
