@@ -130,7 +130,7 @@
             -webkit-backdrop-filter: blur(30px);
             border: 1px solid rgba(255, 255, 255, .1);
             border-radius: 20px;
-            padding: 0 10px;
+            padding: 0 20px;
             min-height: 50px;
             width: 100%;
             max-width: 560px;
@@ -331,7 +331,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px; /* I was stuck for HOURS because of ts */
+            padding: 10px;
+            /* I was stuck for HOURS because of ts */
             background: rgba(0, 0, 0, .5);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -406,6 +407,17 @@
 
         .signal-bars .bar:nth-child(4) {
             height: 10px
+        }
+
+        /* Add this new style for the grayed bar */
+        .signal-bars .bar.grayed {
+            opacity: 0.3;
+            /* makes it look grayed out but still visible */
+        }
+
+        /* If you want it grayed in light mode too */
+        body.light-mode .signal-bars .bar.grayed {
+            opacity: 0.3;
         }
 
         .panel-statusbar .battery {
@@ -657,7 +669,7 @@
         }
 
         .control-icon {
-            font-size: 22px;
+            font-size: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -671,16 +683,16 @@
 
         /* White icons in dark mode */
         body:not(.light-mode) .control-icon img {
-            width: 22px;
-            height: 22px;
+            width: 30px;
+            height: 30px;
             filter: brightness(0) invert(1);
             display: block;
         }
 
         /* Black icons in light mode */
         body.light-mode .control-icon img {
-            width: 22px;
-            height: 22px;
+            width: 30px;
+            height: 30px;
             filter: brightness(0);
             display: block;
         }
@@ -807,7 +819,7 @@
         .portfolio-icon {
             width: 32px;
             height: 32px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -994,9 +1006,9 @@
                             <div class="bar"></div>
                             <div class="bar"></div>
                             <div class="bar"></div>
-                            <div class="bar"></div>
+                            <div class="bar grayed"></div>
                         </div>
-                        <span>ROGERS</span>
+                        <span>ROGERS 5G+</span>
                     </div>
                     <div class="right">
                         <span id="time">9:41</span>
