@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +10,14 @@
         :root {
             --bg-color: #000;
             --panel-bg: rgba(19, 19, 21, 0.95);
-            --tile-bg: rgba(255, 255, 255, 0.12);
-            --tile-hover: rgba(255, 255, 255, 0.18);
+            --tile-bg: rgba(255, 255, 255, 0.08);
+            --tile-hover: rgba(255, 255, 255, 0.14);
             --tile-active: #3478F6;
             --text-primary: #fff;
-            --text-secondary: rgba(255, 255, 255, 0.6);
-            --border-color: rgba(255, 255, 255, 0.08);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
 
         * {
@@ -80,59 +83,172 @@
 
         .projects-content {
             padding: 60px 20px 40px;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
         .page-title {
-            font-size: 34px;
+            font-size: 36px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             animation: fadeInUp 0.6s ease;
+            background: linear-gradient(135deg, #fff 0%, #999 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .page-subtitle {
-            font-size: 14px;
-            opacity: 0.6;
-            margin-bottom: 32px;
+            font-size: 15px;
+            opacity: 0.7;
+            margin-bottom: 40px;
             animation: fadeInUp 0.7s ease;
         }
 
         /* Project cards */
         .project-card {
-            background: var(--tile-bg);
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--tile-bg), rgba(255, 255, 255, 0.05));
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 24px;
             backdrop-filter: blur(40px);
             border: 1px solid var(--border-color);
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             animation: fadeInUp 0.8s ease;
             animation-fill-mode: both;
+            position: relative;
+            overflow: hidden;
         }
 
-        .project-card:nth-child(2) { animation-delay: 0.1s; }
-        .project-card:nth-child(3) { animation-delay: 0.2s; }
-        .project-card:nth-child(4) { animation-delay: 0.3s; }
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #3478F6, transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .project-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .project-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .project-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .project-card:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .project-card:nth-child(5) {
+            animation-delay: 0.4s;
+        }
 
         .project-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-            background: var(--tile-hover);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(52, 120, 246, 0.15);
+            background: linear-gradient(135deg, var(--tile-hover), rgba(52, 120, 246, 0.05));
+            border-color: rgba(52, 120, 246, 0.3);
+        }
+
+        /* Project header with image */
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+
+        .project-info {
+            flex: 1;
         }
 
         .project-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             color: var(--text-primary);
+        }
+
+        /* 3D Flip Card */
+        .project-image-container {
+            width: 120px;
+            height: 120px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .project-image-flipper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .project-image-container:hover .project-image-flipper {
+            transform: rotateY(180deg);
+        }
+
+        .project-image-front,
+        .project-image-back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-image-front {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: 2px solid var(--border-color);
+        }
+
+        .project-image-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-image-front::after {
+            content: '📷';
+            position: absolute;
+            font-size: 48px;
+            opacity: 0.3;
+        }
+
+        .project-image-back {
+            background: linear-gradient(135deg, #3478F6, #667eea);
+            transform: rotateY(180deg);
+            padding: 10px;
+            border: 2px solid rgba(52, 120, 246, 0.3);
+        }
+
+        .project-image-back p {
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
         }
 
         .project-desc {
             font-size: 14px;
-            opacity: 0.8;
-            line-height: 1.6;
-            margin-bottom: 16px;
+            opacity: 0.85;
+            line-height: 1.7;
+            margin-bottom: 18px;
             color: var(--text-secondary);
         }
 
@@ -140,35 +256,36 @@
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
+            margin-bottom: 18px;
         }
 
         .tech-tag {
-            padding: 6px 12px;
-            background: rgba(52, 120, 246, 0.2);
-            border-radius: 12px;
+            padding: 6px 14px;
+            background: rgba(52, 120, 246, 0.15);
+            border-radius: 14px;
             font-size: 12px;
-            color: #3478F6;
+            color: #6BA3F5;
             font-weight: 500;
-            border: 1px solid rgba(52, 120, 246, 0.3);
+            border: 1px solid rgba(52, 120, 246, 0.25);
             transition: all 0.2s;
         }
 
         .tech-tag:hover {
-            background: rgba(52, 120, 246, 0.3);
-            transform: scale(1.05);
+            background: rgba(52, 120, 246, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 120, 246, 0.2);
         }
 
         .project-links {
-            margin-top: 16px;
             display: flex;
             gap: 12px;
         }
 
         .project-link {
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
+            padding: 8px 18px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
             color: var(--text-primary);
             text-decoration: none;
             font-size: 13px;
@@ -177,19 +294,82 @@
         }
 
         .project-link:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
         }
 
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        /* Modal for full image */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s;
+        }
+
+        .image-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 20px;
+            animation: scaleIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.8);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .close-modal:hover {
+            transform: scale(1.2);
         }
 
         /* Responsive */
@@ -197,17 +377,27 @@
             .projects-content {
                 padding: 80px 15px 30px;
             }
-            
+
             .page-title {
                 font-size: 28px;
             }
-            
+
             .project-card {
                 padding: 20px;
+            }
+
+            .project-header {
+                flex-direction: column;
+            }
+
+            .project-image-container {
+                width: 100px;
+                height: 100px;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Starfield Background -->
     <canvas id="starfield"></canvas>
@@ -222,91 +412,193 @@
     <div class="projects-container">
         <div class="projects-content">
             <h1 class="page-title">Featured Projects</h1>
-            <p class="page-subtitle">A selection of my recent work and experiments</p>
+            <p class="page-subtitle">Power electronics, high voltage systems, and embedded hardware designs</p>
 
             <div class="project-card">
-                <div class="project-title">AI-Powered Task Manager</div>
-                <div class="project-desc">
-                    Smart task management app that uses machine learning to prioritize tasks,
-                    predict completion times, and provide personalized productivity insights.
-                    Built with a focus on user experience and intelligent automation.
+                <div class="project-header">
+                    <div class="project-info">
+                        <div class="project-title">HV Safety Test Board</div>
+                        <div class="project-desc">
+                            Designed and validated an analog-only control system for high-voltage contactors with
+                            sequenced precharge,
+                            IMD interlocks, and isolated sensing using AMC1411. Achieved full safety compliance for 600V
+                            operation.
+                        </div>
+                    </div>
+                    <div class="project-image-container" onclick="openModal(this)">
+                        <div class="project-image-flipper">
+                            <div class="project-image-front">
+                                <!-- Image placeholder - will show camera emoji -->
+                            </div>
+                            <div class="project-image-back">
+                                <p>Click to enlarge</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tech-tags">
-                    <span class="tech-tag">Next.js</span>
-                    <span class="tech-tag">OpenAI</span>
-                    <span class="tech-tag">PostgreSQL</span>
-                    <span class="tech-tag">Tailwind CSS</span>
-                    <span class="tech-tag">TypeScript</span>
+                    <span class="tech-tag">600V Systems</span>
+                    <span class="tech-tag">AMC1411</span>
+                    <span class="tech-tag">TPS1H200A-Q1</span>
+                    <span class="tech-tag">555 Timers</span>
+                    <span class="tech-tag">Altium Designer</span>
                 </div>
                 <div class="project-links">
-                    <a href="#" class="project-link">View Demo</a>
-                    <a href="#" class="project-link">GitHub</a>
+                    <a href="#" class="project-link">Technical Documentation</a>
+                    <a href="#" class="project-link">Test Results</a>
                 </div>
             </div>
 
             <div class="project-card">
-                <div class="project-title">E-Commerce Platform</div>
-                <div class="project-desc">
-                    Full-stack marketplace with real-time inventory, secure payments,
-                    and an intuitive admin dashboard for vendors. Features include product recommendations,
-                    user reviews, and advanced search functionality.
+                <div class="project-header">
+                    <div class="project-info">
+                        <div class="project-title">EV7 Systems Integration</div>
+                        <div class="project-desc">
+                            Led the validation and integration of HV/LV subsystems for MAC Formula Electric, achieving
+                            the team's
+                            first fully operational Formula SAE electric vehicle. Implemented comprehensive safety
+                            protocols and testing procedures.
+                        </div>
+                    </div>
+                    <div class="project-image-container" onclick="openModal(this)">
+                        <div class="project-image-flipper">
+                            <div class="project-image-front">
+                                <!-- Image placeholder -->
+                            </div>
+                            <div class="project-image-back">
+                                <p>Click to enlarge</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tech-tags">
-                    <span class="tech-tag">React</span>
-                    <span class="tech-tag">Node.js</span>
-                    <span class="tech-tag">MongoDB</span>
-                    <span class="tech-tag">Stripe API</span>
-                    <span class="tech-tag">Redis</span>
+                    <span class="tech-tag">144s NMC Battery</span>
+                    <span class="tech-tag">Contactor Logic</span>
+                    <span class="tech-tag">Fault Handling</span>
+                    <span class="tech-tag">CAN Bus</span>
+                    <span class="tech-tag">FSAE Compliance</span>
                 </div>
                 <div class="project-links">
-                    <a href="#" class="project-link">Live Site</a>
-                    <a href="#" class="project-link">Case Study</a>
+                    <a href="#" class="project-link">Team Page</a>
+                    <a href="#" class="project-link">Competition Results</a>
                 </div>
             </div>
 
             <div class="project-card">
-                <div class="project-title">Social Analytics Dashboard</div>
-                <div class="project-desc">
-                    Real-time social media analytics tool with sentiment analysis,
-                    trend detection, and automated reporting features. Processes millions of posts
-                    daily to provide actionable insights for marketing teams.
+                <div class="project-header">
+                    <div class="project-info">
+                        <div class="project-title">HIL Interface PCB</div>
+                        <div class="project-desc">
+                            Developed a hardware-in-the-loop interface board bridging power converter evaluation boards
+                            to
+                            Typhoon HIL systems. Integrated precision measurement circuits and comprehensive safety
+                            interlocks.
+                        </div>
+                    </div>
+                    <div class="project-image-container" onclick="openModal(this)">
+                        <div class="project-image-flipper">
+                            <div class="project-image-front">
+                                <!-- Image placeholder -->
+                            </div>
+                            <div class="project-image-back">
+                                <p>Click to enlarge</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tech-tags">
-                    <span class="tech-tag">Vue.js</span>
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">Redis</span>
-                    <span class="tech-tag">D3.js</span>
-                    <span class="tech-tag">AWS</span>
+                    <span class="tech-tag">Altium Designer</span>
+                    <span class="tech-tag">Typhoon HIL</span>
+                    <span class="tech-tag">4-Layer PCB</span>
+                    <span class="tech-tag">Test Points</span>
+                    <span class="tech-tag">Signal Conditioning</span>
                 </div>
                 <div class="project-links">
-                    <a href="#" class="project-link">Documentation</a>
-                    <a href="#" class="project-link">GitHub</a>
+                    <a href="#" class="project-link">Design Files</a>
+                    <a href="#" class="project-link">Test Methodology</a>
                 </div>
             </div>
 
             <div class="project-card">
-                <div class="project-title">IoT Home Automation System</div>
-                <div class="project-desc">
-                    Smart home control system with custom hardware integration, mobile app control,
-                    and voice assistant compatibility. Includes energy monitoring and automated scheduling.
+                <div class="project-header">
+                    <div class="project-info">
+                        <div class="project-title">APM Interleaved Buck Converter</div>
+                        <div class="project-desc">
+                            Co-authored IECON 2025 paper on optimized design methodology for a 3.6 kW Asymmetric Pulse
+                            Modulation
+                            two-stage architecture. Achieved 98.2% peak efficiency through advanced optimization
+                            techniques.
+                        </div>
+                    </div>
+                    <div class="project-image-container" onclick="openModal(this)">
+                        <div class="project-image-flipper">
+                            <div class="project-image-front">
+                                <!-- Image placeholder -->
+                            </div>
+                            <div class="project-image-back">
+                                <p>Click to enlarge</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tech-tags">
-                    <span class="tech-tag">React Native</span>
-                    <span class="tech-tag">Arduino</span>
-                    <span class="tech-tag">MQTT</span>
-                    <span class="tech-tag">Firebase</span>
-                    <span class="tech-tag">C++</span>
+                    <span class="tech-tag">3.6 kW</span>
+                    <span class="tech-tag">GaN FETs</span>
+                    <span class="tech-tag">98.2% Efficiency</span>
+                    <span class="tech-tag">MATLAB Optimization</span>
+                    <span class="tech-tag">IECON 2025</span>
                 </div>
                 <div class="project-links">
-                    <a href="#" class="project-link">Video Demo</a>
-                    <a href="#" class="project-link">Technical Specs</a>
+                    <a href="#" class="project-link">Conference Paper</a>
+                    <a href="#" class="project-link">Simulation Results</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-info">
+                        <div class="project-title">LV Battery Pack Design</div>
+                        <div class="project-desc">
+                            Engineered a custom 6S 2170 lithium-ion battery pack with integrated BMS, proper thermal
+                            management,
+                            and service-friendly modular design. Implemented comprehensive safety features including
+                            fusing and isolation monitoring.
+                        </div>
+                    </div>
+                    <div class="project-image-container" onclick="openModal(this)">
+                        <div class="project-image-flipper">
+                            <div class="project-image-front">
+                                <!-- Image placeholder -->
+                            </div>
+                            <div class="project-image-back">
+                                <p>Click to enlarge</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-tags">
+                    <span class="tech-tag">2170 Cells</span>
+                    <span class="tech-tag">BMS Integration</span>
+                    <span class="tech-tag">Thermal Design</span>
+                    <span class="tech-tag">Safety Systems</span>
+                    <span class="tech-tag">Serviceability</span>
+                </div>
+                <div class="project-links">
+                    <a href="#" class="project-link">Build Documentation</a>
+                    <a href="#" class="project-link">CAD Files</a>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
     <script>
-        // Simple starfield animation
+        // Starfield animation
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -319,18 +611,19 @@
             resize();
             window.addEventListener('resize', resize);
 
-            // Create stars
-            for (let i = 0; i < 100; i++) {
+            // Create stars with varying properties
+            for (let i = 0; i < 150; i++) {
                 stars.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    radius: Math.random() * 1,
-                    alpha: Math.random()
+                    radius: Math.random() * 1.5,
+                    alpha: Math.random(),
+                    speed: Math.random() * 0.5
                 });
             }
 
             function animate() {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 stars.forEach(star => {
@@ -338,6 +631,17 @@
                     ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
                     ctx.fill();
+
+                    // Twinkle effect
+                    star.alpha += (Math.random() - 0.5) * 0.02;
+                    star.alpha = Math.max(0.2, Math.min(1, star.alpha));
+
+                    // Move stars slowly
+                    star.y += star.speed;
+                    if (star.y > canvas.height) {
+                        star.y = 0;
+                        star.x = Math.random() * canvas.width;
+                    }
                 });
 
                 requestAnimationFrame(animate);
@@ -346,6 +650,30 @@
         }
 
         window.addEventListener('DOMContentLoaded', initStarfield);
+
+        // Modal functionality
+        function openModal(container) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+
+            // For demo, using placeholder image
+            modal.classList.add('active');
+            modalImg.src = 'https://via.placeholder.com/800x600/667eea/ffffff?text=Project+Image';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+        }
+
+        // Close modal on outside click
+        window.onclick = function (event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
     </script>
 </body>
+
 </html>
