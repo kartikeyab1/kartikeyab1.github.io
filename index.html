@@ -919,6 +919,38 @@
             opacity: 1;
             transform: translate(-50%, -50%) scale(1)
         }
+
+        .name-link {
+            background: linear-gradient(180deg, #fff 0%, #999 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            text-decoration: none;
+            /* disable native underline */
+        }
+
+        .name-link::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            /* space below text */
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(180deg, #fff 0%, #999 100%);
+            /* underline */
+            border-radius: 2px;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.2s ease;
+        }
+
+        .name-link:hover::after,
+        .name-link:focus-visible::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
     </style>
 </head>
 
@@ -933,7 +965,7 @@
         <!-- Landing -->
         <section class="landing-section">
             <img src="src/assets/Pictures/me.JPG" alt="Kartikeya Babhuta" class="hero-image" />
-            <h1 class="hero-name">Kartikeya Babhuta</h1>
+            <h1 class="hero-name"><a href="about.html" class="name-link">Kartikeya Babhuta</a></h1>
             <div class="subtitle-container">
                 <div class="subtitle-text">⚡ Electrical Engineering @ McMaster University</div>
                 <div class="subtitle-text">👨🏻‍💻 Research Intern @ McMaster Automotive Resource Centre</div>
