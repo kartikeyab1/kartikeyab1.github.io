@@ -653,19 +653,9 @@
             display: block;
         }
 
-        /* Default icon color for lock tile */
-        .lockTile .control-icon img {
-            width: 28px;
-            height: 28px;
-            filter: brightness(0) invert(1);
-            /* white on dark tile */
-            transition: filter 0.3s ease, background 0.3s ease;
-        }
-
         /* When active: tile turns white */
         .lockTile.lock-active {
-            background: #fff;
-            /* white tile */
+            background: #fff; /* white tile */
             transition: background 0.3s ease;
         }
 
@@ -673,7 +663,6 @@
         .lockTile.lock-active .control-icon img {
             filter: invert(18%) sepia(97%) saturate(7487%) hue-rotate(359deg) brightness(91%) contrast(112%);
         }
-
 
         /* Vertical sliders */
         .slider-tile-large {
