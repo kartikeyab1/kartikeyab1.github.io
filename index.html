@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Kartikeya Babhuta - Portfolio</title>
     <style>
         /* Global Variables */
         :root {
             --bg-color: #000;
-            --panel-bg: rgba(19, 19, 21, 0.78);
-            --tile-bg: rgba(255, 255, 255, 0.12);
-            --tile-hover: rgba(255, 255, 255, 0.18);
-            --tile-active: #3478F6;
+            --panel-bg: rgba(28, 28, 30, 0.82);
+            --tile-bg: rgba(255, 255, 255, 0.14);
+            --tile-hover: rgba(255, 255, 255, 0.22);
+            --tile-active: #3478f6;
             --text-primary: #fff;
             --text-secondary: rgba(255, 255, 255, 0.6);
             --blur: blur(60px);
@@ -21,7 +22,7 @@
 
         body.light-mode {
             --bg-color: #f2f2f7;
-            --panel-bg: rgba(242, 242, 247, 0.78);
+            --panel-bg: rgba(242, 242, 247, 0.82);
             --tile-bg: rgba(255, 255, 255, 0.64);
             --tile-hover: rgba(255, 255, 255, 0.8);
             --text-primary: #000;
@@ -43,10 +44,37 @@
             min-height: 100vh;
             filter: brightness(var(--brightness));
             transition: filter 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-x: hidden;
         }
 
         body.airplane-mode {
             background: url('https://images.pexels.com/photos/433283/pexels-photo-433283.jpeg') center/cover fixed !important;
+        }
+
+        body.disco-mode {
+            animation: disco 0.5s linear infinite;
+        }
+
+        @keyframes disco {
+            0% {
+                filter: hue-rotate(0deg) brightness(1)
+            }
+
+            25% {
+                filter: hue-rotate(90deg) brightness(1.2)
+            }
+
+            50% {
+                filter: hue-rotate(180deg) brightness(1)
+            }
+
+            75% {
+                filter: hue-rotate(270deg) brightness(1.2)
+            }
+
+            100% {
+                filter: hue-rotate(360deg) brightness(1)
+            }
         }
 
         /* Main Container */
@@ -57,7 +85,7 @@
             position: relative;
         }
 
-        /* Starfield Background */
+        /* Starfield */
         #starfield {
             position: fixed;
             top: 0;
@@ -67,7 +95,7 @@
             z-index: 0;
         }
 
-        /* Landing Section */
+        /* Landing */
         .landing-section {
             min-height: 100vh;
             display: flex;
@@ -101,10 +129,10 @@
 
         .subtitle-container {
             position: relative;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, .08);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, .1);
             border-radius: 20px;
             padding: 20px 40px;
             min-height: 50px;
@@ -118,9 +146,9 @@
         }
 
         .subtitle-text {
-            font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+            font-size: clamp(.95rem, 2.5vw, 1.2rem);
             font-weight: 400;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, .9);
             text-align: center;
             line-height: 1.5;
             opacity: 0;
@@ -128,62 +156,99 @@
             animation: subtitleFade 20s infinite;
         }
 
-        .subtitle-text:nth-child(1) { animation-delay: 0s; }
-        .subtitle-text:nth-child(2) { animation-delay: 5s; }
-        .subtitle-text:nth-child(3) { animation-delay: 10s; }
-        .subtitle-text:nth-child(4) { animation-delay: 15s; }
+        .subtitle-text:nth-child(1) {
+            animation-delay: 0s
+        }
+
+        .subtitle-text:nth-child(2) {
+            animation-delay: 5s
+        }
+
+        .subtitle-text:nth-child(3) {
+            animation-delay: 10s
+        }
+
+        .subtitle-text:nth-child(4) {
+            animation-delay: 15s
+        }
 
         @keyframes subtitleFade {
-            0%, 9% { opacity: 0; }
-            11%, 30% { opacity: 1; }
-            31%, 100% { opacity: 0; }
+
+            0%,
+            9% {
+                opacity: 0
+            }
+
+            11%,
+            30% {
+                opacity: 1
+            }
+
+            31%,
+            100% {
+                opacity: 0
+            }
         }
 
         @keyframes fadeInScale {
             from {
                 opacity: 0;
-                transform: scale(0.9);
+                transform: scale(.9)
             }
+
             to {
                 opacity: 1;
-                transform: scale(1);
+                transform: scale(1)
             }
         }
 
         /* Typewriter */
         .typewriter-center {
             position: fixed;
-            top: 16px;
+            top: 60px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 12;
             padding: 8px 12px;
             border-radius: 8px;
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-size: clamp(.9rem, 2vw, 1.1rem);
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.85);
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: rgba(255, 255, 255, .85);
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .12);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             white-space: nowrap;
             overflow: hidden;
-            border-right: 1px solid rgba(255, 255, 255, 0.6);
+            border-right: 1px solid rgba(255, 255, 255, .6);
             animation: typing 5.5s steps(39, end) infinite, caretBlink .8s step-end infinite;
         }
 
         @keyframes typing {
-            0% { width: 0; }
-            45% { width: 37ch; }
-            55% { width: 37ch; }
-            100% { width: 0; }
+            0% {
+                width: 0
+            }
+
+            45% {
+                width: 37ch
+            }
+
+            55% {
+                width: 37ch
+            }
+
+            100% {
+                width: 0
+            }
         }
 
         @keyframes caretBlink {
-            40% { border-color: transparent; }
+            40% {
+                border-color: transparent
+            }
         }
 
-        /* Scroll Indicator Button */
+        /* Scroll Indicator */
         .scroll-indicator {
             position: absolute;
             bottom: 40px;
@@ -193,31 +258,23 @@
             width: 48px;
             height: 48px;
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, .2);
+            background: rgba(255, 255, 255, .08);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, .1);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all .3s ease;
             animation: bounce 2s ease-in-out infinite;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             gap: 2px;
-            padding: 0;
-            outline: none;
         }
 
         .scroll-indicator:hover {
-            transform: translateX(-50%) translateY(-2px);
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .scroll-indicator:active {
-            transform: translateX(-50%) translateY(0px) scale(0.95);
+            transform: translateX(-50%) translateY(-2px)
         }
 
         .scroll-indicator .chevron {
@@ -225,47 +282,57 @@
             height: 0;
             border-left: 6px solid transparent;
             border-right: 6px solid transparent;
-            border-top: 6px solid rgba(255, 255, 255, 0.8);
-            animation: pulse 2s ease-in-out infinite;
+            border-top: 6px solid rgba(255, 255, 255, .8);
+            animation: pulse 2s ease-in-out infinite
         }
 
         .scroll-indicator .chevron:nth-child(2) {
-            animation-delay: 0.2s;
+            animation-delay: .2s
         }
 
         .scroll-indicator .chevron:nth-child(3) {
-            animation-delay: 0.4s;
+            animation-delay: .4s
         }
 
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateX(-50%) translateY(0);
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateX(-50%) translateY(0)
             }
+
             40% {
-                transform: translateX(-50%) translateY(-10px);
+                transform: translateX(-50%) translateY(-10px)
             }
+
             60% {
-                transform: translateX(-50%) translateY(-5px);
+                transform: translateX(-50%) translateY(-5px)
             }
         }
 
         @keyframes pulse {
-            0%, 100% {
-                opacity: 0.4;
+
+            0%,
+            100% {
+                opacity: .4
             }
+
             50% {
-                opacity: 1;
+                opacity: 1
             }
         }
 
-        /* Control Center Section */
+        /* Control Center */
         .control-center-section {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 40px 20px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, .5);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             position: relative;
@@ -274,102 +341,197 @@
 
         .control-center-content {
             width: 90%;
-            max-width: 420px;
+            max-width: 380px;
             background: var(--panel-bg);
             backdrop-filter: var(--blur);
             -webkit-backdrop-filter: var(--blur);
-            border-radius: 24px;
-            padding: 24px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, .5);
             border: 1px solid var(--border-color);
+            display: grid;
+            grid-template-rows: auto auto auto auto;
+            row-gap: 10px;
+        }
+
+        /* Status bar INSIDE panel */
+        .panel-statusbar {
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            background: transparent;
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .panel-statusbar .left,
+        .panel-statusbar .right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .signal-bars {
+            display: flex;
+            gap: 2px;
+            align-items: flex-end;
+        }
+
+        .signal-bars .bar {
+            width: 3px;
+            background: #fff;
+            border-radius: 1px;
+        }
+
+        .signal-bars .bar:nth-child(1) {
+            height: 4px
+        }
+
+        .signal-bars .bar:nth-child(2) {
+            height: 6px
+        }
+
+        .signal-bars .bar:nth-child(3) {
+            height: 8px
+        }
+
+        .signal-bars .bar:nth-child(4) {
+            height: 10px
+        }
+
+        .panel-statusbar .battery {
+            width: 22px;
+            height: 10px;
+            border: 1px solid #fff;
+            border-radius: 2px;
+            position: relative;
+            background: rgba(255, 255, 255, .1)
+        }
+
+        .panel-statusbar .battery::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: 3px;
+            width: 2px;
+            height: 4px;
+            background: #fff;
+            border-radius: 0 1px 1px 0
+        }
+
+        .panel-statusbar .battery .battery-level {
+            height: 100%;
+            width: 75%;
+            background: #fff;
+            border-radius: 1px
         }
 
         /* Now Playing */
         .now-playing {
-            background: linear-gradient(135deg, rgba(255, 59, 48, 0.12), rgba(255, 149, 0, 0.12));
+            background: rgba(255, 255, 255, .08);
             border-radius: 16px;
-            padding: 12px;
-            margin-bottom: 12px;
+            padding: 16px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            min-height: 64px;
-            backdrop-filter: blur(40px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            gap: 14px;
+            min-height: 84px;
         }
 
         .album-art {
-            width: 44px;
-            height: 44px;
-            border-radius: 8px;
+            width: 54px;
+            height: 54px;
+            border-radius: 12px;
             background: linear-gradient(135deg, #667eea, #764ba2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 26px;
             flex-shrink: 0;
         }
 
         .now-playing-info {
             flex: 1;
-            min-width: 0;
+            min-width: 0
         }
 
         .now-playing-title {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
             white-space: nowrap;
             overflow: hidden;
-            text-overflow: ellipsis;
+            text-overflow: ellipsis
         }
 
         .now-playing-artist {
-            font-size: 12px;
-            opacity: 0.6;
+            font-size: 13px;
+            opacity: .6;
             white-space: nowrap;
             overflow: hidden;
-            text-overflow: ellipsis;
+            text-overflow: ellipsis
         }
 
         .playback-controls {
             display: flex;
             gap: 8px;
-            align-items: center;
+            align-items: center
         }
 
         .playback-btn {
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, .15);
             border: none;
-            color: white;
+            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all .2s;
+            font-size: 12px
         }
 
         .playback-btn:active {
-            transform: scale(0.9);
-            background: rgba(255, 255, 255, 0.25);
+            transform: scale(.9)
         }
 
-        /* Quick controls grid */
-        .quick-controls {
+        /* Grid rows */
+        .control-row-1 {
+            display: grid;
+            grid-template-columns: repeat(2, 10000fr) 2fr;
+            gap: 10px;
+        }
+
+        .control-group-left {
+            display: grid;
+            grid-template-columns: repeat(2, 2fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .control-row-2 {
+            display: grid;
+            grid-template-columns: 1fr repeat(1, 1fr);
+            gap: 10px;
+        }
+
+        .control-group-right {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             grid-template-rows: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 12px;
-            aspect-ratio: 2/1;
+            gap: 10px;
         }
 
+        /* Tiles */
         .control-tile {
+            aspect-ratio: 1;
             background: var(--tile-bg);
-            border-radius: 16px;
+            border-radius: 100px;
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
             border: 1px solid var(--border-color);
@@ -377,77 +539,113 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 26px;
-            min-height: 72px;
+            transition: all .2s ease;
             position: relative;
             overflow: hidden;
+            min-height: 60px;
         }
 
         .control-tile:active {
-            transform: scale(0.96);
+            transform: scale(.96)
         }
 
         .control-tile.active {
-            background: var(--tile-active);
+            background: var(--tile-active)
         }
 
-        /* Slider tiles */
-        .slider-tile {
-            background: var(--tile-bg);
-            border-radius: 16px;
-            padding: 12px 16px;
-            margin-bottom: 12px;
-            backdrop-filter: blur(40px);
-            border: 1px solid var(--border-color);
+        .control-tile.active.warning {
+            background: #ff9500
         }
 
-        .slider-row {
+        .control-tile.focus-active {
+            background: linear-gradient(135deg, #8b5cf6, #6b21a8)
+        }
+
+        .control-icon {
+            font-size: 28px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: center
         }
 
-        .slider-icon {
-            font-size: 18px;
-            width: 20px;
-            text-align: center;
+        .control-icon img {
+            width: 28px;
+            height: 28px;
+            filter: brightness(0) invert(1)
         }
 
-        .ios-slider {
+        /* Large vertical sliders */
+        .slider-tile-large {
+            background: var(--tile-bg);
+            border-radius: 30px;
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 12px;
+            height: 180px;
+            position: relative;
+        }
+
+        .slider-icon-top {
+            font-size: 22px;
+            margin-bottom: 8px
+        }
+
+        .slider-track {
             flex: 1;
-            -webkit-appearance: none;
-            appearance: none;
-            height: 32px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.15);
-            outline: none;
+            width: 72%;
+            background: rgba(255, 255, 255, .25);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
         }
 
-        .ios-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 30px;
-            height: 30px;
+        .slider-fill {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: #fff;
+            border-radius: 20px;
+            transition: height .12s ease
+        }
+
+        .slider-thumb {
+            position: absolute;
+            width: 34px;
+            height: 34px;
+            background: #fff;
             border-radius: 50%;
-            background: white;
+            left: 50%;
+            transform: translateX(-50%) translateY(50%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
             cursor: pointer;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            touch-action: none;
+            user-select: none;
         }
 
-        /* Portfolio grid */
+        .slider-icon-bottom {
+            font-size: 16px;
+            opacity: .6;
+            margin-top: 8px
+        }
+
+        /* Portfolio */
         .portfolio-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 12px;
+            grid-template-columns: repeat(3, 2fr);
+            gap: 10px
         }
 
         .portfolio-tile {
+            aspect-ratio: 1;
             background: var(--tile-bg);
-            border-radius: 16px;
-            padding: 16px;
-            min-height: 84px;
+            border-radius: 20px;
+            padding: 12px 8px;
             backdrop-filter: blur(40px);
             border: 1px solid var(--border-color);
             display: flex;
@@ -457,23 +655,88 @@
             text-decoration: none;
             color: var(--text-primary);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all .2s;
         }
 
         .portfolio-tile:active {
-            transform: scale(0.96);
-            background: var(--tile-hover);
+            transform: scale(.94);
+            background: var(--tile-hover)
         }
 
         .portfolio-icon {
-            font-size: 28px;
+            width: 32px;
+            height: 32px;
             margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .portfolio-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain
+        }
+
+        .portfolio-icon.emoji {
+            font-size: 28px
         }
 
         .portfolio-label {
             font-size: 12px;
             font-weight: 500;
-            opacity: 0.7;
+            opacity: 0.9;
+            text-align: center
+        }
+
+        /* Flying Airplane */
+        .flying-airplane {
+            position: fixed;
+            font-size: 40px;
+            z-index: 1000;
+            pointer-events: none;
+            animation: fly 3s ease-in-out
+        }
+
+        @keyframes fly {
+            0% {
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) rotate(0deg)
+            }
+
+            25% {
+                left: 80%;
+                top: 30%;
+                transform: rotate(20deg)
+            }
+
+            50% {
+                left: 20%;
+                top: 20%;
+                transform: rotate(-20deg)
+            }
+
+            75% {
+                left: 70%;
+                top: 70%;
+                transform: rotate(15deg)
+            }
+
+            100% {
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) rotate(360deg);
+                opacity: 0
+            }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            opacity: .6;
         }
 
         /* Notification */
@@ -481,38 +744,39 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.8);
+            transform: translate(-50%, -50%) scale(.8);
             background: var(--panel-bg);
             padding: 20px 28px;
             border-radius: 18px;
             backdrop-filter: blur(60px);
             opacity: 0;
             pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all .3s cubic-bezier(.4, 0, .2, 1);
             z-index: 300;
             font-size: 15px;
             font-weight: 500;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, .4);
             border: 1px solid var(--border-color);
         }
 
         .notification.show {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
+            transform: translate(-50%, -50%) scale(1)
         }
     </style>
 </head>
+
 <body>
-    <!-- Starfield Background -->
+    <!-- Starfield -->
     <canvas id="starfield"></canvas>
 
-    <!-- Typewriter Text -->
+    <!-- Typewriter -->
     <div class="typewriter-center">Available Jan – Aug 2026 for Internships</div>
 
     <div class="main-container">
-        <!-- Landing Section -->
+        <!-- Landing -->
         <section class="landing-section">
-            <img src='src/assets/Pictures/me.JPG' alt="Kartikeya Babhuta" class="hero-image">
+            <img src="src/assets/Pictures/me.JPG" alt="Kartikeya Babhuta" class="hero-image" />
             <h1 class="hero-name">Kartikeya Babhuta</h1>
             <div class="subtitle-container">
                 <div class="subtitle-text">⚡ Electrical Engineering @ McMaster University</div>
@@ -520,7 +784,6 @@
                 <div class="subtitle-text">🏎️ Electrical Director @ MAC Formula Electric</div>
                 <div class="subtitle-text">🌮🍕🥪 Will work for snacks</div>
             </div>
-            <!-- Scroll Indicator Button -->
             <button class="scroll-indicator" onclick="scrollToControlCenter()" aria-label="Scroll to Control Center">
                 <div class="chevron"></div>
                 <div class="chevron"></div>
@@ -528,9 +791,27 @@
             </button>
         </section>
 
-        <!-- Control Center Section -->
+        <!-- Control Center -->
         <section class="control-center-section">
             <div class="control-center-content">
+                <div class="panel-statusbar">
+                    <div class="left">
+                        <div class="signal-bars">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                        <span>ROGERS</span>
+                    </div>
+                    <div class="right">
+                        <span id="time">9:41</span>
+                        <div class="battery">
+                            <div class="battery-level"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Now Playing -->
                 <div class="now-playing">
                     <div class="album-art" id="albumArt">🎵</div>
@@ -540,53 +821,112 @@
                     </div>
                     <div class="playback-controls">
                         <button class="playback-btn" onclick="previousSong()">◀</button>
-                        <button class="playback-btn" onclick="nextSong()">▷</button>
+                        <button class="playback-btn" onclick="nextSong()">▶</button>
                     </div>
                 </div>
 
-                <!-- Quick Controls -->
-                <div class="quick-controls">
-                    <div class="control-tile" id="airplaneMode" onclick="toggleAirplaneMode()">✈️</div>
-                    <div class="control-tile" id="bluetooth" onclick="toggleBluetooth()">🔗</div>
-                    <div class="control-tile" id="flashlight" onclick="toggleFlashlight()">🔦</div>
-                    <div class="control-tile" id="doNotDisturb" onclick="toggleDND()">🌙</div>
-                </div>
+                <!-- Row 1 -->
+                <div class="control-row-1">
+                    <div class="control-group-left">
+                        <div class="control-tile" id="airplaneMode" onclick="toggleAirplaneMode()"
+                            aria-label="Airplane Mode">
+                            <div class="control-icon">✈️</div>
+                        </div>
+                        <div class="control-tile" id="wifi" onclick="toggleWifi()" aria-label="Wi-Fi">
+                            <div class="control-icon">
+                                <img alt="WiFi" src="src/assets/logos/wifi.png" />
+                            </div>
+                        </div>
+                        <div class="control-tile" id="bluetooth" onclick="toggleBluetooth()" aria-label="Bluetooth">
+                            <div class="control-icon">
+                                <img alt="Bluetooth" src="https://simpleicons.org/icons/bluetooth.svg" />
+                            </div>
 
-                <!-- Brightness Slider -->
-                <div class="slider-tile">
-                    <div class="slider-row">
-                        <span class="slider-icon">☀️</span>
-                        <input type="range" class="ios-slider" id="brightnessSlider" min="30" max="100" value="100"
-                            oninput="adjustBrightness(this.value)">
+                        </div>
+                        <div class="control-tile" id="flashlight" onclick="toggleFlashlight()" aria-label="Flashlight">
+                            <div class="control-icon">🔦</div>
+                        </div>
+                    </div>
+
+                    <div class="slider-tile-large" id="brightnessSlider">
+                        <div class="slider-icon-top">☀️</div>
+                        <div class="slider-track" id="brightnessTrack">
+                            <div class="slider-fill" id="brightnessFill" style="height: 100%"></div>
+                            <div class="slider-thumb" id="brightnessThumb" style="bottom: 100%"></div>
+                        </div>
+                        <div class="slider-icon-bottom">🔅</div>
                     </div>
                 </div>
 
-                <!-- Portfolio Grid -->
+                <!-- Row 2 -->
+                <div class="control-row-2">
+                    <div class="slider-tile-large" id="volumeSlider">
+                        <div class="slider-icon-top">🔊</div>
+                        <div class="slider-track" id="volumeTrack">
+                            <div class="slider-fill" id="volumeFill" style="height: 50%"></div>
+                            <div class="slider-thumb" id="volumeThumb" style="bottom: 50%"></div>
+                        </div>
+                        <div class="slider-icon-bottom">🔇</div>
+                    </div>
+
+                    <div class="control-group-right">
+                        <div class="control-tile focus-tile" id="focusTile" onclick="toggleFocus()" aria-label="Focus">
+                            <div class="control-icon">🌙</div>
+                        </div>
+                        <div class="control-tile warning" id="disco" onclick="toggleDisco()" aria-label="Disco">
+                            <div class="control-icon">⚠️</div>
+                        </div>
+                        <div class="control-tile" onclick="showNotification('🎯 Feature coming soon!')"
+                            aria-label="Soon">
+                            <div class="control-icon">🎯</div>
+                        </div>
+                        <div class="control-tile" onclick="showNotification('🔒 Screen Lock')" aria-label="Lock">
+                            <div class="control-icon">🔒</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portfolio -->
                 <div class="portfolio-grid">
                     <a href="skills.html" class="portfolio-tile">
-                        <div class="portfolio-icon">💡</div>
+                        <div class="portfolio-icon emoji">💡</div>
                         <div class="portfolio-label">Skills</div>
                     </a>
                     <a href="projects.html" class="portfolio-tile">
-                        <div class="portfolio-icon">🚀</div>
+                        <div class="portfolio-icon emoji">🚀</div>
                         <div class="portfolio-label">Projects</div>
                     </a>
                     <a href="https://linkedin.com/in/kbabhuta" target="_blank" class="portfolio-tile">
-                        <div class="portfolio-icon">💼</div>
+                        <div class="portfolio-icon">
+                            <img alt="LinkedIn"
+                                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230077B5'%3E%3Cpath d='M19 0H5C2.239 0 0 2.239 0 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5V5c0-2.761-2.238-5-5-5zM8 19H5V8h3v11zM6.5 6.732A1.75 1.75 0 116.5 3.204a1.75 1.75 0 010 3.528zM20 19h-3v-5.604c0-3.368-3.663-3.113-3.663 0V19h-3V8h3v1.765C14.733 7.179 20 6.988 20 12.241V19z'/%3E%3C/svg%3E" />
+                        </div>
                         <div class="portfolio-label">LinkedIn</div>
                     </a>
                     <a href="resume.pdf" target="_blank" class="portfolio-tile">
-                        <div class="portfolio-icon">📄</div>
+                        <div class="portfolio-icon emoji">📄</div>
                         <div class="portfolio-label">Resume</div>
                     </a>
-                    <a href="https://wave-english-539.notion.site/Kartikeya-Babhuta-b8fd9a2dbc1340db9e8df1c3fe323e25" target="_blank" class="portfolio-tile">
-                        <div class="portfolio-icon">📝</div>
+                    <a href="https://wave-english-539.notion.site/Kartikeya-Babhuta-b8fd9a2dbc1340db9e8df1c3fe323e25"
+                        target="_blank" class="portfolio-tile">
+                        <div class="portfolio-icon">
+                            <img alt="Notion"
+                                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M4.459 4.208c.746 0 1.434-.155 2.089-.475.655-.32 1.53-1.054 2.089-1.721.592-.329 1.052-1.012 1.415-1.012.148 0 .307.029.466.085.16.056.338.149.518.255.18.106.377.258.575.451.198.193.418.44.64.729l1.733 2.871c1.112 1.936 1.671 3.276 1.671 4.019 0 .185-.013.366-.04.543a1.804 1.804 0 01-.117.469 1.883 1.883 0 01-.205.388c-.082.106-.18.2-.294.282l-5.889 3.509a.61.61 0 01-.744-.052 1.275 1.275 0 01-.423-.324 1.395 1.395 0 01-.296-.497 1.915 1.915 0 01-.106-.668c0-.296.071-.693.211-1.192.14-.499.397-1.119.77-1.862.193-.378.316-.631.372-.76.056-.128.083-.237.083-.328 0-.158-.085-.36-.255-.601-.17-.241-.5-.62-.987-1.137L4.458 4.208zm7.308 11.395c0 .363.212.902.637 1.616.425.714 1.266 1.952 2.522 3.713.174.246.371.394.588.442.217.048.4.024.545-.072l4.668-2.774c.246-.148.392-.336.439-.564.047-.228.035-.516-.036-.866-.071-.349-.225-.803-.46-1.362-.236-.559-.606-1.275-1.11-2.15-.988-1.717-1.854-2.993-2.596-3.829-.743-.835-1.362-1.391-1.86-1.666-.311-.172-.603-.278-.876-.316a1.419 1.419 0 00-.734.098c-.217.09-.408.249-.576.475-.167.227-.274.545-.318.956-.044.41.008.963.158 1.664.149.7.452 1.579.906 2.635l.137.328c.283.68.532 1.364.748 2.052.215.688.323 1.238.323 1.65z'/%3E%3C/svg%3E" />
+                        </div>
                         <div class="portfolio-label">Notion</div>
                     </a>
-                    <a href="mailto:babhutk@mcmaster.ca" class="portfolio-tile">
-                        <div class="portfolio-icon">✉️</div>
-                        <div class="portfolio-label">Email</div>
+                    <a href="https://github.com/kbabhuta" target="_blank" class="portfolio-tile">
+                        <div class="portfolio-icon">
+                            <img alt="GitHub"
+                                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604C6.32 17.706 3.518 16.677 3.518 12.08c0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23a10.55 10.55 0 016.009 0c2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.965 21.798 24.4 17.301 24.4 11.999 24 5.372 18.627 0 12 0z'/%3E%3C/svg%3E" />
+                        </div>
+                        <div class="portfolio-label">GitHub</div>
                     </a>
+                </div>
+
+                <!-- Footer -->
+                <div class="footer">
+                    <p>© 2025 Kartikeya Babhuta. All rights reserved.</p>
                 </div>
             </div>
         </section>
@@ -596,7 +936,6 @@
     <div class="notification" id="notification"></div>
 
     <script>
-        // Configuration
         const CONFIG = {
             playlist: [
                 { title: "Cosmic Journey", artist: "Space Ambient", icon: "🌌" },
@@ -607,146 +946,180 @@
             ]
         };
 
-        // State
         let state = {
             darkMode: true,
             airplaneMode: false,
+            wifiOn: false,
             bluetoothConnected: false,
-            dndEnabled: false,
+            focusEnabled: false,
+            discoMode: false,
             currentSongIndex: 0,
-            stars: []
+            brightnessPercent: 100,
+            volumePercent: 50,
+            stars: [],
+            dragging: null
         };
 
-        // Initialize
-        window.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('DOMContentLoaded', () => {
             initStarfield();
             initializeMusic();
+            updateTime();
+            setInterval(updateTime, 1000);
             setInterval(nextSong, 8000);
+
+            setupVerticalSlider('brightness');
+            setupVerticalSlider('volume');
+
+            applyBrightness(state.brightnessPercent);
+            updateBrightnessSlider(state.brightnessPercent);
+            updateVolumeSlider(state.volumePercent);
         });
 
-        // Smooth scroll to control center
-        function scrollToControlCenter() {
-            const controlCenter = document.querySelector('.control-center-section');
-            if (controlCenter) {
-                controlCenter.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
+        function updateTime() {
+            const now = new Date();
+            const hh = now.getHours();
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time').textContent = `${hh}:${mm}`;
         }
 
-        // Starfield animation
+        function scrollToControlCenter() {
+            document.querySelector('.control-center-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        /* Starfield */
         function initStarfield() {
             const canvas = document.getElementById('starfield');
             const ctx = canvas.getContext('2d');
+            function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+            resize(); addEventListener('resize', resize);
 
-            function resize() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            resize();
-            window.addEventListener('resize', resize);
-
-            // Create stars
             for (let i = 0; i < 150; i++) {
-                state.stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 1.2,
-                    alpha: Math.random(),
-                    speed: Math.random() * 0.3 + 0.1,
-                    twinkleSpeed: Math.random() * 0.02
-                });
+                state.stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, radius: Math.random() * 1.2, alpha: Math.random(), speed: Math.random() * 0.3 + 0.1, twinkleSpeed: Math.random() * 0.02 });
             }
-
-            function animate() {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                state.stars.forEach(star => {
-                    ctx.beginPath();
-                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
-                    ctx.fill();
-
-                    star.alpha += Math.sin(Date.now() * star.twinkleSpeed) * 0.01;
-                    star.alpha = Math.max(0.2, Math.min(1, star.alpha));
-
-                    star.y += star.speed;
-                    if (star.y > canvas.height) {
-                        star.y = 0;
-                        star.x = Math.random() * canvas.width;
-                    }
+            (function animate() {
+                ctx.fillStyle = 'rgba(0,0,0,0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                state.stars.forEach(s => {
+                    ctx.beginPath(); ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${s.alpha})`; ctx.fill();
+                    s.alpha += Math.sin(Date.now() * s.twinkleSpeed) * 0.01; s.alpha = Math.max(0.2, Math.min(1, s.alpha));
+                    s.y += s.speed; if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
                 });
-
                 requestAnimationFrame(animate);
-            }
-            animate();
+            })();
         }
 
-        // Quick controls
+        /* Controls */
         function toggleAirplaneMode() {
-            state.airplaneMode = !state.airplaneMode;
-            document.body.classList.toggle('airplane-mode');
-            document.getElementById('airplaneMode').classList.toggle('active');
-            showNotification(state.airplaneMode ? '✈️ Airplane Mode On' : '✈️ Airplane Mode Off');
+            const tile = document.getElementById('airplaneMode');
+            if (!state.airplaneMode) {
+                tile.classList.add('active', 'warning');
+                state.airplaneMode = true;
+                showNotification('✈️ Airplane Mode On');
+                setTimeout(() => {
+                    const airplane = document.createElement('div');
+                    airplane.className = 'flying-airplane'; airplane.textContent = '✈️'; document.body.appendChild(airplane);
+                    setTimeout(() => { airplane.remove(); document.body.classList.add('airplane-mode'); }, 3000);
+                }, 100);
+            } else {
+                tile.classList.remove('active', 'warning');
+                state.airplaneMode = false;
+                document.body.classList.remove('airplane-mode');
+                showNotification('✈️ Airplane Mode Off');
+            }
         }
-
+        function toggleWifi() {
+            state.wifiOn = !state.wifiOn;
+            document.getElementById('wifi').classList.toggle('active');
+            showNotification(state.wifiOn ? '📶 Wi-Fi Connected' : '📵 Wi-Fi Disconnected');
+        }
         function toggleBluetooth() {
             state.bluetoothConnected = !state.bluetoothConnected;
             document.getElementById('bluetooth').classList.toggle('active');
             const device = navigator.platform || 'Device';
             showNotification(state.bluetoothConnected ? `Connected to ${device}` : `Disconnected from ${device}`);
         }
-
         function toggleFlashlight() {
             state.darkMode = !state.darkMode;
             document.body.classList.toggle('light-mode');
             document.getElementById('flashlight').classList.toggle('active');
         }
-
-        function toggleDND() {
-            state.dndEnabled = !state.dndEnabled;
-            document.getElementById('doNotDisturb').classList.toggle('active');
-            showNotification(state.dndEnabled ? '🌙 Do Not Disturb On' : '🌙 Do Not Disturb Off');
+        function toggleFocus() {
+            state.focusEnabled = !state.focusEnabled;
+            const tile = document.getElementById('focusTile');
+            if (state.focusEnabled) {
+                tile.classList.add('focus-active');
+                document.body.style.filter = 'hue-rotate(280deg) brightness(0.9)';
+                showNotification('🌙 Focus Mode On');
+            } else {
+                tile.classList.remove('focus-active');
+                document.body.style.filter = `brightness(${mapBrightness(state.brightnessPercent)})`;
+                showNotification('Focus Mode Off');
+            }
+        }
+        function toggleDisco() {
+            state.discoMode = !state.discoMode;
+            document.getElementById('disco').classList.toggle('active');
+            document.body.classList.toggle('disco-mode');
+            if (state.discoMode) {
+                showNotification('🕺 DISCO MODE ACTIVATED! 💃');
+                const audio = new AudioContext();
+                const osc = audio.createOscillator(); const g = audio.createGain();
+                osc.connect(g); g.connect(audio.destination);
+                osc.frequency.value = 440; g.gain.setValueAtTime(0, audio.currentTime);
+                g.gain.linearRampToValueAtTime(0.3, audio.currentTime + 0.1);
+                g.gain.exponentialRampToValueAtTime(0.01, audio.currentTime + 0.5);
+                osc.start(audio.currentTime); osc.stop(audio.currentTime + 0.5);
+            } else {
+                showNotification('Party mode deactivated');
+            }
         }
 
-        function adjustBrightness(value) {
-            document.documentElement.style.setProperty('--brightness', value / 100);
+        /* Sliders (drag + click) */
+        function setupVerticalSlider(kind) {
+            const track = document.getElementById(kind === 'brightness' ? 'brightnessTrack' : 'volumeTrack');
+            const onMove = (clientY) => {
+                const rect = track.getBoundingClientRect();
+                let p = (1 - (clientY - rect.top) / rect.height) * 100;
+                p = Math.max(0, Math.min(100, p));
+                if (kind === 'brightness') {
+                    state.brightnessPercent = p; applyBrightness(p); updateBrightnessSlider(p);
+                } else {
+                    state.volumePercent = p; updateVolumeSlider(p);
+                    const icon = p > 50 ? '🔊' : p > 0 ? '🔉' : '🔇';
+                    showNotification(`${icon} Volume: ${Math.round(p)}%`);
+                }
+            };
+            const start = (e) => { onMove(getClientY(e)); addEventListener('mousemove', move); addEventListener('mouseup', end, { once: true }); addEventListener('touchmove', move, { passive: false }); addEventListener('touchend', end, { once: true }); };
+            const move = (e) => { e.preventDefault?.(); onMove(getClientY(e)); };
+            const end = () => { removeEventListener('mousemove', move); removeEventListener('touchmove', move); };
+            track.addEventListener('mousedown', start);
+            track.addEventListener('touchstart', start, { passive: false });
         }
+        function getClientY(e) { return (e.touches && e.touches[0]) ? e.touches[0].clientY : e.clientY; }
 
-        // Music controls
-        function initializeMusic() {
-            updateNowPlaying();
-        }
+        function updateBrightnessSlider(p) { document.getElementById('brightnessFill').style.height = p + '%'; document.getElementById('brightnessThumb').style.bottom = p + '%'; }
+        function updateVolumeSlider(p) { document.getElementById('volumeFill').style.height = p + '%'; document.getElementById('volumeThumb').style.bottom = p + '%'; }
+        function mapBrightness(p) { const min = 0.30, max = 1.00; return (min + (max - min) * (p / 100)).toFixed(3); }
+        function applyBrightness(p) { document.documentElement.style.setProperty('--brightness', mapBrightness(p)); }
 
+        /* Music */
+        function initializeMusic() { updateNowPlaying(); }
         function updateNowPlaying() {
-            const song = CONFIG.playlist[state.currentSongIndex];
-            document.getElementById('songTitle').textContent = song.title;
-            document.getElementById('songArtist').textContent = song.artist;
-            document.getElementById('albumArt').textContent = song.icon;
+            const s = CONFIG.playlist[state.currentSongIndex];
+            document.getElementById('songTitle').textContent = s.title;
+            document.getElementById('songArtist').textContent = s.artist;
+            document.getElementById('albumArt').textContent = s.icon;
         }
+        function nextSong() { state.currentSongIndex = (state.currentSongIndex + 1) % CONFIG.playlist.length; updateNowPlaying(); }
+        function previousSong() { state.currentSongIndex = state.currentSongIndex ? state.currentSongIndex - 1 : CONFIG.playlist.length - 1; updateNowPlaying(); }
 
-        function nextSong() {
-            state.currentSongIndex = (state.currentSongIndex + 1) % CONFIG.playlist.length;
-            updateNowPlaying();
-        }
-
-        function previousSong() {
-            state.currentSongIndex = state.currentSongIndex === 0 ? CONFIG.playlist.length - 1 : state.currentSongIndex - 1;
-            updateNowPlaying();
-        }
-
-        // Notifications
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.classList.add('show');
-
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 2500);
+        /* Notification */
+        function showNotification(msg) {
+            const n = document.getElementById('notification');
+            n.textContent = msg; n.classList.add('show');
+            clearTimeout(n._t); n._t = setTimeout(() => n.classList.remove('show'), 2500);
         }
     </script>
 </body>
+
 </html>
