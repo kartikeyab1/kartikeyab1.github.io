@@ -1,339 +1,752 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>Kartikeya Babhuta — Home</title>
-  <style>
-    /* ===== Shared Base (duplicated in all pages for GH Pages simplicity) ===== */
-    :root{
-      --bg-color:#000;--panel-bg:rgba(19,19,21,.78);--tile-bg:rgba(255,255,255,.12);
-      --tile-hover:rgba(255,255,255,.18);--tile-active:#3478F6;--text-primary:#fff;
-      --text-secondary:rgba(255,255,255,.6);--blur:blur(60px);--brightness:1;
-      --hue-rotate:0deg;--border-color:rgba(255,255,255,.08)
-    }
-    body.light-mode{
-      --bg-color:#f2f2f7;--panel-bg:rgba(242,242,247,.78);--tile-bg:rgba(255,255,255,.64);
-      --tile-hover:rgba(255,255,255,.8);--text-primary:#000;--text-secondary:rgba(0,0,0,.6);
-      --border-color:rgba(0,0,0,.08)
-    }
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    html,body{overflow-x:hidden!important}
-    body{
-      font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Helvetica Neue',Helvetica,Arial,sans-serif;
-      background:#000;color:var(--text-primary);
-      filter:brightness(var(--brightness)) hue-rotate(var(--hue-rotate));
-      transition:filter .6s cubic-bezier(.4,0,.2,1)
-    }
-    body.focus-dnd{--hue-rotate:280deg}
-    body.focus-sleep{--hue-rotate:330deg}
-    body.focus-work{--hue-rotate:210deg}
-    body.focus-personal{--hue-rotate:140deg}
-    body.airplane-mode{background:url('https://images.pexels.com/photos/433283/pexels-photo-433283.jpeg') center/cover fixed!important}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kartikeya Babhuta - Portfolio</title>
+    <style>
+        /* Global Variables */
+        :root {
+            --bg-color: #000;
+            --panel-bg: rgba(19, 19, 21, 0.78);
+            --tile-bg: rgba(255, 255, 255, 0.12);
+            --tile-hover: rgba(255, 255, 255, 0.18);
+            --tile-active: #3478F6;
+            --text-primary: #fff;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --blur: blur(60px);
+            --brightness: 1;
+            --border-color: rgba(255, 255, 255, 0.08);
+        }
 
-    /* Starfield */
-    #starfield{position:fixed;inset:0;width:100%;height:100vh;z-index:0}
+        body.light-mode {
+            --bg-color: #f2f2f7;
+            --panel-bg: rgba(242, 242, 247, 0.78);
+            --tile-bg: rgba(255, 255, 255, 0.64);
+            --tile-hover: rgba(255, 255, 255, 0.8);
+            --text-primary: #000;
+            --text-secondary: rgba(0, 0, 0, 0.6);
+            --border-color: rgba(0, 0, 0, 0.08);
+        }
 
-    /* Layout sections (static, no SPA transforms) */
-    .section{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
-    .landing-section{z-index:10;padding:64px 20px}
-    .control-center-section{z-index:20;background:rgba(0,0,0,.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:64px 20px}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    .hero-name{
-      font-size:clamp(2.5rem,10vw,5rem);font-weight:650;
-      background:linear-gradient(180deg,#fff 0%,#999 100%);
-      -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-      margin:1.25rem 0;letter-spacing:-.01em
-    }
-    .hero-image{width:min(90vw,400px);max-height:300px;object-fit:cover;border-radius:20px;margin-bottom:1.5rem}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            filter: brightness(var(--brightness));
+            transition: filter 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    .subtitle-container{
-      background:rgba(255,255,255,.08);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
-      border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px 40px;min-height:50px;
-      width:90%;max-width:560px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden
-    }
-    .subtitle-text{font-size:clamp(.95rem,2.5vw,1.2rem);font-weight:400;color:rgba(255,255,255,.9);text-align:center;line-height:1.5}
-    .typewriter-center{
-      position:fixed;left:50%;transform:translateX(-50%);top:16px;z-index:12;padding:8px 12px;border-radius:8px;
-      font-size:clamp(.9rem,2vw,1.1rem);font-weight:600;color:rgba(255,255,255,.85);
-      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(10px);
-      white-space:nowrap;overflow:hidden;border-right:1px solid rgba(255,255,255,.6);
-      animation:typing 5.5s steps(39,end) infinite, caretBlink .8s step-end infinite
-    }
-    @keyframes typing{0%{width:0}45%{width:37ch}55%{width:37ch}100%{width:0}}
-    @keyframes caretBlink{40%{border-color:transparent}}
+        body.airplane-mode {
+            background: url('https://images.pexels.com/photos/433283/pexels-photo-433283.jpeg') center/cover fixed !important;
+        }
 
-    /* Scroll button */
-    .scrollIndicator{
-      margin-top:24px;width:44px;height:44px;border-radius:20px;border:1px solid rgba(255,255,255,.1);
-      background:rgba(255,255,255,.08);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
-      display:grid;place-items:center;cursor:pointer;transition:transform .2s ease,background .2s ease
-    }
-    .scrollIndicator:hover{transform:translateY(-2px);background:rgba(255,255,255,.12)}
-    .chev{color:#fff;font-size:16px;line-height:1;display:inline-block;opacity:.9}
+        /* Main Container */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+        }
 
-    /* Control Center Card */
-    .control-center-content{
-      width:90%;max-width:420px;background:var(--panel-bg);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-      border-radius:24px;padding:24px;border:1px solid var(--border-color);box-shadow:0 10px 40px rgba(0,0,0,.5)
-    }
-    .now-playing{background:linear-gradient(135deg,rgba(255,59,48,.12),rgba(255,149,0,.12));border-radius:16px;padding:12px;margin-bottom:12px;display:flex;gap:12px;align-items:center;border:1px solid rgba(255,255,255,.06)}
-    .album-art{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-    .now-playing-info{flex:1;min-width:0}
-    .now-playing-title{font-size:14px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .now-playing-artist{font-size:12px;opacity:.6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .playback-controls{display:flex;gap:8px}
-    .playback-btn{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s}
-    .playback-btn:active{transform:scale(.9);background:rgba(255,255,255,.25)}
-    .quick-controls{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:12px;margin-bottom:12px;aspect-ratio:2/1}
-    .control-tile{background:var(--tile-bg);border:1px solid var(--border-color);border-radius:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;font-size:26px;min-height:72px}
-    .control-tile:active{transform:scale(.96)}.control-tile.active{background:var(--tile-active)}
-    .slider-tile{background:var(--tile-bg);border-radius:16px;padding:12px 16px;margin-bottom:12px;border:1px solid var(--border-color)}
-    .slider-row{display:flex;align-items:center;gap:12px}
-    .ios-slider{flex:1;-webkit-appearance:none;appearance:none;height:32px;border-radius:16px;background:rgba(255,255,255,.15);outline:none}
-    .ios-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:30px;height:30px;border-radius:50%;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.3)}
-    .menu-btn{background:var(--tile-bg);border-radius:16px;padding:14px;margin-bottom:12px;border:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:.2s}
-    .menu-btn:active{transform:scale(.98);background:var(--tile-hover)}
-    .menu-btn-left{display:flex;align-items:center;gap:12px}
-    .portfolio-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
-    .portfolio-tile{background:var(--tile-bg);border-radius:16px;padding:16px;min-height:84px;border:1px solid var(--border-color);display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;color:var(--text-primary);transition:.2s}
-    .portfolio-tile:active{transform:scale(.96);background:var(--tile-hover)}
-    .portfolio-icon{font-size:28px;margin-bottom:6px}
-    .portfolio-label{font-size:12px;font-weight:500;opacity:.7}
+        /* Starfield Background */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 0;
+        }
 
-    /* Modals + notification (unchanged) */
-    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(10px);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
-    .modal-overlay.active{opacity:1;pointer-events:auto}
-    .modal-panel{position:fixed;left:50%;transform:translateX(-50%);bottom:-100%;width:90%;max-width:360px;background:var(--panel-bg);
-      border-radius:24px;padding:20px;z-index:201;transition:bottom .4s cubic-bezier(.32,.72,0,1);max-height:70vh;overflow-y:auto;border:1px solid var(--border-color)}
-    .modal-panel.active{bottom:20px}
-    .modal-header{text-align:center;font-size:18px;font-weight:600;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border-color)}
-    .time-picker{display:flex;justify-content:center;align-items:center;gap:8px;margin:20px 0;height:200px;position:relative;overflow:hidden;mask-image:linear-gradient(transparent,black 30%,black 70%,transparent);-webkit-mask-image:linear-gradient(transparent,black 30%,black 70%,transparent)}
-    .picker-column{width:80px;height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-    .picker-column::-webkit-scrollbar{display:none}
-    .picker-item{height:40px;display:flex;align-items:center;justify-content:center;scroll-snap-align:center;font-size:20px;font-weight:500;opacity:.3;transition:.2s}
-    .picker-item.selected{opacity:1;font-size:24px}
-    .picker-separator{font-size:24px;font-weight:600;opacity:.5}
-    .focus-options{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
-    .focus-option{background:rgba(255,255,255,.08);border-radius:16px;padding:16px;text-align:center;cursor:pointer;transition:.2s;border:1px solid var(--border-color)}
-    .focus-option:active{transform:scale(.96)}.focus-option.active{background:var(--tile-active);border-color:var(--tile-active)}
-    .action-btn{width:100%;padding:14px;background:var(--tile-active);border:none;border-radius:14px;color:#fff;font-size:16px;font-weight:600;cursor:pointer;margin-top:16px;transition:.2s}
-    .action-btn:active{transform:scale(.98);opacity:.9}.cancel-btn{background:rgba(255,255,255,.1);margin-top:8px}
-    .notification{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.8);background:var(--panel-bg);padding:20px 28px;border-radius:18px;backdrop-filter:blur(60px);opacity:0;pointer-events:none;transition:.3s;z-index:300;font-size:15px;font-weight:500;border:1px solid var(--border-color)}
-    .notification.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
-  </style>
+        /* Landing Section */
+        .landing-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        .hero-name {
+            font-size: clamp(2.5rem, 10vw, 5rem);
+            font-weight: 650;
+            background: linear-gradient(180deg, #fff 0%, #999 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.01em;
+            animation: fadeInScale 1s ease;
+        }
+
+        .hero-image {
+            width: min(90vw, 400px);
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+        }
+
+        .subtitle-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px 40px;
+            min-height: 50px;
+            width: 90%;
+            max-width: 560px;
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInScale 1.2s ease;
+        }
+
+        .subtitle-text {
+            font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            line-height: 1.5;
+            opacity: 0;
+            position: absolute;
+            animation: subtitleFade 20s infinite;
+        }
+
+        .subtitle-text:nth-child(1) { animation-delay: 0s; }
+        .subtitle-text:nth-child(2) { animation-delay: 5s; }
+        .subtitle-text:nth-child(3) { animation-delay: 10s; }
+        .subtitle-text:nth-child(4) { animation-delay: 15s; }
+
+        @keyframes subtitleFade {
+            0%, 9% { opacity: 0; }
+            11%, 30% { opacity: 1; }
+            31%, 100% { opacity: 0; }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Typewriter */
+        .typewriter-center {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 12;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 1px solid rgba(255, 255, 255, 0.6);
+            animation: typing 5.5s steps(39, end) infinite, caretBlink .8s step-end infinite;
+        }
+
+        @keyframes typing {
+            0% { width: 0; }
+            45% { width: 37ch; }
+            55% { width: 37ch; }
+            100% { width: 0; }
+        }
+
+        @keyframes caretBlink {
+            40% { border-color: transparent; }
+        }
+
+        /* Scroll Indicator Button */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 15;
+            width: 48px;
+            height: 48px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: bounce 2s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 2px;
+            padding: 0;
+            outline: none;
+        }
+
+        .scroll-indicator:hover {
+            transform: translateX(-50%) translateY(-2px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .scroll-indicator:active {
+            transform: translateX(-50%) translateY(0px) scale(0.95);
+        }
+
+        .scroll-indicator .chevron {
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid rgba(255, 255, 255, 0.8);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .scroll-indicator .chevron:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .scroll-indicator .chevron:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.4;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Control Center Section */
+        .control-center-section {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 20;
+        }
+
+        .control-center-content {
+            width: 90%;
+            max-width: 420px;
+            background: var(--panel-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Now Playing */
+        .now-playing {
+            background: linear-gradient(135deg, rgba(255, 59, 48, 0.12), rgba(255, 149, 0, 0.12));
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 64px;
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .album-art {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .now-playing-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .now-playing-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .now-playing-artist {
+            font-size: 12px;
+            opacity: 0.6;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playback-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .playback-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .playback-btn:active {
+            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Quick controls grid */
+        .quick-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+            aspect-ratio: 2/1;
+        }
+
+        .control-tile {
+            background: var(--tile-bg);
+            border-radius: 16px;
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 26px;
+            min-height: 72px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .control-tile:active {
+            transform: scale(0.96);
+        }
+
+        .control-tile.active {
+            background: var(--tile-active);
+        }
+
+        /* Slider tiles */
+        .slider-tile {
+            background: var(--tile-bg);
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border-color);
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .slider-icon {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .ios-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 32px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.15);
+            outline: none;
+        }
+
+        .ios-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Portfolio grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .portfolio-tile {
+            background: var(--tile-bg);
+            border-radius: 16px;
+            padding: 16px;
+            min-height: 84px;
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .portfolio-tile:active {
+            transform: scale(0.96);
+            background: var(--tile-hover);
+        }
+
+        .portfolio-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .portfolio-label {
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0.7;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: var(--panel-bg);
+            padding: 20px 28px;
+            border-radius: 18px;
+            backdrop-filter: blur(60px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 300;
+            font-size: 15px;
+            font-weight: 500;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-color);
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+    </style>
 </head>
 <body>
-  <!-- Starfield -->
-  <canvas id="starfield">Kartikeya</canvas>
+    <!-- Starfield Background -->
+    <canvas id="starfield"></canvas>
 
-  <!-- Floating availability -->
-  <div class="typewriter-center">Available Jan – Aug 2026 for Internships</div>
+    <!-- Typewriter Text -->
+    <div class="typewriter-center">Available Jan – Aug 2026 for Internships</div>
 
-  <!-- Landing -->
-  <section class="section landing-section" id="landing">
-    <img src="src/assets/Pictures/me.JPG" alt="Kartikeya Babhuta" class="hero-image" />
-    <h1 class="hero-name">Kartikeya Babhuta</h1>
-    <div class="subtitle-container">
-      <div class="subtitle-text">
-        ⚡ Electrical Engineering @ McMaster University • 👨🏻‍💻 Research Intern @ MARC • 🏎️ Electrical Director @ MAC Formula Electric • 🌮🍕🥪 Will work for snacks
-      </div>
+    <div class="main-container">
+        <!-- Landing Section -->
+        <section class="landing-section">
+            <img src='src/assets/Pictures/me.JPG' alt="Kartikeya Babhuta" class="hero-image">
+            <h1 class="hero-name">Kartikeya Babhuta</h1>
+            <div class="subtitle-container">
+                <div class="subtitle-text">⚡ Electrical Engineering @ McMaster University</div>
+                <div class="subtitle-text">👨🏻‍💻 Research Intern @ McMaster Automotive Resource Centre</div>
+                <div class="subtitle-text">🏎️ Electrical Director @ MAC Formula Electric</div>
+                <div class="subtitle-text">🌮🍕🥪 Will work for snacks</div>
+            </div>
+            <!-- Scroll Indicator Button -->
+            <button class="scroll-indicator" onclick="scrollToControlCenter()" aria-label="Scroll to Control Center">
+                <div class="chevron"></div>
+                <div class="chevron"></div>
+                <div class="chevron"></div>
+            </button>
+        </section>
+
+        <!-- Control Center Section -->
+        <section class="control-center-section">
+            <div class="control-center-content">
+                <!-- Now Playing -->
+                <div class="now-playing">
+                    <div class="album-art" id="albumArt">🎵</div>
+                    <div class="now-playing-info">
+                        <div class="now-playing-title" id="songTitle">Loading...</div>
+                        <div class="now-playing-artist" id="songArtist">...</div>
+                    </div>
+                    <div class="playback-controls">
+                        <button class="playback-btn" onclick="previousSong()">◀</button>
+                        <button class="playback-btn" onclick="nextSong()">▷</button>
+                    </div>
+                </div>
+
+                <!-- Quick Controls -->
+                <div class="quick-controls">
+                    <div class="control-tile" id="airplaneMode" onclick="toggleAirplaneMode()">✈️</div>
+                    <div class="control-tile" id="bluetooth" onclick="toggleBluetooth()">🔗</div>
+                    <div class="control-tile" id="flashlight" onclick="toggleFlashlight()">🔦</div>
+                    <div class="control-tile" id="doNotDisturb" onclick="toggleDND()">🌙</div>
+                </div>
+
+                <!-- Brightness Slider -->
+                <div class="slider-tile">
+                    <div class="slider-row">
+                        <span class="slider-icon">☀️</span>
+                        <input type="range" class="ios-slider" id="brightnessSlider" min="30" max="100" value="100"
+                            oninput="adjustBrightness(this.value)">
+                    </div>
+                </div>
+
+                <!-- Portfolio Grid -->
+                <div class="portfolio-grid">
+                    <a href="skills.html" class="portfolio-tile">
+                        <div class="portfolio-icon">💡</div>
+                        <div class="portfolio-label">Skills</div>
+                    </a>
+                    <a href="projects.html" class="portfolio-tile">
+                        <div class="portfolio-icon">🚀</div>
+                        <div class="portfolio-label">Projects</div>
+                    </a>
+                    <a href="https://linkedin.com/in/kbabhuta" target="_blank" class="portfolio-tile">
+                        <div class="portfolio-icon">💼</div>
+                        <div class="portfolio-label">LinkedIn</div>
+                    </a>
+                    <a href="resume.pdf" target="_blank" class="portfolio-tile">
+                        <div class="portfolio-icon">📄</div>
+                        <div class="portfolio-label">Resume</div>
+                    </a>
+                    <a href="https://wave-english-539.notion.site/Kartikeya-Babhuta-b8fd9a2dbc1340db9e8df1c3fe323e25" target="_blank" class="portfolio-tile">
+                        <div class="portfolio-icon">📝</div>
+                        <div class="portfolio-label">Notion</div>
+                    </a>
+                    <a href="mailto:babhutk@mcmaster.ca" class="portfolio-tile">
+                        <div class="portfolio-icon">✉️</div>
+                        <div class="portfolio-label">Email</div>
+                    </a>
+                </div>
+            </div>
+        </section>
     </div>
-    <button class="scrollIndicator" onclick="scrollToControlCenter()" aria-label="Scroll to Control Center">
-      <span class="chev">⌄⌄⌄</span>
-    </button>
-  </section>
 
-  <!-- Control Center -->
-  <section class="section control-center-section" id="control-center">
-    <div class="control-center-content">
-      <!-- Now Playing -->
-      <div class="now-playing">
-        <div class="album-art" id="albumArt">🎵</div>
-        <div class="now-playing-info">
-          <div class="now-playing-title" id="songTitle">Loading...</div>
-          <div class="now-playing-artist" id="songArtist">...</div>
-        </div>
-        <div class="playback-controls">
-          <button class="playback-btn" onclick="previousSong()">◁</button>
-          <button class="playback-btn" onclick="nextSong()">▷</button>
-        </div>
-      </div>
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
 
-      <!-- Quick Controls -->
-      <div class="quick-controls">
-        <div class="control-tile" id="airplaneMode" onclick="toggleAirplaneMode()">✈️</div>
-        <div class="control-tile" id="bluetooth" onclick="toggleBluetooth()">ᚼᛒ</div>
-        <div class="control-tile" id="flashlight" onclick="toggleFlashlight()">🔦</div>
-        <div class="control-tile" id="doNotDisturb" onclick="toggleDND()">🌙</div>
-      </div>
+    <script>
+        // Configuration
+        const CONFIG = {
+            playlist: [
+                { title: "Cosmic Journey", artist: "Space Ambient", icon: "🌌" },
+                { title: "Stellar Dreams", artist: "Electronic Chill", icon: "✨" },
+                { title: "Nebula Waves", artist: "Lo-Fi Universe", icon: "🌠" },
+                { title: "Galactic Flow", artist: "Synthwave Mix", icon: "🚀" },
+                { title: "Starlight Code", artist: "Dev Beats", icon: "💫" }
+            ]
+        };
 
-      <!-- Brightness -->
-      <div class="slider-tile">
-        <div class="slider-row">
-          <span>☀️</span>
-          <input type="range" class="ios-slider" id="brightnessSlider" min="30" max="100" value="100" oninput="adjustBrightness(this.value)"/>
-        </div>
-      </div>
+        // State
+        let state = {
+            darkMode: true,
+            airplaneMode: false,
+            bluetoothConnected: false,
+            dndEnabled: false,
+            currentSongIndex: 0,
+            stars: []
+        };
 
-      <!-- Menus -->
-      <div class="menu-btn" onclick="openTimerModal()">
-        <div class="menu-btn-left"><span>⏱️</span><span>Timer</span></div>
-        <span>›</span>
-      </div>
-      <div class="menu-btn" onclick="openFocusModal()">
-        <div class="menu-btn-left"><span>🎯</span><span>Focus</span></div>
-        <span>›</span>
-      </div>
-
-      <!-- Portfolio Shortcuts -->
-      <div class="portfolio-grid">
-        <a href="skills.html" class="portfolio-tile">
-          <div class="portfolio-icon">💡</div><div class="portfolio-label">Skills</div>
-        </a>
-        <a href="projects.html" class="portfolio-tile">
-          <div class="portfolio-icon">🚀</div><div class="portfolio-label">Projects</div>
-        </a>
-        <a href="https://linkedin.com/in/kbabhuta" target="_blank" class="portfolio-tile">
-          <div class="portfolio-icon">💼</div><div class="portfolio-label">LinkedIn</div>
-        </a>
-        <a href="resume.pdf" target="_blank" class="portfolio-tile">
-          <div class="portfolio-icon">📄</div><div class="portfolio-label">Resume</div>
-        </a>
-        <a href="https://notion.so/yourworkspace" target="_blank" class="portfolio-tile">
-          <div class="portfolio-icon">📝</div><div class="portfolio-label">Notion</div>
-        </a>
-        <a href="mailto:your.email@example.com" class="portfolio-tile">
-          <div class="portfolio-icon">✉️</div><div class="portfolio-label">Email</div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Overlay + Modals -->
-  <div class="modal-overlay" id="modalOverlay" onclick="closeAllModals()"></div>
-  <div class="modal-panel" id="timerModal">
-    <div class="modal-header">Set Timer</div>
-    <div class="time-picker">
-      <div class="picker-column" id="minutePicker"></div>
-      <span class="picker-separator">:</span>
-      <div class="picker-column" id="secondPicker"></div>
-    </div>
-    <button class="action-btn" onclick="startTimer()">Start Timer</button>
-    <button class="action-btn cancel-btn" onclick="closeTimerModal()">Cancel</button>
-  </div>
-
-  <div class="modal-panel" id="focusModal">
-    <div class="modal-header">Focus Mode</div>
-    <div class="focus-options">
-      <div class="focus-option" onclick="setFocusMode('dnd')"><div>🌙</div><div>Do Not Disturb</div></div>
-      <div class="focus-option" onclick="setFocusMode('sleep')"><div>😴</div><div>Sleep</div></div>
-      <div class="focus-option" onclick="setFocusMode('work')"><div>💼</div><div>Work</div></div>
-      <div class="focus-option" onclick="setFocusMode('personal')"><div>🏠</div><div>Personal</div></div>
-    </div>
-    <button class="action-btn cancel-btn" onclick="closeFocusModal()">Done</button>
-  </div>
-
-  <div class="notification" id="notification"></div>
-
-  <script>
-    /* Minimal config/state */
-    const CONFIG={yourName:"Kartikeya Babhuta",
-      playlist:[
-        {title:"Cosmic Journey",artist:"Space Ambient",icon:"🌌"},
-        {title:"Stellar Dreams",artist:"Electronic Chill",icon:"✨"},
-        {title:"Nebula Waves",artist:"Lo-Fi Universe",icon:"🌠"},
-        {title:"Galactic Flow",artist:"Synthwave Mix",icon:"🚀"},
-        {title:"Starlight Code",artist:"Dev Beats",icon:"💫"}
-      ]};
-    const state={currentSongIndex:0,airplaneMode:false,bluetoothConnected:false,dndEnabled:false,currentFocus:null,timerSeconds:0,timerInterval:null,selectedMinutes:5,selectedSeconds:0,stars:[]};
-
-    /* Init */
-    window.addEventListener('DOMContentLoaded',()=>{
-      initStarfield(); initializeMusic(); initTimePickers();
-      // auto-cycle songs
-      setInterval(nextSong,8000);
-    });
-
-    /* Simple local scroll */
-    function scrollToControlCenter(){
-      const el=document.getElementById('control-center');
-      el?.scrollIntoView({behavior:'smooth',block:'start'});
-    }
-
-    /* Starfield */
-    function initStarfield(){
-      const c=document.getElementById('starfield'); const ctx=c.getContext('2d');
-      function resize(){c.width=innerWidth;c.height=innerHeight}
-      resize(); addEventListener('resize',resize);
-      for(let i=0;i<150;i++){state.stars.push({x:Math.random()*c.width,y:Math.random()*c.height,radius:Math.random()*1.2,alpha:Math.random(),speed:Math.random()*0.3+0.1,twinkleSpeed:Math.random()*0.02})}
-      (function anim(){
-        ctx.fillStyle='rgba(0,0,0,.05)';ctx.fillRect(0,0,c.width,c.height);
-        state.stars.forEach(s=>{
-          ctx.beginPath();ctx.arc(s.x,s.y,s.radius,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${s.alpha})`;ctx.fill();
-          s.alpha+=Math.sin(Date.now()*s.twinkleSpeed)*0.01;s.alpha=Math.max(0.2,Math.min(1,s.alpha));
-          s.y+=s.speed;if(s.y>c.height){s.y=0;s.x=Math.random()*c.width;}
+        // Initialize
+        window.addEventListener('DOMContentLoaded', function() {
+            initStarfield();
+            initializeMusic();
+            setInterval(nextSong, 8000);
         });
-        requestAnimationFrame(anim);
-      })();
-    }
 
-    /* Toggles & brightness */
-    function toggleAirplaneMode(){state.airplaneMode=!state.airplaneMode;document.body.classList.toggle('airplane-mode');document.getElementById('airplaneMode').classList.toggle('active');showNotification(state.airplaneMode?'✈️ Airplane Mode On':'✈️ Airplane Mode Off')}
-    function toggleBluetooth(){state.bluetoothConnected=!state.bluetoothConnected;document.getElementById('bluetooth').classList.toggle('active');const dev=navigator.platform||'Device';showNotification(state.bluetoothConnected?`Connected to ${dev}`:`Disconnected from ${dev}`)}
-    function toggleFlashlight(){document.body.classList.toggle('light-mode');document.getElementById('flashlight').classList.toggle('active')}
-    function toggleDND(){state.dndEnabled=!state.dndEnabled;document.getElementById('doNotDisturb').classList.toggle('active');state.dndEnabled?setFocusMode('dnd'):clearFocusMode()}
-    function adjustBrightness(v){document.documentElement.style.setProperty('--brightness',v/100)}
+        // Smooth scroll to control center
+        function scrollToControlCenter() {
+            const controlCenter = document.querySelector('.control-center-section');
+            if (controlCenter) {
+                controlCenter.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
 
-    /* Music */
-    function initializeMusic(){updateNowPlaying()}
-    function updateNowPlaying(){const s=CONFIG.playlist[state.currentSongIndex];document.getElementById('songTitle').textContent=s.title;document.getElementById('songArtist').textContent=s.artist;document.getElementById('albumArt').textContent=s.icon}
-    function nextSong(){state.currentSongIndex=(state.currentSongIndex+1)%CONFIG.playlist.length;updateNowPlaying()}
-    function previousSong(){state.currentSongIndex=state.currentSongIndex===0?CONFIG.playlist.length-1:state.currentSongIndex-1;updateNowPlaying()}
+        // Starfield animation
+        function initStarfield() {
+            const canvas = document.getElementById('starfield');
+            const ctx = canvas.getContext('2d');
 
-    /* Timer */
-    function openTimerModal(){document.getElementById('modalOverlay').classList.add('active');document.getElementById('timerModal').classList.add('active')}
-    function closeTimerModal(){document.getElementById('modalOverlay').classList.remove('active');document.getElementById('timerModal').classList.remove('active')}
-    function initTimePickers(){
-      const minCol=document.getElementById('minutePicker');const secCol=document.getElementById('secondPicker');
-      for(let i=0;i<2;i++){minCol.innerHTML+='<div class="picker-item">&nbsp;</div>';secCol.innerHTML+='<div class="picker-item">&nbsp;</div>'}
-      for(let i=0;i<=59;i++){const d=document.createElement('div');d.className='picker-item';d.textContent=i.toString().padStart(2,'0');d.dataset.value=i;minCol.appendChild(d)}
-      for(let i=0;i<=59;i+=5){const d=document.createElement('div');d.className='picker-item';d.textContent=i.toString().padStart(2,'0');d.dataset.value=i;secCol.appendChild(d)}
-      for(let i=0;i<2;i++){minCol.innerHTML+='<div class="picker-item">&nbsp;</div>';secCol.innerHTML+='<div class="picker-item">&nbsp;</div>'}
-      minCol.scrollTop=80;secCol.scrollTop=0;
-      [minCol,secCol].forEach(col=>{
-        col.addEventListener('scroll',function(){
-          const h=40;const idx=Math.round(this.scrollTop/h);
-          this.querySelectorAll('.picker-item').forEach((it,j)=>it.classList.toggle('selected',j===idx+2));
-          if(col===minCol){state.selectedMinutes=Math.max(0,Math.min(59,idx))}else{state.selectedSeconds=Math.max(0,Math.min(59,idx*5))}
-        })
-      })
-    }
-    function startTimer(){
-      if(state.selectedMinutes===0&&state.selectedSeconds===0){showNotification('Please select a valid time');return;}
-      state.timerSeconds=state.selectedMinutes*60+state.selectedSeconds;closeTimerModal();
-      showNotification(`⏱️ Timer set for ${state.selectedMinutes}:${state.selectedSeconds.toString().padStart(2,'0')}`);
-      state.timerInterval=setInterval(()=>{state.timerSeconds--;if(state.timerSeconds<=0){clearInterval(state.timerInterval);playTimerSound();showNotification('⏰ Timer finished!')}},1000)
-    }
-    function playTimerSound(){
-      const ac=new (window.AudioContext||window.webkitAudioContext)();const notes=[523.25,659.25,783.99,1046.5];
-      notes.forEach((f,i)=>{setTimeout(()=>{const o=ac.createOscillator();const g=ac.createGain();o.type='sine';o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(0,ac.currentTime);g.gain.linearRampToValueAtTime(.3,ac.currentTime+.02);g.gain.exponentialRampToValueAtTime(.01,ac.currentTime+.4);o.start(ac.currentTime);o.stop(ac.currentTime+.4)},i*150)})
-    }
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
 
-    /* Focus modal */
-    function openFocusModal(){document.getElementById('modalOverlay').classList.add('active');document.getElementById('focusModal').classList.add('active')}
-    function closeFocusModal(){document.getElementById('modalOverlay').classList.remove('active');document.getElementById('focusModal').classList.remove('active')}
-    function setFocusMode(mode){
-      clearFocusMode();state.currentFocus=mode;document.body.classList.add(`focus-${mode}`);
-      document.querySelectorAll('.focus-option').forEach(el=>el.classList.remove('active'));
-      const names={dnd:'Do Not Disturb',sleep:'Sleep Focus',work:'Work Focus',personal:'Personal Focus'};
-      showNotification(`${names[mode]} enabled`);setTimeout(closeFocusModal,500)
-    }
-    function clearFocusMode(){document.body.classList.remove('focus-dnd','focus-sleep','focus-work','focus-personal');document.querySelectorAll('.focus-option').forEach(el=>el.classList.remove('active'));state.currentFocus=null}
-    function closeAllModals(){document.getElementById('modalOverlay').classList.remove('active');document.getElementById('timerModal').classList.remove('active');document.getElementById('focusModal').classList.remove('active')}
+            // Create stars
+            for (let i = 0; i < 150; i++) {
+                state.stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1.2,
+                    alpha: Math.random(),
+                    speed: Math.random() * 0.3 + 0.1,
+                    twinkleSpeed: Math.random() * 0.02
+                });
+            }
 
-    /* Notifications */
-    function showNotification(msg){const n=document.getElementById('notification');n.textContent=msg;n.classList.add('show');setTimeout(()=>n.classList.remove('show'),2500)}
-  </script>
+            function animate() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                state.stars.forEach(star => {
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+                    ctx.fill();
+
+                    star.alpha += Math.sin(Date.now() * star.twinkleSpeed) * 0.01;
+                    star.alpha = Math.max(0.2, Math.min(1, star.alpha));
+
+                    star.y += star.speed;
+                    if (star.y > canvas.height) {
+                        star.y = 0;
+                        star.x = Math.random() * canvas.width;
+                    }
+                });
+
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Quick controls
+        function toggleAirplaneMode() {
+            state.airplaneMode = !state.airplaneMode;
+            document.body.classList.toggle('airplane-mode');
+            document.getElementById('airplaneMode').classList.toggle('active');
+            showNotification(state.airplaneMode ? '✈️ Airplane Mode On' : '✈️ Airplane Mode Off');
+        }
+
+        function toggleBluetooth() {
+            state.bluetoothConnected = !state.bluetoothConnected;
+            document.getElementById('bluetooth').classList.toggle('active');
+            const device = navigator.platform || 'Device';
+            showNotification(state.bluetoothConnected ? `Connected to ${device}` : `Disconnected from ${device}`);
+        }
+
+        function toggleFlashlight() {
+            state.darkMode = !state.darkMode;
+            document.body.classList.toggle('light-mode');
+            document.getElementById('flashlight').classList.toggle('active');
+        }
+
+        function toggleDND() {
+            state.dndEnabled = !state.dndEnabled;
+            document.getElementById('doNotDisturb').classList.toggle('active');
+            showNotification(state.dndEnabled ? '🌙 Do Not Disturb On' : '🌙 Do Not Disturb Off');
+        }
+
+        function adjustBrightness(value) {
+            document.documentElement.style.setProperty('--brightness', value / 100);
+        }
+
+        // Music controls
+        function initializeMusic() {
+            updateNowPlaying();
+        }
+
+        function updateNowPlaying() {
+            const song = CONFIG.playlist[state.currentSongIndex];
+            document.getElementById('songTitle').textContent = song.title;
+            document.getElementById('songArtist').textContent = song.artist;
+            document.getElementById('albumArt').textContent = song.icon;
+        }
+
+        function nextSong() {
+            state.currentSongIndex = (state.currentSongIndex + 1) % CONFIG.playlist.length;
+            updateNowPlaying();
+        }
+
+        function previousSong() {
+            state.currentSongIndex = state.currentSongIndex === 0 ? CONFIG.playlist.length - 1 : state.currentSongIndex - 1;
+            updateNowPlaying();
+        }
+
+        // Notifications
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2500);
+        }
+    </script>
 </body>
 </html>

@@ -1,69 +1,351 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Projects — Kartikeya Babhuta</title>
-  <style>
-    /* Shared tiny base */
-    :root{--bg:#000;--panel:rgba(19,19,21,.78);--text:#fff;--tile:rgba(255,255,255,.12);--hover:rgba(255,255,255,.18);--border:rgba(255,255,255,.08)}
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
-    main{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:80px 20px}
-    .page{width:100%;max-width:900px;background:var(--panel);backdrop-filter:blur(60px);-webkit-backdrop-filter:blur(60px);border:1px solid var(--border);border-radius:24px;padding:32px}
-    .topbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
-    .back{color:#fff;text-decoration:none;background:var(--tile);border:1px solid var(--border);padding:10px 14px;border-radius:12px}
-    h1{font-size:32px;font-weight:700;margin:8px 0}
-    p.muted{opacity:.6;margin-bottom:24px}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Kartikeya Babhuta</title>
+    <style>
+        /* Global Variables */
+        :root {
+            --bg-color: #000;
+            --panel-bg: rgba(19, 19, 21, 0.95);
+            --tile-bg: rgba(255, 255, 255, 0.12);
+            --tile-hover: rgba(255, 255, 255, 0.18);
+            --tile-active: #3478F6;
+            --text-primary: #fff;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --border-color: rgba(255, 255, 255, 0.08);
+        }
 
-    .project-card{background:var(--tile);border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:16px;transition:.3s}
-    .project-card:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,.3)}
-    .project-title{font-size:18px;font-weight:600;margin-bottom:8px}
-    .project-desc{font-size:14px;opacity:.8;line-height:1.5;margin-bottom:12px}
-    .tech-tags{display:flex;flex-wrap:wrap;gap:6px}
-    .tech-tag{padding:4px 10px;background:rgba(52,120,246,.2);border-radius:10px;font-size:11px;color:#3478F6;font-weight:500}
-    .links{display:flex;gap:8px}
-    .pill{display:inline-block;padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:var(--tile);text-decoration:none;color:#fff;font-size:13px}
-  </style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Starfield Background */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 0;
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: var(--tile-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 16px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .back-button:hover {
+            background: var(--tile-hover);
+            transform: translateX(-2px);
+        }
+
+        /* Main Content */
+        .projects-container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            background: var(--panel-bg);
+            backdrop-filter: blur(60px);
+            -webkit-backdrop-filter: blur(60px);
+        }
+
+        .projects-content {
+            padding: 60px 20px 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            opacity: 0.6;
+            margin-bottom: 32px;
+            animation: fadeInUp 0.7s ease;
+        }
+
+        /* Project cards */
+        .project-card {
+            background: var(--tile-bg);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+            animation: fadeInUp 0.8s ease;
+            animation-fill-mode: both;
+        }
+
+        .project-card:nth-child(2) { animation-delay: 0.1s; }
+        .project-card:nth-child(3) { animation-delay: 0.2s; }
+        .project-card:nth-child(4) { animation-delay: 0.3s; }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+            background: var(--tile-hover);
+        }
+
+        .project-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .project-desc {
+            font-size: 14px;
+            opacity: 0.8;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tech-tag {
+            padding: 6px 12px;
+            background: rgba(52, 120, 246, 0.2);
+            border-radius: 12px;
+            font-size: 12px;
+            color: #3478F6;
+            font-weight: 500;
+            border: 1px solid rgba(52, 120, 246, 0.3);
+            transition: all 0.2s;
+        }
+
+        .tech-tag:hover {
+            background: rgba(52, 120, 246, 0.3);
+            transform: scale(1.05);
+        }
+
+        .project-links {
+            margin-top: 16px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .project-link {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .project-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .projects-content {
+                padding: 80px 15px 30px;
+            }
+            
+            .page-title {
+                font-size: 28px;
+            }
+            
+            .project-card {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <main>
-    <section class="page">
-      <div class="topbar">
-        <a class="back" href="index.html">← Home</a>
-        <div class="links">
-          <a class="pill" href="skills.html">Skills</a>
-          <a class="pill" href="resume.pdf" target="_blank">Resume</a>
-        </div>
-      </div>
+    <!-- Starfield Background -->
+    <canvas id="starfield"></canvas>
 
-      <h1>Portfolio</h1>
-      <p class="muted">Featured projects</p>
+    <!-- Back Button -->
+    <a href="index.html" class="back-button">
+        <span>←</span>
+        <span>Back to Home</span>
+    </a>
 
-      <article class="project-card">
-        <div class="project-title">AI-Powered Task Manager</div>
-        <div class="project-desc">Smart task management app that uses machine learning to prioritize tasks, predict completion times, and provide personalized productivity insights.</div>
-        <div class="tech-tags">
-          <span class="tech-tag">Next.js</span><span class="tech-tag">OpenAI</span><span class="tech-tag">PostgreSQL</span><span class="tech-tag">Tailwind</span>
-        </div>
-      </article>
+    <!-- Main Content -->
+    <div class="projects-container">
+        <div class="projects-content">
+            <h1 class="page-title">Featured Projects</h1>
+            <p class="page-subtitle">A selection of my recent work and experiments</p>
 
-      <article class="project-card">
-        <div class="project-title">E-Commerce Platform</div>
-        <div class="project-desc">Full-stack marketplace with real-time inventory, secure payments, and an intuitive admin dashboard for vendors.</div>
-        <div class="tech-tags">
-          <span class="tech-tag">React</span><span class="tech-tag">Node.js</span><span class="tech-tag">MongoDB</span><span class="tech-tag">Stripe</span>
-        </div>
-      </article>
+            <div class="project-card">
+                <div class="project-title">AI-Powered Task Manager</div>
+                <div class="project-desc">
+                    Smart task management app that uses machine learning to prioritize tasks,
+                    predict completion times, and provide personalized productivity insights.
+                    Built with a focus on user experience and intelligent automation.
+                </div>
+                <div class="tech-tags">
+                    <span class="tech-tag">Next.js</span>
+                    <span class="tech-tag">OpenAI</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">Tailwind CSS</span>
+                    <span class="tech-tag">TypeScript</span>
+                </div>
+                <div class="project-links">
+                    <a href="#" class="project-link">View Demo</a>
+                    <a href="#" class="project-link">GitHub</a>
+                </div>
+            </div>
 
-      <article class="project-card">
-        <div class="project-title">Social Analytics Dashboard</div>
-        <div class="project-desc">Real-time social media analytics tool with sentiment analysis, trend detection, and automated reporting features.</div>
-        <div class="tech-tags">
-          <span class="tech-tag">Vue.js</span><span class="tech-tag">Python</span><span class="tech-tag">Redis</span><span class="tech-tag">D3.js</span>
+            <div class="project-card">
+                <div class="project-title">E-Commerce Platform</div>
+                <div class="project-desc">
+                    Full-stack marketplace with real-time inventory, secure payments,
+                    and an intuitive admin dashboard for vendors. Features include product recommendations,
+                    user reviews, and advanced search functionality.
+                </div>
+                <div class="tech-tags">
+                    <span class="tech-tag">React</span>
+                    <span class="tech-tag">Node.js</span>
+                    <span class="tech-tag">MongoDB</span>
+                    <span class="tech-tag">Stripe API</span>
+                    <span class="tech-tag">Redis</span>
+                </div>
+                <div class="project-links">
+                    <a href="#" class="project-link">Live Site</a>
+                    <a href="#" class="project-link">Case Study</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-title">Social Analytics Dashboard</div>
+                <div class="project-desc">
+                    Real-time social media analytics tool with sentiment analysis,
+                    trend detection, and automated reporting features. Processes millions of posts
+                    daily to provide actionable insights for marketing teams.
+                </div>
+                <div class="tech-tags">
+                    <span class="tech-tag">Vue.js</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Redis</span>
+                    <span class="tech-tag">D3.js</span>
+                    <span class="tech-tag">AWS</span>
+                </div>
+                <div class="project-links">
+                    <a href="#" class="project-link">Documentation</a>
+                    <a href="#" class="project-link">GitHub</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-title">IoT Home Automation System</div>
+                <div class="project-desc">
+                    Smart home control system with custom hardware integration, mobile app control,
+                    and voice assistant compatibility. Includes energy monitoring and automated scheduling.
+                </div>
+                <div class="tech-tags">
+                    <span class="tech-tag">React Native</span>
+                    <span class="tech-tag">Arduino</span>
+                    <span class="tech-tag">MQTT</span>
+                    <span class="tech-tag">Firebase</span>
+                    <span class="tech-tag">C++</span>
+                </div>
+                <div class="project-links">
+                    <a href="#" class="project-link">Video Demo</a>
+                    <a href="#" class="project-link">Technical Specs</a>
+                </div>
+            </div>
         </div>
-      </article>
-    </section>
-  </main>
+    </div>
+
+    <script>
+        // Simple starfield animation
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function initStarfield() {
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            // Create stars
+            for (let i = 0; i < 100; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1,
+                    alpha: Math.random()
+                });
+            }
+
+            function animate() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                stars.forEach(star => {
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        window.addEventListener('DOMContentLoaded', initStarfield);
+    </script>
 </body>
 </html>
