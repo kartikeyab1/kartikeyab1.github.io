@@ -47,10 +47,6 @@
             overflow-x: hidden;
         }
 
-        body.airplane-mode {
-            background: url('https://images.pexels.com/photos/433283/pexels-photo-433283.jpeg') center/cover fixed !important;
-        }
-
         body.disco-mode {
             animation: disco 0.5s linear infinite;
         }
@@ -478,7 +474,8 @@
         .playback-controls {
             display: flex;
             gap: 8px;
-            align-items: center
+            align-items: center;
+            justify-content: center;
         }
 
         .playback-btn {
@@ -493,43 +490,54 @@
             justify-content: center;
             cursor: pointer;
             transition: all .2s;
-            font-size: 12px
+            font-size: 12px;
+            padding: 0;
+            margin: auto;
+            line-height: 1;
         }
 
         .playback-btn:active {
-            transform: scale(.9)
+            transform: scale(.95);
+            background: rgba(255, 255, 255, .25);
         }
 
         /* Grid rows */
         .control-row-1 {
             display: grid;
-            grid-template-columns: repeat(2, 10000fr) 2fr;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.7fr);
+            /* left cluster | right slider  */
             gap: 10px;
+            align-items: stretch;
+            /* makes right slider match left cluster height */
         }
 
         .control-group-left {
             display: grid;
-            grid-template-columns: repeat(2, 2fr);
-            grid-template-rows: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-auto-rows: 1fr;
+            /* two equal rows */
             gap: 10px;
         }
 
+        /* ROW 2: left = tall volume, right = 2×2 small tiles */
         .control-row-2 {
             display: grid;
-            grid-template-columns: 1fr repeat(1, 1fr);
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 2fr);
+            /* left slider | right cluster */
             gap: 10px;
+            align-items: stretch;
         }
 
         .control-group-right {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-auto-rows: 1fr;
             gap: 10px;
         }
 
         /* Tiles */
         .control-tile {
-            aspect-ratio: 1;
+            aspect-ratio: 1 / 1;
             background: var(--tile-bg);
             border-radius: 100px;
             backdrop-filter: blur(40px);
@@ -568,13 +576,23 @@
             justify-content: center
         }
 
-        .control-icon img {
+        /* White icons in dark mode */
+        body:not(.light-mode) .control-icon img {
             width: 28px;
             height: 28px;
-            filter: brightness(0) invert(1)
+            filter: brightness(0) invert(1);
+            display: block;
         }
 
-        /* Large vertical sliders */
+        /* Black icons in light mode */
+        body.light-mode .control-icon img {
+            width: 28px;
+            height: 28px;
+            filter: brightness(0);
+            display: block;
+        }
+
+        /* Vertical sliders */
         .slider-tile-large {
             background: var(--tile-bg);
             border-radius: 30px;
@@ -585,7 +603,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 16px 12px;
-            height: 180px;
+            height: auto;
             position: relative;
         }
 
@@ -669,13 +687,13 @@
             margin-bottom: 6px;
             display: flex;
             align-items: center;
-            justify-content: center
+            justify-content: center;
         }
 
         .portfolio-icon img {
             width: 100%;
             height: 100%;
-            object-fit: contain
+            object-fit: contain;
         }
 
         .portfolio-icon.emoji {
@@ -686,7 +704,7 @@
             font-size: 12px;
             font-weight: 500;
             opacity: 0.9;
-            text-align: center
+            text-align: center;
         }
 
         /* Flying Airplane */
@@ -695,7 +713,7 @@
             font-size: 40px;
             z-index: 1000;
             pointer-events: none;
-            animation: fly 3s ease-in-out
+            animation: fly 3s ease-in-out;
         }
 
         @keyframes fly {
@@ -926,7 +944,7 @@
 
                 <!-- Footer -->
                 <div class="footer">
-                    <p>© 2025 Kartikeya Babhuta. All rights reserved.</p>
+                    <p>© 2025 Kartikeya Babhuta.</p>
                 </div>
             </div>
         </section>
@@ -1018,12 +1036,11 @@
                 setTimeout(() => {
                     const airplane = document.createElement('div');
                     airplane.className = 'flying-airplane'; airplane.textContent = '✈️'; document.body.appendChild(airplane);
-                    setTimeout(() => { airplane.remove(); document.body.classList.add('airplane-mode'); }, 3000);
+                    setTimeout(() => { airplane.remove(); }, 3000);
                 }, 100);
             } else {
                 tile.classList.remove('active', 'warning');
                 state.airplaneMode = false;
-                document.body.classList.remove('airplane-mode');
                 showNotification('✈️ Airplane Mode Off');
             }
         }
@@ -1061,7 +1078,7 @@
             document.getElementById('disco').classList.toggle('active');
             document.body.classList.toggle('disco-mode');
             if (state.discoMode) {
-                showNotification('🕺 DISCO MODE ACTIVATED! 💃');
+                showNotification('🕺 PARTY MODE ACTIVATED! 💃');
                 const audio = new AudioContext();
                 const osc = audio.createOscillator(); const g = audio.createGain();
                 osc.connect(g); g.connect(audio.destination);
