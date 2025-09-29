@@ -653,6 +653,28 @@
             display: block;
         }
 
+        /* Default icon color for lock tile */
+        .lockTile .control-icon img {
+            width: 28px;
+            height: 28px;
+            filter: brightness(0) invert(1);
+            /* white on dark tile */
+            transition: filter 0.3s ease, background 0.3s ease;
+        }
+
+        /* When active: tile turns white */
+        .lockTile.lock-active {
+            background: #fff;
+            /* white tile */
+            transition: background 0.3s ease;
+        }
+
+        /* When active: icon turns iOS red */
+        .lockTile.lock-active .control-icon img {
+            filter: invert(18%) sepia(97%) saturate(7487%) hue-rotate(359deg) brightness(91%) contrast(112%);
+        }
+
+
         /* Vertical sliders */
         .slider-tile-large {
             background: var(--tile-bg);
@@ -997,8 +1019,10 @@
                             aria-label="Soon">
                             <div class="control-icon">🎯</div>
                         </div>
-                        <div class="control-tile" onclick="showNotification('🔒 Screen Lock')" aria-label="Lock">
-                            <div class="control-icon">🔒</div>
+                        <div class="control-tile lockTile" onclick="toggleLock()" aria-label="Lock">
+                            <div class="control-icon">
+                                <img src="src/assets/logos/lock.png" alt="Lock" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1190,7 +1214,17 @@
                 g.gain.exponentialRampToValueAtTime(0.01, audio.currentTime + 0.5);
                 osc.start(audio.currentTime); osc.stop(audio.currentTime + 0.5);
             } else {
-                showNotification('Party mode deactivated');
+                showNotification('Party mode deactivated 🥺');
+            }
+        }
+
+        function toggleLock() {
+            const tile = document.querySelector('.lockTile');
+            tile.classList.toggle('lock-active');
+            if (tile.classList.contains('lock-active')) {
+                showNotification('🔴 Orientation Lock On');
+            } else {
+                showNotification('⚪ Orientation Lock Off');
             }
         }
 
