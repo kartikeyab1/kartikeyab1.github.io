@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projects — Kartikeya Babhuta</title>
+  <style>
+    /* Shared tiny base */
+    :root{--bg:#000;--panel:rgba(19,19,21,.78);--text:#fff;--tile:rgba(255,255,255,.12);--hover:rgba(255,255,255,.18);--border:rgba(255,255,255,.08)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    main{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:80px 20px}
+    .page{width:100%;max-width:900px;background:var(--panel);backdrop-filter:blur(60px);-webkit-backdrop-filter:blur(60px);border:1px solid var(--border);border-radius:24px;padding:32px}
+    .topbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .back{color:#fff;text-decoration:none;background:var(--tile);border:1px solid var(--border);padding:10px 14px;border-radius:12px}
+    h1{font-size:32px;font-weight:700;margin:8px 0}
+    p.muted{opacity:.6;margin-bottom:24px}
+
+    .project-card{background:var(--tile);border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:16px;transition:.3s}
+    .project-card:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,.3)}
+    .project-title{font-size:18px;font-weight:600;margin-bottom:8px}
+    .project-desc{font-size:14px;opacity:.8;line-height:1.5;margin-bottom:12px}
+    .tech-tags{display:flex;flex-wrap:wrap;gap:6px}
+    .tech-tag{padding:4px 10px;background:rgba(52,120,246,.2);border-radius:10px;font-size:11px;color:#3478F6;font-weight:500}
+    .links{display:flex;gap:8px}
+    .pill{display:inline-block;padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:var(--tile);text-decoration:none;color:#fff;font-size:13px}
+  </style>
+</head>
+<body>
+  <main>
+    <section class="page">
+      <div class="topbar">
+        <a class="back" href="index.html">← Home</a>
+        <div class="links">
+          <a class="pill" href="skills.html">Skills</a>
+          <a class="pill" href="resume.pdf" target="_blank">Resume</a>
+        </div>
+      </div>
+
+      <h1>Portfolio</h1>
+      <p class="muted">Featured projects</p>
+
+      <article class="project-card">
+        <div class="project-title">AI-Powered Task Manager</div>
+        <div class="project-desc">Smart task management app that uses machine learning to prioritize tasks, predict completion times, and provide personalized productivity insights.</div>
+        <div class="tech-tags">
+          <span class="tech-tag">Next.js</span><span class="tech-tag">OpenAI</span><span class="tech-tag">PostgreSQL</span><span class="tech-tag">Tailwind</span>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-title">E-Commerce Platform</div>
+        <div class="project-desc">Full-stack marketplace with real-time inventory, secure payments, and an intuitive admin dashboard for vendors.</div>
+        <div class="tech-tags">
+          <span class="tech-tag">React</span><span class="tech-tag">Node.js</span><span class="tech-tag">MongoDB</span><span class="tech-tag">Stripe</span>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-title">Social Analytics Dashboard</div>
+        <div class="project-desc">Real-time social media analytics tool with sentiment analysis, trend detection, and automated reporting features.</div>
+        <div class="tech-tags">
+          <span class="tech-tag">Vue.js</span><span class="tech-tag">Python</span><span class="tech-tag">Redis</span><span class="tech-tag">D3.js</span>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

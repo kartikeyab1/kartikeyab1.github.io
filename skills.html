@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skills — Kartikeya Babhuta</title>
+  <style>
+    /* Shared tiny base */
+    :root{--bg:#000;--panel:rgba(19,19,21,.78);--text:#fff;--tile:rgba(255,255,255,.12);--hover:rgba(255,255,255,.18);--border:rgba(255,255,255,.08)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    main{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:80px 20px}
+    .page{width:100%;max-width:900px;background:var(--panel);backdrop-filter:blur(60px);-webkit-backdrop-filter:blur(60px);border:1px solid var(--border);border-radius:24px;padding:32px}
+    .topbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .back{color:#fff;text-decoration:none;background:var(--tile);border:1px solid var(--border);padding:10px 14px;border-radius:12px}
+    h1{font-size:32px;font-weight:700;margin:8px 0}
+    p.muted{opacity:.6;margin-bottom:24px}
+
+    .section-title{font-size:20px;font-weight:600;margin:24px 0 12px;opacity:.9}
+    .category-label{font-size:14px;opacity:.7;margin:14px 0 10px}
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px}
+    .skill-card{background:var(--tile);border-radius:16px;padding:16px 8px;text-align:center;border:1px solid var(--border);transition:.2s}
+    .skill-card:hover{transform:translateY(-4px);background:var(--hover)}
+    .skill-icon{font-size:28px;margin-bottom:6px}
+    .skill-name{font-size:12px;font-weight:500;opacity:.85}
+    .links{display:flex;gap:8px}
+    .pill{display:inline-block;padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:var(--tile);text-decoration:none;color:#fff;font-size:13px}
+  </style>
+</head>
+<body>
+  <main>
+    <section class="page">
+      <div class="topbar">
+        <a class="back" href="index.html">← Home</a>
+        <div class="links">
+          <a class="pill" href="projects.html">Projects</a>
+          <a class="pill" href="resume.pdf" target="_blank">Resume</a>
+        </div>
+      </div>
+
+      <h1>Skills & Technologies</h1>
+      <p class="muted">What I work with</p>
+
+      <div class="category">
+        <div class="category-label">Frontend</div>
+        <div class="skills-grid">
+          <div class="skill-card"><div class="skill-icon">⚛️</div><div class="skill-name">React</div></div>
+          <div class="skill-card"><div class="skill-icon">💚</div><div class="skill-name">Vue.js</div></div>
+          <div class="skill-card"><div class="skill-icon">🎯</div><div class="skill-name">TypeScript</div></div>
+          <div class="skill-card"><div class="skill-icon">⚡</div><div class="skill-name">Next.js</div></div>
+          <div class="skill-card"><div class="skill-icon">🎨</div><div class="skill-name">Tailwind</div></div>
+          <div class="skill-card"><div class="skill-icon">📱</div><div class="skill-name">React Native</div></div>
+        </div>
+      </div>
+
+      <div class="category">
+        <div class="category-label">Backend</div>
+        <div class="skills-grid">
+          <div class="skill-card"><div class="skill-icon">🟢</div><div class="skill-name">Node.js</div></div>
+          <div class="skill-card"><div class="skill-icon">🐍</div><div class="skill-name">Python</div></div>
+          <div class="skill-card"><div class="skill-icon">🗄️</div><div class="skill-name">PostgreSQL</div></div>
+          <div class="skill-card"><div class="skill-icon">🍃</div><div class="skill-name">MongoDB</div></div>
+          <div class="skill-card"><div class="skill-icon">🔥</div><div class="skill-name">Firebase</div></div>
+          <div class="skill-card"><div class="skill-icon">📦</div><div class="skill-name">Docker</div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
