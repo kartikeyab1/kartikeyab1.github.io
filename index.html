@@ -217,7 +217,8 @@
             white-space: nowrap;
             overflow: hidden;
             border-right: 1px solid rgba(255, 255, 255, .6);
-            animation: typing 5.5s steps(39, end) infinite, caretBlink .8s step-end infinite;
+            animation: typing 5.5s steps(37, end) infinite, caretBlink .8s step-end infinite;
+            max-width: 90vw;
         }
 
         @keyframes typing {
@@ -226,11 +227,11 @@
             }
 
             45% {
-                width: 37ch
+                width: min(37ch, 85vw)
             }
 
             55% {
-                width: 37ch
+                width: min(37ch, 85vw)
             }
 
             100% {
