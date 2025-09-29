@@ -395,6 +395,25 @@
                 height: 100px;
             }
         }
+
+        css
+
+        /* Enhanced video thumbnail styling */
+        .video-thumbnail {
+            background: linear-gradient(135deg, #ff4757, #ff6348);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .video-thumbnail::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, transparent 30%, rgba(0, 0, 0, 0.3));
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -417,21 +436,22 @@
             <div class="project-card">
                 <div class="project-header">
                     <div class="project-info">
-                        <div class="project-title">HV Safety Test Board</div>
+                        <div class="project-title">HVPB (HV Protection Board)</div>
                         <div class="project-desc">
-                            Designed and validated an analog-only control system for high-voltage contactors with
-                            sequenced precharge,
-                            IMD interlocks, and isolated sensing using AMC1411. Achieved full safety compliance for 600V
-                            operation.
+                            Designed and validated a fully analog high-voltage contactor control system featuring
+                            sequenced pre-charge, integrated IMD fault logic, and isolated voltage sensing via the
+                            AMC1411. Engineered for 600 V operation with robust creepage/clearance, galvanic isolation,
+                            and fault-safe latching to meet stringent FSAE safety requirements.
                         </div>
                     </div>
-                    <div class="project-image-container" onclick="openModal(this)">
+                    <div class="project-image-container" onclick="openVideo('hv-safety')">
                         <div class="project-image-flipper">
-                            <div class="project-image-front">
-                                <!-- Image placeholder - will show camera emoji -->
+                            <div class="project-image-front video-thumbnail">
+                                <span
+                                    style="font-size: 48px; color: white; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">▶️</span>
                             </div>
                             <div class="project-image-back">
-                                <p>Click to enlarge</p>
+                                <p>Play Video</p>
                             </div>
                         </div>
                     </div>
@@ -449,10 +469,11 @@
                 </div>
             </div>
 
+            <!-- EV7 Systems Integration with Video -->
             <div class="project-card">
                 <div class="project-header">
                     <div class="project-info">
-                        <div class="project-title">EV7 Systems Integration</div>
+                        <div class="project-title">EV6 Systems Integration</div>
                         <div class="project-desc">
                             Led the validation and integration of HV/LV subsystems for MAC Formula Electric, achieving
                             the team's
@@ -460,13 +481,14 @@
                             protocols and testing procedures.
                         </div>
                     </div>
-                    <div class="project-image-container" onclick="openModal(this)">
+                    <div class="project-image-container" onclick="openVideo('ev6')">
                         <div class="project-image-flipper">
-                            <div class="project-image-front">
-                                <!-- Image placeholder -->
+                            <div class="project-image-front video-thumbnail">
+                                <span
+                                    style="font-size: 48px; color: white; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">▶️</span>
                             </div>
                             <div class="project-image-back">
-                                <p>Click to enlarge</p>
+                                <p>Play Video</p>
                             </div>
                         </div>
                     </div>
@@ -483,6 +505,7 @@
                     <a href="#" class="project-link">Competition Results</a>
                 </div>
             </div>
+
 
             <div class="project-card">
                 <div class="project-header">
@@ -596,6 +619,17 @@
         <span class="close-modal" onclick="closeModal()">&times;</span>
         <img class="modal-content" id="modalImage">
     </div>
+   
+    <!-- Video Modal -->
+    <div id="videoModal" class="video-modal">
+        <div class="video-wrapper">
+            <span class="close-video" onclick="closeVideo()">&times;</span>
+            <video id="projectVideo" controls>
+                <source src="" type="video/mp4">
+                Your browser doesn't support video.
+            </video>
+        </div>
+    </div>
 
     <script>
         // Starfield animation
@@ -673,6 +707,60 @@
                 closeModal();
             }
         }
+        // Video handling functions
+        function openVideo(project) {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('projectVideo');
+            const videoSource = video.querySelector('source');
+
+            // Set video source based on project
+            switch (project) {
+                case 'hv-safety':
+                    videoSource.src = 'src/assets/Projects/Videos/HVPB 3D Render.avi';
+                    break;
+                case 'ev6':
+                    videoSource.src = 'src/assets/Projects/Videos/video.MP4';
+                    break;
+                default:
+                    videoSource.src = '';
+            }
+
+            video.load(); // Reload video with new source
+            modal.classList.add('active');
+
+            // Auto-play after a short delay
+            setTimeout(() => {
+                video.play();
+            }, 100);
+        }
+
+        function closeVideo() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('projectVideo');
+
+            modal.classList.remove('active');
+            video.pause();
+            video.currentTime = 0;
+        }
+
+        // Event listeners for video modal
+        document.addEventListener('DOMContentLoaded', () => {
+            const videoModal = document.getElementById('videoModal');
+
+            // Close on background click
+            videoModal.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeVideo();
+                }
+            });
+
+            // Close on Escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && videoModal.classList.contains('active')) {
+                    closeVideo();
+                }
+            });
+        });
     </script>
 </body>
 
