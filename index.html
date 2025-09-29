@@ -331,7 +331,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px 20px;
+            padding: 10px;
+            margin: 0 auto;
             background: rgba(0, 0, 0, .5);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -339,6 +340,7 @@
             z-index: 20;
             padding-bottom: calc(40px + env(safe-area-inset-bottom));
             padding-top: calc(40px + env(safe-area-inset-top));
+            overflow: hidden;
         }
 
         .control-center-content {
