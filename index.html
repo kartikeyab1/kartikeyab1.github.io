@@ -426,6 +426,38 @@
             border-radius: 1px
         }
 
+        /* Light mode: black text, bars, battery */
+        body.light-mode .panel-statusbar {
+            border-bottom: 1px solid #000;
+        }
+
+        /* Text (ROGERS, time) black */
+        body.light-mode .panel-statusbar .left span,
+        body.light-mode .panel-statusbar .right span {
+            color: #000;
+        }
+
+        /* Network bars black */
+        body.light-mode .panel-statusbar .signal-bars .bar {
+            background: #000;
+        }
+
+        /* Battery outline + fill black */
+        body.light-mode .panel-statusbar .battery {
+            border: 1px solid #000;
+            background: rgba(0, 0, 0, 0.05);
+            /* optional subtle gray bg */
+        }
+
+        body.light-mode .panel-statusbar .battery::after {
+            background: #000;
+        }
+
+        body.light-mode .panel-statusbar .battery .battery-level {
+            background: #000;
+        }
+
+
         /* Now Playing */
         .now-playing {
             background: rgba(255, 255, 255, .08);
@@ -436,6 +468,14 @@
             gap: 14px;
             min-height: 84px;
         }
+
+        /* Light mode: black border around Now Playing tile */
+        body.light-mode .now-playing {
+            border: 1px solid #000;
+            background: rgba(0, 0, 0, 0.05);
+            /* optional subtle gray bg */
+        }
+
 
         .album-art {
             width: 54px;
@@ -499,6 +539,21 @@
         .playback-btn:active {
             transform: scale(.95);
             background: rgba(255, 255, 255, .25);
+        }
+
+        /* Light mode: black arrows + black border */
+        body.light-mode .playback-btn {
+            background: rgba(0, 0, 0, 0.08);
+            color: #000;
+            /* arrow color black */
+            border: 1px solid #000;
+            /* black border */
+        }
+
+        /* Click effect */
+        body.light-mode .playback-btn:active {
+            background: rgba(0, 0, 0, 0.15);
+            transform: scale(.95);
         }
 
         /* Grid rows */
@@ -573,7 +628,13 @@
             font-size: 28px;
             display: flex;
             align-items: center;
-            justify-content: center
+            justify-content: center;
+        }
+
+        /* Light mode: black border for all tiles */
+        body.light-mode .control-tile {
+            border: 1px solid #000;
+            /* border */
         }
 
         /* White icons in dark mode */
@@ -623,7 +684,6 @@
             background: #000;
             /* Optional: black thumb in light mode */
         }
-
 
         .slider-icon-top {
             font-size: 22px;
@@ -706,6 +766,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        /* Light mode: black border for portfolio tiles */
+        body.light-mode .portfolio-tile {
+            border: 1px solid #000;
+            color: #000;
         }
 
         body:not(.light-mode) .portfolio-icon img[alt="GitHub"] {
