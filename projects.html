@@ -558,7 +558,8 @@
                     <div class="project-image-container" onclick="openModal(this)">
                         <div class="project-image-flipper">
                             <div class="project-image-front">
-                            </div>  <img src="src/assets/Projects/Pictures/paper.png" alt="HIL PCB" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div> <img src="src/assets/Projects/Pictures/paper.png" alt="HIL PCB"
+                                style="width: 100%; height: 100%; object-fit: cover;">
                             <div class="project-image-back">
                                 <p>Click to enlarge</p>
                             </div>
@@ -583,7 +584,8 @@
                     <div class="project-info">
                         <div class="project-title">LV Battery Pack Design</div>
                         <div class="project-desc">
-                            Engineered a custom 6S 2170 lithium-ion battery pack for the car's LV Bus. Implemented comprehensive safety features including
+                            Engineered a custom 6S 2170 lithium-ion battery pack for the car's LV Bus. Implemented
+                            comprehensive safety features including
                             fusing and efficient conduction paths.
                         </div>
                     </div>
@@ -684,14 +686,30 @@
 
         window.addEventListener('DOMContentLoaded', initStarfield);
 
-        // Modal functionality
         function openModal(container) {
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImage');
 
-            // For demo, using placeholder image
+            // Get the project card to identify which image to show
+            const projectCard = container.closest('.project-card');
+            const projectTitle = projectCard.querySelector('.project-title').textContent;
+
             modal.classList.add('active');
-            modalImg.src = 'https://via.placeholder.com/800x600/667eea/ffffff?text=Project+Image';
+
+            // Set different images based on project
+            switch (projectTitle) {
+                case 'HIL Interface PCB':
+                    modalImg.src = 'src'; // Your image path
+                    break;
+                case 'APM Interleaved Buck Converter':
+                    modalImg.src = 'src/assets/Projects/Pictures/paper.png'; // Your image path
+                    break;
+                case 'LV Battery Pack Design':
+                    modalImg.src = './images/lv-battery-full.jpg'; // Your image path
+                    break;
+                default:
+                    modalImg.src = 'https://via.placeholder.com/800x600/667eea/ffffff?text=Project+Image';
+            }
         }
 
         function closeModal() {
