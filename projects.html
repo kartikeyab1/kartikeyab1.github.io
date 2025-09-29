@@ -372,6 +372,89 @@
             transform: scale(1.2);
         }
 
+        /* Video Modal - Fixed positioning */
+        .video-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .video-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-wrapper {
+            width: 90%;
+            max-width: 900px;
+            max-height: 80vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            max-height: 70vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            background: #000;
+        }
+
+        .close-video {
+            position: absolute;
+            top: -45px;
+            right: 0;
+            font-size: 36px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+
+        .close-video:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Prevent body scroll when modal is open */
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* Enhanced video thumbnail styling */
+        .video-thumbnail {
+            background: linear-gradient(135deg, #ff4757, #ff6348);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .video-thumbnail::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, transparent 30%, rgba(0, 0, 0, 0.3));
+            pointer-events: none;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .projects-content {
@@ -394,25 +477,6 @@
                 width: 100px;
                 height: 100px;
             }
-        }
-
-        css
-
-        /* Enhanced video thumbnail styling */
-        .video-thumbnail {
-            background: linear-gradient(135deg, #ff4757, #ff6348);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .video-thumbnail::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle, transparent 30%, rgba(0, 0, 0, 0.3));
-            pointer-events: none;
         }
     </style>
 </head>
@@ -470,7 +534,6 @@
                 </div>
             </div>
 
-            <!-- EV7 Systems Integration with Video -->
             <div class="project-card">
                 <div class="project-header">
                     <div class="project-info">
@@ -485,8 +548,8 @@
                     <div class="project-image-container" onclick="openVideo('ev6')">
                         <div class="project-image-flipper">
                             <div class="project-image-front video-thumbnail">
-                                <span
-                                    style="font-size: 48px; color: white; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">▶️</span>
+                                <img src="src/assets/Projects/Pictures/car.jpeg" alt="APM Buck Converter"
+                                >
                             </div>
                             <div class="project-image-back">
                                 <p>Play Video</p>
@@ -510,7 +573,6 @@
                 </div>
             </div>
 
-
             <div class="project-card">
                 <div class="project-header">
                     <div class="project-info">
@@ -522,9 +584,8 @@
                     </div>
                     <div class="project-image-container" onclick="openModal(this)">
                         <div class="project-image-flipper">
-                            <div class="project-image-front">
-                                <!-- Image placeholder -->
-                            </div>
+                            <img src="src/assets/Projects/Pictures/typhoon.png" alt="HIL PCB"
+                                style="width: 100%; height: 100%; object-fit: cover;">
                             <div class="project-image-back">
                                 <p>Click to enlarge</p>
                             </div>
@@ -557,8 +618,7 @@
                     </div>
                     <div class="project-image-container" onclick="openModal(this)">
                         <div class="project-image-flipper">
-                            <div class="project-image-front">
-                            </div> <img src="src/assets/Projects/Pictures/paper.png" alt="HIL PCB"
+                            <img src="src/assets/Projects/Pictures/paper.png" alt="APM Buck Converter"
                                 style="width: 100%; height: 100%; object-fit: cover;">
                             <div class="project-image-back">
                                 <p>Click to enlarge</p>
@@ -582,11 +642,12 @@
             <div class="project-card">
                 <div class="project-header">
                     <div class="project-info">
-                        <div class="project-title">LV Battery Pack Design</div>
+                        <div class="project-title">PCB Business Card (Picture Coming Soon)</div>
                         <div class="project-desc">
-                            Engineered a custom 6S 2170 lithium-ion battery pack for the car's LV Bus. Implemented
-                            comprehensive safety features including
-                            fusing and efficient conduction paths.
+                            Created a custom PCB business card integrating NFC for digital contact sharing, embedded PCB
+                            design tools, and a functional ruler. Engineered with a unique layout feature that reduces
+                            reflow manufacturing time by more than 50%, blending manufacturibililty with practical
+                            utility.
                         </div>
                     </div>
                     <div class="project-image-container" onclick="openModal(this)">
@@ -601,15 +662,16 @@
                     </div>
                 </div>
                 <div class="tech-tags">
-                    <span class="tech-tag">2170 Cells</span>
-                    <span class="tech-tag">BMS Integration</span>
-                    <span class="tech-tag">Design and Manufacturing</span>
-                    <span class="tech-tag">Safety Systems</span>
-                    <span class="tech-tag">Serviceability</span>
+                    <span class="tech-tag">PCB Layout</span>
+                    <span class="tech-tag">DFA & DFM</span>
+                    <span class="tech-tag">RF</span>
+                    <span class="tech-tag">Planar Coils</span>
+                    <span class="tech-tag">Utility</span>
+                    <span class="tech-tag">PCB Designer Toolkit</span>
                 </div>
                 <div class="project-links">
                     <a href="#" class="project-link">Build Documentation</a>
-                    <a href="#" class="project-link">CAD Files</a>
+                    <a href="#" class="project-link">Reflow Process</a>
                 </div>
             </div>
         </div>
@@ -686,6 +748,7 @@
 
         window.addEventListener('DOMContentLoaded', initStarfield);
 
+        // Modal functionality
         function openModal(container) {
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImage');
@@ -699,13 +762,13 @@
             // Set different images based on project
             switch (projectTitle) {
                 case 'HIL Interface PCB':
-                    modalImg.src = 'src'; // Your image path
+                    modalImg.src = 'src/assets/Projects/Pictures/typhoon.png';
                     break;
                 case 'APM Interleaved Buck Converter':
-                    modalImg.src = 'src/assets/Projects/Pictures/paper.png'; // Your image path
+                    modalImg.src = 'src/assets/Projects/Pictures/paper.png';
                     break;
-                case 'LV Battery Pack Design':
-                    modalImg.src = './images/lv-battery-full.jpg'; // Your image path
+                case 'PCB Business Card (Picture Coming Soon)':
+                    modalImg.src = 'https://via.placeholder.com/800x600/667eea/ffffff?text=Coming+Soon';
                     break;
                 default:
                     modalImg.src = 'https://via.placeholder.com/800x600/667eea/ffffff?text=Project+Image';
@@ -717,26 +780,24 @@
             modal.classList.remove('active');
         }
 
-        // Close modal on outside click
-        window.onclick = function (event) {
-            const modal = document.getElementById('imageModal');
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
-        // Video handling functions
+        // Video handling functions - FIXED
         function openVideo(project) {
             const modal = document.getElementById('videoModal');
             const video = document.getElementById('projectVideo');
             const videoSource = video.querySelector('source');
 
+            // Prevent body scrolling
+            document.body.classList.add('modal-open');
+
             // Set video source based on project
             switch (project) {
                 case 'hv-safety':
-                    videoSource.src = 'src/assets/Projects/Videos/HVPB 3D Render.avi';
+                    videoSource.src = './videos/hv-safety-board.mp4'; // Update with your actual path
+                    videoSource.type = 'video/mp4';
                     break;
                 case 'ev6':
-                    videoSource.src = 'src/assets/Projects/Videos/video.MP4';
+                    videoSource.src = 'src/assets/Projects/Videos/video.mp4'; // Update with your actual path
+                    videoSource.type = 'video/mp4';
                     break;
                 default:
                     videoSource.src = '';
@@ -755,26 +816,46 @@
             const modal = document.getElementById('videoModal');
             const video = document.getElementById('projectVideo');
 
+            // Re-enable body scrolling
+            document.body.classList.remove('modal-open');
+
             modal.classList.remove('active');
             video.pause();
             video.currentTime = 0;
         }
 
-        // Event listeners for video modal
+        // Event listeners
         document.addEventListener('DOMContentLoaded', () => {
             const videoModal = document.getElementById('videoModal');
+            const imageModal = document.getElementById('imageModal');
 
-            // Close on background click
-            videoModal.addEventListener('click', function (e) {
-                if (e.target === this) {
-                    closeVideo();
-                }
-            });
+            // Close video on background click
+            if (videoModal) {
+                videoModal.addEventListener('click', function (e) {
+                    if (e.target === this) {
+                        closeVideo();
+                    }
+                });
+            }
+
+            // Close image modal on background click
+            if (imageModal) {
+                imageModal.addEventListener('click', function (e) {
+                    if (e.target === this) {
+                        closeModal();
+                    }
+                });
+            }
 
             // Close on Escape key
             document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape' && videoModal.classList.contains('active')) {
-                    closeVideo();
+                if (e.key === 'Escape') {
+                    if (videoModal && videoModal.classList.contains('active')) {
+                        closeVideo();
+                    }
+                    if (imageModal && imageModal.classList.contains('active')) {
+                        closeModal();
+                    }
                 }
             });
         });
