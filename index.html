@@ -584,7 +584,7 @@
         /* Grid rows */
         .control-row-1 {
             display: grid;
-            grid-template-columns: 1.8fr 1.2fr;
+            grid-template-columns: 2fr minmax(60px, 1fr);
             /* left cluster | right slider */
             gap: 10px;
             align-items: stretch;
@@ -603,7 +603,7 @@
         /* ROW 2: left = tall volume, right = 2×2 small tiles */
         .control-row-2 {
             display: grid;
-            grid-template-columns: 1.2fr 1.8fr;
+            grid-template-columns: minmax(60px, 1fr) 2fr;
             /* left slider | right cluster */
             gap: 10px;
             align-items: stretch;
@@ -702,9 +702,10 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 12px;
+            padding: 16px 8px;
             height: auto;
             position: relative;
+            width: 100%;
         }
 
         /* Make slider borders black in light mode */
