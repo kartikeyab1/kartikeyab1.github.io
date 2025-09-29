@@ -119,7 +119,7 @@
     .skill-card {
       background: var(--tile-bg);
       border-radius: 16px;
-      padding: 20px 12px;
+      padding: 20px 6px;
       text-align: center;
       backdrop-filter: blur(40px);
       border: 1px solid var(--border-color);
@@ -147,11 +147,21 @@
       font-weight: 500;
       opacity: 0.9;
       color: var(--text-primary);
+      align-items: center;
+      justify-content: center;
+      display: -webkit-box;
+      /* required */
+      -webkit-box-orient: vertical;
+      /* required */
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      overflow: hidden;
+      ;
     }
 
     .skill-level {
       margin-top: 8px;
-      height: 3px;
+      height: 4px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 2px;
       overflow: hidden;
@@ -240,7 +250,8 @@
   <div class="skills-container">
     <div class="skills-content">
       <h1 class="page-title">Skills & Technologies</h1>
-      <p class="page-subtitle">Analog & Digital Circuits, PCB design, Embedded Systems, Power Electronics, and Hardware Testing & Validation.</p>
+      <p class="page-subtitle">Analog & Digital Circuits, PCB design, Embedded Systems, Power Electronics, and Hardware
+        Testing & Validation.</p>
 
       <!-- Core Skills -->
       <div class="skills-category">
@@ -342,7 +353,7 @@
             <span class="skill-icon"><img
                 src="https://digilent.com/reference/_media/reference/test-and-measurement/analog-discovery-2/analog_discovery_2_obl_600.png"
                 alt="Oscilloscopes"></span>
-            <div class="skill-name">Oscilloscopes</div>
+            <div class="skill-name">Oscilloscopes & Signal Generators</div>
             <div class="skill-level">
               <div class="skill-level-fill" style="width:100%"></div>
             </div>
@@ -359,9 +370,7 @@
           </div>
 
           <div class="skill-card">
-            <span class="skill-icon"><img
-                src="src/assets/logos/psu.png"
-                alt="DC Supplies and Loads"></span>
+            <span class="skill-icon"><img src="src/assets/logos/psu.png" alt="DC Supplies and Loads"></span>
             <div class="skill-name">DC Supplies and Loads</div>
             <div class="skill-level">
               <div class="skill-level-fill" style="width:100%"></div>
