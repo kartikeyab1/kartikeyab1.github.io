@@ -6,297 +6,231 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects - Kartikeya Babhuta</title>
     <style>
-        /* Global Variables */
-        :root {
-            --bg-color: #000;
-            --panel-bg: rgba(19, 19, 21, 0.95);
-            --tile-bg: rgba(255, 255, 255, 0.08);
-            --tile-hover: rgba(255, 255, 255, 0.14);
-            --tile-active: #3478F6;
-            --text-primary: #fff;
-            --text-secondary: rgba(255, 255, 255, 0.7);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background: var(--bg-color);
-            color: var(--text-primary);
-            min-height: 100vh;
-            position: relative;
+        :root {
+            --primary: #000000;
+            --surface: rgba(255, 255, 255, 0.02);
+            --text: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.6);
+            --accent-blue: #0A84FF;
+            --accent-purple: #5E5CE6;
+            --accent-pink: #FF375F;
+            --accent-green: #30D158;
+            --accent-yellow: #FFD60A;
+            --accent-orange: #FF9500;
+            --border: rgba(255, 255, 255, 0.1);
+            --glow: 0 0 40px rgba(10, 132, 255, 0.5);
         }
 
-        /* Starfield Background */
-        #starfield {
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+            background: #000;
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+            cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="white" stroke-width="2"/></svg>'), auto;
+        }
+
+        /* Animated Background */
+        .universe {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(ellipse at center, #0a0a0a 0%, #000 100%);
+            z-index: -2;
+        }
+
+        .stars {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100vh;
-            z-index: 0;
+            height: 100%;
+            z-index: -1;
         }
 
-        /* Back Button */
-        .back-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 100;
-            background: var(--tile-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 10px 16px;
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-
-        .back-button:hover {
-            background: var(--tile-hover);
-            transform: translateX(-2px);
-        }
-
-        /* Main Content */
-        .projects-container {
-            position: relative;
-            z-index: 10;
-            min-height: 100vh;
-            background: var(--panel-bg);
-            backdrop-filter: blur(60px);
-            -webkit-backdrop-filter: blur(60px);
-        }
-
-        .projects-content {
-            padding: 60px 20px 40px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .page-title {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            animation: fadeInUp 0.6s ease;
-            background: linear-gradient(135deg, #fff 0%, #999 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .page-subtitle {
-            font-size: 15px;
-            opacity: 0.7;
-            margin-bottom: 40px;
-            animation: fadeInUp 0.7s ease;
-        }
-
-        /* Project cards */
-        .project-card {
-            background: linear-gradient(135deg, var(--tile-bg), rgba(255, 255, 255, 0.05));
-            border-radius: 24px;
-            padding: 28px;
-            margin-bottom: 24px;
-            backdrop-filter: blur(40px);
-            border: 1px solid var(--border-color);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: fadeInUp 0.8s ease;
-            animation-fill-mode: both;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-card::before {
-            content: '';
+        .star {
             position: absolute;
+            background: white;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: twinkle 4s infinite;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Floating Orbs Background */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--accent-blue), transparent);
+            top: -200px;
+            left: -200px;
+        }
+
+        .orb2 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--accent-purple), transparent);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: -10s;
+        }
+
+        .orb3 {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, var(--accent-pink), transparent);
+            top: 50%;
+            left: 50%;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            25% {
+                transform: translate(100px, -100px) scale(1.1);
+            }
+
+            50% {
+                transform: translate(-100px, 100px) scale(0.9);
+            }
+
+            75% {
+                transform: translate(50px, 50px) scale(1.05);
+            }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #3478F6, transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
+            padding: 20px 40px;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent);
+            backdrop-filter: blur(20px);
         }
 
-        .project-card:hover::before {
-            transform: translateX(100%);
-        }
-
-        .project-card:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-
-        .project-card:nth-child(3) {
-            animation-delay: 0.2s;
-        }
-
-        .project-card:nth-child(4) {
-            animation-delay: 0.3s;
-        }
-
-        .project-card:nth-child(5) {
-            animation-delay: 0.4s;
-        }
-
-        .project-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 40px rgba(52, 120, 246, 0.15);
-            background: linear-gradient(135deg, var(--tile-hover), rgba(52, 120, 246, 0.05));
-            border-color: rgba(52, 120, 246, 0.3);
-        }
-
-        /* Project header with image */
-        .project-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            gap: 20px;
-        }
-
-        .project-info {
-            flex: 1;
-        }
-
-        .project-title {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-        }
-
-        /* 3D Flip Card */
-        .project-image-container {
-            width: 120px;
-            height: 120px;
-            perspective: 1000px;
-            cursor: pointer;
-        }
-
-        .project-image-flipper {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.6s;
-        }
-
-        .project-image-container:hover .project-image-flipper {
-            transform: rotateY(180deg);
-        }
-
-        .project-image-front,
-        .project-image-back {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            backface-visibility: hidden;
-            border-radius: 16px;
-            overflow: hidden;
-            display: flex;
+        .back-btn {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-        }
-
-        .project-image-front {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border: 2px solid var(--border-color);
-        }
-
-        .project-image-front img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .project-image-front::after {
-            content: '📷';
-            position: absolute;
-            font-size: 48px;
-            opacity: 0.3;
-        }
-
-        .project-image-back {
-            background: linear-gradient(135deg, #3478F6, #667eea);
-            transform: rotateY(180deg);
-            padding: 10px;
-            border: 2px solid rgba(52, 120, 246, 0.3);
-        }
-
-        .project-image-back p {
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .project-desc {
-            font-size: 14px;
-            opacity: 0.85;
-            line-height: 1.7;
-            margin-bottom: 18px;
-            color: var(--text-secondary);
-        }
-
-        .tech-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 18px;
-        }
-
-        .tech-tag {
-            padding: 6px 14px;
-            background: rgba(52, 120, 246, 0.15);
-            border-radius: 14px;
-            font-size: 12px;
-            color: #6BA3F5;
-            font-weight: 500;
-            border: 1px solid rgba(52, 120, 246, 0.25);
-            transition: all 0.2s;
-        }
-
-        .tech-tag:hover {
-            background: rgba(52, 120, 246, 0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(52, 120, 246, 0.2);
-        }
-
-        .project-links {
-            display: flex;
-            gap: 12px;
-        }
-
-        .project-link {
-            padding: 8px 18px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            color: var(--text-primary);
+            gap: 10px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            color: var(--text);
             text-decoration: none;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
         }
 
-        .project-link:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, var(--accent-blue), transparent);
+            transition: all 0.5s;
+            transform: translate(-50%, -50%);
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px) scale(1.05);
+            border-color: var(--accent-blue);
+            box-shadow: var(--glow);
+        }
+
+        .back-btn:hover::before {
+            width: 200px;
+            height: 200px;
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            min-height: 100vh;
+            padding: 100px 20px 40px;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .title {
+            font-size: clamp(48px, 8vw, 72px);
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--accent-blue), var(--accent-purple), #fff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 8s ease infinite;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: var(--text-dim);
+            animation: fadeInUp 1s ease;
         }
 
         @keyframes fadeInUp {
@@ -311,554 +245,1115 @@
             }
         }
 
-        /* Modal for full image */
-        .image-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s;
+        /* Project Tiles Grid */
+        .tiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            perspective: 1000px;
         }
 
-        .image-modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* Project Tile */
+        .tile {
+            position: relative;
+            height: 400px;
+            border-radius: 24px;
+            overflow: hidden;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            animation: tileEntry 0.8s ease backwards;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid var(--border);
         }
 
-        .modal-content {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 20px;
-            animation: scaleIn 0.3s;
+        .tile:nth-child(1) {
+            animation-delay: 0.1s;
         }
 
-        @keyframes fadeIn {
+        .tile:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .tile:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .tile:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .tile:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes tileEntry {
             from {
                 opacity: 0;
+                transform: rotateX(-30deg) translateY(50px);
             }
 
             to {
                 opacity: 1;
+                transform: rotateX(0) translateY(0);
             }
         }
 
-        @keyframes scaleIn {
+        /* Tile Image */
+        .tile-image {
+            position: absolute;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 72px;
+            transition: all 0.5s;
+            overflow: hidden;
+        }
+
+        .tile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+
+        .tile-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        }
+
+        /* Tile Content */
+        .tile-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 24px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6));
+            backdrop-filter: blur(10px);
+            transition: all 0.4s;
+        }
+
+        .tile-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+
+        .tile-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s;
+        }
+
+        .tile-tag {
+            padding: 4px 12px;
+            background: rgba(10, 132, 255, 0.2);
+            border: 1px solid var(--accent-blue);
+            border-radius: 100px;
+            font-size: 11px;
+            color: var(--accent-blue);
+        }
+
+        /* Tile Hover Effects */
+        .tile:hover {
+            transform: rotateY(5deg) rotateX(-5deg) scale(1.05);
+            box-shadow:
+                0 30px 60px rgba(10, 132, 255, 0.3),
+                0 0 100px rgba(10, 132, 255, 0.1),
+                inset 0 0 30px rgba(10, 132, 255, 0.05);
+            border-color: var(--accent-blue);
+            z-index: 10;
+        }
+
+        .tile:hover .tile-image {
+            height: 50%;
+        }
+
+        .tile:hover .tile-image img {
+            transform: scale(1.1);
+        }
+
+        .tile:hover .tile-content {
+            padding-bottom: 30px;
+        }
+
+        .tile:hover .tile-tags {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tile:hover .tile-title {
+            color: var(--accent-blue);
+            transform: translateY(-5px);
+        }
+
+        /* Special tile animations */
+        .tile.bounce {
+            animation: bounce 0.6s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(0.95);
+            }
+        }
+
+        /* Project Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes modalSlideIn {
             from {
-                transform: scale(0.8);
+                transform: scale(0.8) translateY(100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            position: relative;
+            height: 250px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 32px 32px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .modal-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .modal-header-icon {
+            font-size: 100px;
+            color: white;
+            z-index: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--accent-pink);
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .modal-body {
+            padding: 40px;
+        }
+
+        .modal-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--text), var(--accent-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-description {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-dim);
+            margin-bottom: 32px;
+        }
+
+        .modal-skills {
+            margin-bottom: 32px;
+        }
+
+        .modal-skills-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--accent-blue);
+        }
+
+        .modal-skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .skill-tag {
+            padding: 10px 20px;
+            background: rgba(10, 132, 255, 0.1);
+            border: 1px solid rgba(10, 132, 255, 0.3);
+            border-radius: 100px;
+            font-size: 14px;
+            color: var(--accent-blue);
+            transition: all 0.3s;
+            animation: skillPop 0.5s ease backwards;
+        }
+
+        .skill-tag:nth-child(even) {
+            animation-delay: 0.1s;
+        }
+
+        .skill-tag:nth-child(odd) {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes skillPop {
+            from {
+                transform: scale(0);
+                opacity: 0;
             }
 
             to {
                 transform: scale(1);
+                opacity: 1;
             }
         }
 
-        .close-modal {
-            position: absolute;
-            top: 30px;
-            right: 40px;
-            font-size: 40px;
+        .skill-tag:hover {
+            background: var(--accent-blue);
             color: white;
-            cursor: pointer;
-            transition: transform 0.2s;
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 10px 20px rgba(10, 132, 255, 0.4);
         }
 
-        .close-modal:hover {
-            transform: scale(1.2);
+        .modal-links {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
         }
 
-        /* Video Modal - Fixed positioning */
-        .video-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
+        .modal-link {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border: none;
+            border-radius: 100px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
             overflow: hidden;
         }
 
-        .video-modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .video-wrapper {
-            width: 90%;
-            max-width: 900px;
-            max-height: 80vh;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .video-wrapper video {
-            width: 100%;
-            max-height: 70vh;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-            background: #000;
-        }
-
-        .close-video {
-            position: absolute;
-            top: -45px;
-            right: 0;
-            font-size: 36px;
-            color: white;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: rgba(255, 255, 255, 0.1);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1001;
-        }
-
-        .close-video:hover {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Prevent body scroll when modal is open */
-        body.modal-open {
-            overflow: hidden;
-        }
-
-        /* Enhanced video thumbnail styling */
-        .video-thumbnail {
-            background: linear-gradient(135deg, #ff4757, #ff6348);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .video-thumbnail::before {
+        .modal-link::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: radial-gradient(circle, transparent 30%, rgba(0, 0, 0, 0.3));
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s;
+        }
+
+        .modal-link:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .modal-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(10, 132, 255, 0.4);
+        }
+
+        /* Easter Egg Elements */
+        .floating-emoji {
+            position: fixed;
+            font-size: 40px;
+            animation: floatUp 3s ease-out forwards;
             pointer-events: none;
+            z-index: 3000;
+        }
+
+        @keyframes floatUp {
+            from {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Secret Button */
+        .secret-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-orange));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: secretPulse 2s infinite;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(255, 55, 95, 0.4);
+        }
+
+        @keyframes secretPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .secret-btn:hover {
+            transform: scale(1.2) rotate(180deg);
+            box-shadow: 0 15px 40px rgba(255, 55, 95, 0.6);
+        }
+
+        /* Rainbow Mode */
+        body.rainbow-mode {
+            animation: rainbowBg 5s linear infinite;
+        }
+
+        @keyframes rainbowBg {
+            0% {
+                filter: hue-rotate(0deg);
+            }
+
+            100% {
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        /* Party Mode */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-yellow);
+            animation: confettiFall 3s linear forwards;
+            z-index: 3000;
+        }
+
+        @keyframes confettiFall {
+            from {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Achievement Toast */
+        .achievement {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            color: white;
+            padding: 20px 40px;
+            border-radius: 100px;
+            font-weight: 600;
+            box-shadow: 0 20px 40px rgba(48, 209, 88, 0.4);
+            transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 3000;
+        }
+
+        .achievement.show {
+            top: 100px;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .projects-content {
-                padding: 80px 15px 30px;
+            .tiles-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
             }
 
-            .page-title {
-                font-size: 28px;
+            .tile {
+                height: 350px;
             }
 
-            .project-card {
-                padding: 20px;
+            .title {
+                font-size: 36px;
             }
 
-            .project-header {
-                flex-direction: column;
+            .modal-body {
+                padding: 24px;
             }
+        }
 
-            .project-image-container {
-                width: 100px;
-                height: 100px;
+        /* Loading Shimmer */
+        .shimmer {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            100% {
+                left: 100%;
+            }
+        }
+
+        /* Hover Ripple Effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(0);
+            animation: ripple 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Starfield Background -->
-    <canvas id="starfield"></canvas>
+    <!-- Background Elements -->
+    <div class="universe"></div>
+    <div class="stars" id="stars"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
 
-    <!-- Back Button -->
-    <a href="index.html" class="back-button">
-        <span>←</span>
-        <span>Back to Home</span>
-    </a>
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="index.html" class="back-btn">
+            <span>←</span>
+            <span>Back to Home</span>
+        </a>
+    </nav>
 
-    <!-- Main Content -->
-    <div class="projects-container">
-        <div class="projects-content">
-            <h1 class="page-title">Featured Projects</h1>
-            <p class="page-subtitle">Power electronics, high voltage systems, and embedded hardware designs</p>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title" id="mainTitle">Featured Projects</h1>
+            <p class="subtitle">Power electronics, Analog & Digital Circuits, PCB design, and Hardware Testing &
+                Validation.</p>
+        </header>
 
-            <div class="project-card">
-                <div class="project-header">
-                    <div class="project-info">
-                        <div class="project-title">HVPB (HV Protection Board)</div>
-                        <div class="project-desc">
-                            Designed and validated a fully analog high-voltage contactor control system featuring
-                            sequenced pre-charge, integrated IMD fault logic, and isolated voltage sensing via the
-                            AMC1411. Engineered for 600 V operation with robust creepage/clearance, galvanic isolation,
-                            and fault-safe latching to meet stringent FSAE safety requirements.
-                        </div>
-                    </div>
-                    <div class="project-image-container" onclick="openVideo('hv-safety')">
-                        <div class="project-image-flipper">
-                            <div class="project-image-front video-thumbnail">
-                                <span
-                                    style="font-size: 48px; color: white; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">▶️</span>
-                            </div>
-                            <div class="project-image-back">
-                                <p>Play Video</p>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Project Tiles Grid -->
+        <div class="tiles-grid" id="tilesGrid">
+            <!-- Project 1: HVPB -->
+            <div class="tile" data-project="hvpb" data-icon="⚡">
+                <div class="shimmer"></div>
+                <div class="tile-image">
+                    <img src="src/assets/Projects/Pictures/HVPB2.png" alt="HVPB Thumbnail">
                 </div>
-                <div class="tech-tags">
-                    <span class="tech-tag">600V Systems</span>
-                    <span class="tech-tag">Galvanic Isolation</span>
-                    <span class="tech-tag">E-Fuse</span>
-                    <span class="tech-tag">IMD</span>
-                    <span class="tech-tag">Altium Designer</span>
-                    <span class="tech-tag">High Power</span>
-                </div>
-                <div class="project-links">
-                    <a href="#" class="project-link">Technical Documentation</a>
-                    <a href="#" class="project-link">Test Results</a>
+                <div class="tile-content">
+                    <h3 class="tile-title">HVPB (HV Protection Board)</h3>
+                    <div class="tile-tags">
+                        <span class="tile-tag">600V</span>
+                        <span class="tile-tag">Analog</span>
+                        <span class="tile-tag">Safety</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="project-card">
-                <div class="project-header">
-                    <div class="project-info">
-                        <div class="project-title">EV6 Systems Integration</div>
-                        <div class="project-desc">
-                            Led the validation and integration of HV/LV subsystems for MAC Formula Electric, achieving
-                            the team's
-                            first fully operational Formula SAE electric vehicle. Implemented comprehensive safety
-                            protocols and testing procedures.
-                        </div>
-                    </div>
-                    <div class="project-image-container" onclick="openVideo('ev6')">
-                        <div class="project-image-flipper">
-                            <div class="project-image-front video-thumbnail">
-                                <img src="src/assets/Projects/Pictures/car.jpeg" alt="APM Buck Converter"
-                                >
-                            </div>
-                            <div class="project-image-back">
-                                <p>Play Video</p>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Project 2: EV6 -->
+            <div class="tile" data-project="ev6" data-icon="🏎️">
+                <div class="shimmer"></div>
+                <div class="tile-image">
+                    <img src="src/assets/Projects/Pictures/car.jpeg" alt="EV6"
+                        onerror="this.style.display='none'; this.parentElement.innerHTML='🏎️';">
                 </div>
-                <div class="tech-tags">
-                    <span class="tech-tag">144s NMC Battery</span>
-                    <span class="tech-tag">Contactor Logic</span>
-                    <span class="tech-tag">Fault Handling</span>
-                    <span class="tech-tag">CAN Bus</span>
-                    <span class="tech-tag">Hardware Development</span>
-                    <span class="tech-tag">Integration</span>
-                    <span class="tech-tag">Troubleshooting</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://macformularacing.com/" class="project-link">Team Page</a>
-                    <a href="https://legacy.sae.org/binaries//content/assets/cm/content/attend/student-events/results/formula-sae/fsae_ev_2024_results.pdf"
-                        class="project-link">Competition Results</a>
+                <div class="tile-content">
+                    <h3 class="tile-title">EV6 Systems Integration</h3>
+                    <div class="tile-tags">
+                        <span class="tile-tag">FSAE</span>
+                        <span class="tile-tag">Integration</span>
+                        <span class="tile-tag">Testing</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="project-card">
-                <div class="project-header">
-                    <div class="project-info">
-                        <div class="project-title">HIL Interface PCB</div>
-                        <div class="project-desc">
-                            Developing a HIL interface board to connect power converter evaluation hardware to Typhoon
-                            HIL systems with precision measurement and robust debugging features.
-                        </div>
-                    </div>
-                    <div class="project-image-container" onclick="openModal(this)">
-                        <div class="project-image-flipper">
-                            <img src="src/assets/Projects/Pictures/typhoon.png" alt="HIL PCB"
-                                style="width: 100%; height: 100%; object-fit: cover;">
-                            <div class="project-image-back">
-                                <p>Click to enlarge</p>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Project 3: HIL -->
+            <div class="tile" data-project="hil" data-icon="🔧">
+                <div class="shimmer"></div>
+                <div class="tile-image">
+                    <img src="src/assets/Projects/Pictures/typhoon.png" alt="HIL"
+                        onerror="this.style.display='none'; this.parentElement.innerHTML='🔧';">
                 </div>
-                <div class="tech-tags">
-                    <span class="tech-tag">Altium Designer</span>
-                    <span class="tech-tag">Typhoon HIL</span>
-                    <span class="tech-tag">4-Layer PCB</span>
-                    <span class="tech-tag">Test Points</span>
-                    <span class="tech-tag">Signal Conditioning</span>
-                </div>
-                <div class="project-links">
-                    <a href="#" class="project-link">Design Files</a>
-                    <a href="#" class="project-link">Test Methodology</a>
+                <div class="tile-content">
+                    <h3 class="tile-title">HIL Interface PCB</h3>
+                    <div class="tile-tags">
+                        <span class="tile-tag">PCB</span>
+                        <span class="tile-tag">Testing</span>
+                        <span class="tile-tag">HIL</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="project-card">
-                <div class="project-header">
-                    <div class="project-info">
-                        <div class="project-title">APM Interleaved Buck Converter</div>
-                        <div class="project-desc">
-                            Co-authored IECON 2025 paper on optimized design methodology for a 3.6 kW Asymmetric Pulse
-                            Modulation
-                            two-stage architecture. Achieved ~96% peak efficiency through advanced optimization
-                            techniques.
-                        </div>
-                    </div>
-                    <div class="project-image-container" onclick="openModal(this)">
-                        <div class="project-image-flipper">
-                            <img src="src/assets/Projects/Pictures/paper.png" alt="APM Buck Converter"
-                                style="width: 100%; height: 100%; object-fit: cover;">
-                            <div class="project-image-back">
-                                <p>Click to enlarge</p>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Project 4: APM -->
+            <div class="tile" data-project="apm" data-icon="📊">
+                <div class="shimmer"></div>
+                <div class="tile-image">
+                    <img src="src/assets/Projects/Pictures/paper.png" alt="APM"
+                        onerror="this.style.display='none'; this.parentElement.innerHTML='📊';">
                 </div>
-                <div class="tech-tags">
-                    <span class="tech-tag">3.6 kW</span>
-                    <span class="tech-tag">GaN FETs</span>
-                    <span class="tech-tag">98.2% Efficiency</span>
-                    <span class="tech-tag">MATLAB Optimization</span>
-                    <span class="tech-tag">IECON 2025</span>
-                </div>
-                <div class="project-links">
-                    <a href="#" class="project-link">Conference Paper</a>
-                    <a href="#" class="project-link">Simulation Results</a>
+                <div class="tile-content">
+                    <h3 class="tile-title">APM Buck Converter</h3>
+                    <div class="tile-tags">
+                        <span class="tile-tag">3.6kW</span>
+                        <span class="tile-tag">GaN</span>
+                        <span class="tile-tag">Research</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="project-card">
-                <div class="project-header">
-                    <div class="project-info">
-                        <div class="project-title">PCB Business Card (Picture Coming Soon)</div>
-                        <div class="project-desc">
-                            Created a custom PCB business card integrating NFC for digital contact sharing, embedded PCB
-                            design tools, and a functional ruler. Engineered with a unique layout feature that reduces
-                            reflow manufacturing time by more than 50%, blending manufacturibililty with practical
-                            utility.
-                        </div>
-                    </div>
-                    <div class="project-image-container" onclick="openModal(this)">
-                        <div class="project-image-flipper">
-                            <div class="project-image-front">
-                                <!-- Image placeholder -->
-                            </div>
-                            <div class="project-image-back">
-                                <p>Click to enlarge</p>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Project 5: Business Card -->
+            <div class="tile" data-project="business-card" data-icon="💳">
+                <div class="shimmer"></div>
+                <div class="tile-image">
+                    <span>💳</span>
                 </div>
-                <div class="tech-tags">
-                    <span class="tech-tag">PCB Layout</span>
-                    <span class="tech-tag">DFA & DFM</span>
-                    <span class="tech-tag">RF</span>
-                    <span class="tech-tag">Planar Coils</span>
-                    <span class="tech-tag">Utility</span>
-                    <span class="tech-tag">PCB Designer Toolkit</span>
-                </div>
-                <div class="project-links">
-                    <a href="#" class="project-link">Build Documentation</a>
-                    <a href="#" class="project-link">Reflow Process</a>
+                <div class="tile-content">
+                    <h3 class="tile-title">PCB Business Card</h3>
+                    <div class="tile-tags">
+                        <span class="tile-tag">NFC</span>
+                        <span class="tile-tag">Creative</span>
+                        <span class="tile-tag">DFM</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Image Modal -->
-    <div id="imageModal" class="image-modal">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
-        <img class="modal-content" id="modalImage">
-    </div>
-
-    <!-- Video Modal -->
-    <div id="videoModal" class="video-modal">
-        <div class="video-wrapper">
-            <span class="close-video" onclick="closeVideo()">&times;</span>
-            <video id="projectVideo" controls>
-                <source src="" type="video/mp4">
-                Your browser doesn't support video.
-            </video>
+    <!-- Project Modal -->
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <div class="modal-header" id="modalHeader">
+                <span class="modal-header-icon" id="modalIcon">⚡</span>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <h2 class="modal-title" id="modalTitle">Project Title</h2>
+                <p class="modal-description" id="modalDescription">Description</p>
+                <div class="modal-skills">
+                    <h3 class="modal-skills-title">Technologies & Skills</h3>
+                    <div class="modal-skills-grid" id="modalSkills"></div>
+                </div>
+                <div class="modal-links" id="modalLinks"></div>
+            </div>
         </div>
     </div>
+
+    <!-- Secret Button -->
+    <button class="secret-btn" id="secretBtn" title="Click me for surprises!">🎉</button>
+
+    <!-- Achievement Toast -->
+    <div class="achievement" id="achievement">🏆 Achievement Unlocked!</div>
 
     <script>
-        // Starfield animation
-        const canvas = document.getElementById('starfield');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-
-        function initStarfield() {
-            function resize() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+        // Project Data
+        const projects = {
+            hvpb: {
+                title: "HVPB (HV Protection Board)",
+                description: "Designed and validated a fully analog high-voltage contactor control system featuring sequenced pre-charge, integrated IMD fault logic, and isolated voltage sensing via the AMC1411. Engineered for 600 V operation with robust creepage/clearance, galvanic isolation, and fault-safe latching to meet stringent FSAE safety requirements.",
+                skills: ["600V Systems", "Galvanic Isolation", "E-Fuse", "IMD", "Altium Designer", "High Power"],
+                links: [
+                    { text: "Technical Documentation", url: "#" },
+                    { text: "Test Results", url: "#" }
+                ],
+                icon: "⚡",
+                gradient: "linear-gradient(135deg, #FFD60A, #FF9500)"
+            },
+            ev6: {
+                title: "EV6 Systems Integration",
+                description: "Led the validation and integration of HV/LV subsystems for MAC Formula Electric, achieving the team's first fully operational Formula SAE electric vehicle. Implemented comprehensive safety protocols and testing procedures.",
+                skills: ["144s NMC Battery", "Contactor Logic", "Fault Handling", "CAN Bus", "Hardware Development", "Integration", "Troubleshooting"],
+                links: [
+                    { text: "Team Page", url: "https://macformularacing.com/" },
+                    { text: "Competition Results", url: "https://legacy.sae.org/binaries//content/assets/cm/content/attend/student-events/results/formula-sae/fsae_ev_2024_results.pdf" }
+                ],
+                icon: "🏎️",
+                gradient: "linear-gradient(135deg, #FF375F, #5E5CE6)"
+            },
+            hil: {
+                title: "HIL Interface PCB",
+                description: "Developing a HIL interface board to connect power converter evaluation hardware to Typhoon HIL systems with precision measurement and robust debugging features.",
+                skills: ["Altium Designer", "Typhoon HIL", "4-Layer PCB", "Test Points", "Signal Conditioning"],
+                links: [
+                    { text: "Design Files", url: "#" },
+                    { text: "Test Methodology", url: "#" }
+                ],
+                icon: "🔧",
+                gradient: "linear-gradient(135deg, #30D158, #0A84FF)"
+            },
+            apm: {
+                title: "APM Interleaved Buck Converter",
+                description: "Co-authored IECON 2025 paper on optimized design methodology for a 3.6 kW Asymmetric Pulse Modulation two-stage architecture. Achieved ~96% peak efficiency through advanced optimization techniques.",
+                skills: ["3.6 kW", "GaN FETs", "98.2% Efficiency", "MATLAB Optimization", "IECON 2025"],
+                links: [
+                    { text: "Conference Paper", url: "#" },
+                    { text: "Simulation Results", url: "#" }
+                ],
+                icon: "📊",
+                gradient: "linear-gradient(135deg, #0A84FF, #5E5CE6)"
+            },
+            "business-card": {
+                title: "PCB Business Card (Picture Coming Soon)",
+                description: "Created a custom PCB business card integrating NFC for digital contact sharing, embedded PCB design tools, and a functional ruler. Engineered with a unique layout feature that reduces reflow manufacturing time by more than 50%, blending manufacturibililty with practical utility.",
+                skills: ["PCB Layout", "DFA & DFM", "RF", "Planar Coils", "Utility", "PCB Designer Toolkit"],
+                links: [
+                    { text: "Build Documentation", url: "#" },
+                    { text: "Reflow Process", url: "#" }
+                ],
+                icon: "💳",
+                gradient: "linear-gradient(135deg, #FF9500, #FF375F)"
             }
-            resize();
-            window.addEventListener('resize', resize);
+        };
 
-            // Create stars with varying properties
-            for (let i = 0; i < 150; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 1.5,
-                    alpha: Math.random(),
-                    speed: Math.random() * 0.5
-                });
+        // Generate Stars
+        function generateStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 15 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 4 + 's';
+                star.style.animationDuration = Math.random() * 3 + 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        generateStars();
+
+        // Click counter for easter eggs
+        let clickCount = 0;
+        let lastClickTime = Date.now();
+
+        // Tile Click Handlers
+        document.querySelectorAll('.tile').forEach(tile => {
+            // Add ripple effect on click
+            tile.addEventListener('click', function (e) {
+                e.stopPropagation(); // Prevent event bubbling
+
+                // Create ripple
+                const ripple = document.createElement('div');
+                ripple.className = 'ripple';
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = e.clientX - rect.left - size / 2 + 'px';
+                ripple.style.top = e.clientY - rect.top - size / 2 + 'px';
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+
+                // Bounce animation
+                this.classList.add('bounce');
+                setTimeout(() => this.classList.remove('bounce'), 600);
+
+                // Open modal - THIS IS THE IMPORTANT PART
+                const projectId = this.dataset.project;
+                console.log('Opening modal for:', projectId); // Debug log
+                openModal(projectId);
+
+                // Click tracking for easter egg
+                clickCount++;
+                const currentTime = Date.now();
+                if (currentTime - lastClickTime < 500) { // Double click
+                    createFloatingEmoji(this.dataset.icon);
+                }
+                lastClickTime = currentTime;
+
+                // Achievement check
+                if (clickCount === 10) {
+                    showAchievement('🎯 Curious Explorer - Clicked 10 tiles!');
+                }
+            });
+
+            // Hover effects
+            tile.addEventListener('mouseenter', function () {
+                // Add random tilt
+                const tiltX = (Math.random() - 0.5) * 10;
+                const tiltY = (Math.random() - 0.5) * 10;
+                this.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.05)`;
+            });
+
+            tile.addEventListener('mouseleave', function () {
+                this.style.transform = '';
+            });
+        });
+
+        // Modal Functions
+        function openModal(projectId) {
+            const modal = document.getElementById('projectModal');
+            const project = projects[projectId];
+
+            console.log('Project data:', project); // Debug log
+
+            if (!project) {
+                console.error('Project not found:', projectId);
+                return;
             }
 
-            function animate() {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Update modal content
+            document.getElementById('modalIcon').textContent = project.icon;
+            document.getElementById('modalTitle').textContent = project.title;
+            document.getElementById('modalDescription').textContent = project.description;
+            document.getElementById('modalHeader').style.background = project.gradient;
 
-                stars.forEach(star => {
-                    ctx.beginPath();
-                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
-                    ctx.fill();
+            // Update skills
+            const skillsContainer = document.getElementById('modalSkills');
+            skillsContainer.innerHTML = '';
+            project.skills.forEach((skill, index) => {
+                const skillTag = document.createElement('span');
+                skillTag.className = 'skill-tag';
+                skillTag.textContent = skill;
+                skillTag.style.animationDelay = index * 0.05 + 's';
+                skillsContainer.appendChild(skillTag);
+            });
 
-                    // Twinkle effect
-                    star.alpha += (Math.random() - 0.5) * 0.02;
-                    star.alpha = Math.max(0.2, Math.min(1, star.alpha));
-
-                    // Move stars slowly
-                    star.y += star.speed;
-                    if (star.y > canvas.height) {
-                        star.y = 0;
-                        star.x = Math.random() * canvas.width;
+            // Update links
+            const linksContainer = document.getElementById('modalLinks');
+            linksContainer.innerHTML = '';
+            project.links.forEach(link => {
+                const linkBtn = document.createElement('a');
+                linkBtn.className = 'modal-link';
+                linkBtn.href = link.url;
+                linkBtn.textContent = link.text;
+                if (link.url !== '#') {
+                    linkBtn.target = '_blank';
+                }
+                linkBtn.addEventListener('click', function (e) {
+                    if (link.url === '#') {
+                        e.preventDefault();
+                        showAchievement('📄 Documentation coming soon!');
                     }
                 });
+                linksContainer.appendChild(linkBtn);
+            });
 
-                requestAnimationFrame(animate);
-            }
-            animate();
-        }
-
-        window.addEventListener('DOMContentLoaded', initStarfield);
-
-        // Modal functionality
-        function openModal(container) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-
-            // Get the project card to identify which image to show
-            const projectCard = container.closest('.project-card');
-            const projectTitle = projectCard.querySelector('.project-title').textContent;
-
+            // Show modal
             modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
 
-            // Set different images based on project
-            switch (projectTitle) {
-                case 'HIL Interface PCB':
-                    modalImg.src = 'src/assets/Projects/Pictures/typhoon.png';
-                    break;
-                case 'APM Interleaved Buck Converter':
-                    modalImg.src = 'src/assets/Projects/Pictures/paper.png';
-                    break;
-                case 'PCB Business Card (Picture Coming Soon)':
-                    modalImg.src = 'https://via.placeholder.com/800x600/667eea/ffffff?text=Coming+Soon';
-                    break;
-                default:
-                    modalImg.src = 'https://via.placeholder.com/800x600/667eea/ffffff?text=Project+Image';
-            }
+            // Animate modal content
+            setTimeout(() => {
+                const modalContent = modal.querySelector('.modal-content');
+                modalContent.style.animation = 'modalSlideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            }, 10);
         }
 
         function closeModal() {
-            const modal = document.getElementById('imageModal');
+            const modal = document.getElementById('projectModal');
             modal.classList.remove('active');
+            document.body.style.overflow = '';
+
+            // Reset animation
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.style.animation = '';
         }
 
-        // Video handling functions - FIXED
-        function openVideo(project) {
-            const modal = document.getElementById('videoModal');
-            const video = document.getElementById('projectVideo');
-            const videoSource = video.querySelector('source');
+        // Close modal on background click
+        document.getElementById('projectModal').addEventListener('click', function (e) {
+            if (e.target === this) closeModal();
+        });
 
-            // Prevent body scrolling
-            document.body.classList.add('modal-open');
+        // ESC key to close modal
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeModal();
+        });
 
-            // Set video source based on project
-            switch (project) {
-                case 'hv-safety':
-                    videoSource.src = './videos/hv-safety-board.mp4'; // Update with your actual path
-                    videoSource.type = 'video/mp4';
-                    break;
-                case 'ev6':
-                    videoSource.src = 'src/assets/Projects/Videos/video.mp4'; // Update with your actual path
-                    videoSource.type = 'video/mp4';
-                    break;
-                default:
-                    videoSource.src = '';
-            }
+        // Secret Button Functions
+        let secretClickCount = 0;
+        const secretBtn = document.getElementById('secretBtn');
+        const secretModes = [
+            { name: '🌈 Rainbow Mode', action: () => toggleRainbowMode() },
+            { name: '🎊 Party Time', action: () => startParty() },
+            { name: '✨ Sparkle Effect', action: () => addSparkles() },
+            { name: '🎪 Circus Mode', action: () => circusMode() },
+            { name: '🚀 Space Launch', action: () => spaceLaunch() }
+        ];
 
-            video.load(); // Reload video with new source
-            modal.classList.add('active');
+        secretBtn.addEventListener('click', function () {
+            const mode = secretModes[secretClickCount % secretModes.length];
+            showAchievement(mode.name + ' Activated!');
+            mode.action();
+            secretClickCount++;
 
-            // Auto-play after a short delay
+            // Rotate button
+            this.style.transform = `scale(1.2) rotate(${secretClickCount * 360}deg)`;
             setTimeout(() => {
-                video.play();
+                this.style.transform = '';
+            }, 500);
+        });
+
+        // Easter Egg Functions
+        function toggleRainbowMode() {
+            document.body.classList.toggle('rainbow-mode');
+            if (document.body.classList.contains('rainbow-mode')) {
+                createConfetti(30);
+            }
+        }
+
+        function startParty() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => createConfetti(20), i * 200);
+            }
+            // Make tiles dance
+            document.querySelectorAll('.tile').forEach((tile, index) => {
+                setTimeout(() => {
+                    tile.style.animation = 'bounce 0.5s ease-out';
+                    setTimeout(() => {
+                        tile.style.animation = '';
+                    }, 500);
+                }, index * 100);
+            });
+        }
+
+        function addSparkles() {
+            const tiles = document.querySelectorAll('.tile');
+            tiles.forEach(tile => {
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        const sparkle = document.createElement('span');
+                        sparkle.textContent = '✨';
+                        sparkle.className = 'floating-emoji';
+                        sparkle.style.left = tile.offsetLeft + Math.random() * tile.offsetWidth + 'px';
+                        sparkle.style.top = tile.offsetTop + tile.offsetHeight + 'px';
+                        document.body.appendChild(sparkle);
+                        setTimeout(() => sparkle.remove(), 3000);
+                    }, i * 200);
+                }
+            });
+        }
+
+        function circusMode() {
+            const emojis = ['🎪', '🤡', '🎭', '🎨', '🎯', '🎲'];
+            emojis.forEach((emoji, i) => {
+                setTimeout(() => createFloatingEmoji(emoji), i * 200);
+            });
+        }
+
+        function spaceLaunch() {
+            const rocket = document.createElement('div');
+            rocket.textContent = '🚀';
+            rocket.className = 'floating-emoji';
+            rocket.style.fontSize = '80px';
+            rocket.style.left = '50%';
+            rocket.style.bottom = '0';
+            rocket.style.animation = 'floatUp 2s ease-in forwards';
+            document.body.appendChild(rocket);
+
+            setTimeout(() => {
+                createConfetti(50);
+                rocket.remove();
+            }, 2000);
+        }
+
+        function createFloatingEmoji(emoji) {
+            const floater = document.createElement('div');
+            floater.className = 'floating-emoji';
+            floater.textContent = emoji;
+            floater.style.left = Math.random() * window.innerWidth + 'px';
+            floater.style.top = window.innerHeight + 'px';
+            document.body.appendChild(floater);
+            setTimeout(() => floater.remove(), 3000);
+        }
+
+        function createConfetti(count = 20) {
+            const colors = ['#FF375F', '#0A84FF', '#30D158', '#FFD60A', '#FF9500', '#5E5CE6'];
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = Math.random() * 2 + 2 + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 50);
+            }
+        }
+
+        function showAchievement(text) {
+            const achievement = document.getElementById('achievement');
+            achievement.textContent = text;
+            achievement.classList.add('show');
+            setTimeout(() => {
+                achievement.classList.remove('show');
+            }, 3000);
+        }
+
+        // Title Easter Egg - Click to make it dance
+        const mainTitle = document.getElementById('mainTitle');
+        let titleClickCount = 0;
+        mainTitle.style.cursor = 'pointer';
+        mainTitle.addEventListener('click', function () {
+            titleClickCount++;
+            this.style.animation = 'none';
+
+            if (titleClickCount === 1) {
+                this.textContent = 'Featured Projects 🎯';
+            } else if (titleClickCount === 2) {
+                this.textContent = 'Awesome Projects 🚀';
+            } else if (titleClickCount === 3) {
+                this.textContent = 'Epic Projects ⚡';
+            } else if (titleClickCount === 4) {
+                this.textContent = 'Legendary Projects 🏆';
+            } else if (titleClickCount >= 5) {
+                this.textContent = 'ULTIMATE PROJECTS 🔥';
+                showAchievement('🎊 Title Master - Found the secret!');
+                startParty();
+                titleClickCount = 0;
+            }
+
+            setTimeout(() => {
+                this.style.animation = 'gradientShift 8s ease infinite';
             }, 100);
-        }
+        });
 
-        function closeVideo() {
-            const modal = document.getElementById('videoModal');
-            const video = document.getElementById('projectVideo');
+        // Hover sound effect simulation (visual feedback)
+        document.querySelectorAll('.tile, .modal-link, .skill-tag, .back-btn').forEach(elem => {
+            elem.addEventListener('mouseenter', function () {
+                this.style.transition = 'all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            });
+        });
 
-            // Re-enable body scrolling
-            document.body.classList.remove('modal-open');
-
-            modal.classList.remove('active');
-            video.pause();
-            video.currentTime = 0;
-        }
-
-        // Event listeners
-        document.addEventListener('DOMContentLoaded', () => {
-            const videoModal = document.getElementById('videoModal');
-            const imageModal = document.getElementById('imageModal');
-
-            // Close video on background click
-            if (videoModal) {
-                videoModal.addEventListener('click', function (e) {
-                    if (e.target === this) {
-                        closeVideo();
-                    }
-                });
+        // Keyboard shortcuts
+        let konamiCode = '';
+        document.addEventListener('keydown', function (e) {
+            konamiCode += e.key;
+            if (konamiCode.includes('ArrowUpArrowUpArrowDownArrowDown')) {
+                showAchievement('🎮 Konami Code Activated!');
+                document.body.style.transform = 'rotate(360deg)';
+                document.body.style.transition = 'transform 1s';
+                setTimeout(() => {
+                    document.body.style.transform = '';
+                }, 1000);
+                konamiCode = '';
             }
+            // Clear after 2 seconds
+            setTimeout(() => { konamiCode = ''; }, 2000);
+        });
 
-            // Close image modal on background click
-            if (imageModal) {
-                imageModal.addEventListener('click', function (e) {
-                    if (e.target === this) {
-                        closeModal();
-                    }
-                });
-            }
-
-            // Close on Escape key
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape') {
-                    if (videoModal && videoModal.classList.contains('active')) {
-                        closeVideo();
-                    }
-                    if (imageModal && imageModal.classList.contains('active')) {
-                        closeModal();
-                    }
+        // Track all tiles hover for achievement
+        const hoveredTiles = new Set();
+        document.querySelectorAll('.tile').forEach(tile => {
+            tile.addEventListener('mouseenter', function () {
+                hoveredTiles.add(this.dataset.project);
+                if (hoveredTiles.size === 5) {
+                    showAchievement('👀 Observer - Hovered all projects!');
                 }
             });
         });
+
+        // Page load animation
+        window.addEventListener('load', function () {
+            setTimeout(() => {
+                showAchievement('👋 Welcome to My Projects!');
+            }, 1000);
+        });
+
+        // Create subtle background animation
+        setInterval(() => {
+            const orbs = document.querySelectorAll('.orb');
+            orbs.forEach(orb => {
+                if (Math.random() > 0.8) {
+                    orb.style.filter = `blur(${40 + Math.random() * 20}px)`;
+                }
+            });
+        }, 3000);
     </script>
 </body>
 
