@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects - Kartikeya Babhuta</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/MTLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
     <style>
         * {
             margin: 0;
@@ -33,10 +36,8 @@
             color: var(--text);
             overflow-x: hidden;
             min-height: 100vh;
-            cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="white" stroke-width="2"/></svg>'), auto;
         }
 
-        /* Animated Background */
         .universe {
             position: fixed;
             width: 100%;
@@ -77,12 +78,11 @@
             }
         }
 
-        /* Floating Orbs Background */
         .orb {
             position: fixed;
             border-radius: 50%;
             filter: blur(40px);
-            opacity: 0.4;
+            opacity: 0.25;
             animation: float 20s infinite ease-in-out;
             pointer-events: none;
             z-index: -1;
@@ -134,7 +134,6 @@
             }
         }
 
-        /* Navigation */
         .nav {
             position: fixed;
             top: 0;
@@ -158,35 +157,15 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .back-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: radial-gradient(circle, var(--accent-blue), transparent);
-            transition: all 0.5s;
-            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
         }
 
         .back-btn:hover {
-            transform: translateX(-5px) scale(1.05);
+            transform: translateX(-5px);
             border-color: var(--accent-blue);
             box-shadow: var(--glow);
         }
 
-        .back-btn:hover::before {
-            width: 200px;
-            height: 200px;
-        }
-
-        /* Main Container */
         .container {
             position: relative;
             min-height: 100vh;
@@ -194,11 +173,9 @@
             z-index: 1;
         }
 
-        /* Header */
         .header {
             text-align: center;
             margin-bottom: 60px;
-            position: relative;
         }
 
         .title {
@@ -211,8 +188,6 @@
             -webkit-text-fill-color: transparent;
             animation: gradientShift 8s ease infinite;
             margin-bottom: 10px;
-            position: relative;
-            display: inline-block;
         }
 
         @keyframes gradientShift {
@@ -245,25 +220,21 @@
             }
         }
 
-        /* Project Tiles Grid */
         .tiles-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
             max-width: 1200px;
             margin: 0 auto;
-            perspective: 1000px;
         }
 
-        /* Project Tile */
         .tile {
             position: relative;
             height: 400px;
             border-radius: 24px;
             overflow: hidden;
             cursor: pointer;
-            transform-style: preserve-3d;
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.4s ease;
             animation: tileEntry 0.8s ease backwards;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
             border: 1px solid var(--border);
@@ -292,16 +263,15 @@
         @keyframes tileEntry {
             from {
                 opacity: 0;
-                transform: rotateX(-30deg) translateY(50px);
+                transform: translateY(50px);
             }
 
             to {
                 opacity: 1;
-                transform: rotateX(0) translateY(0);
+                transform: translateY(0);
             }
         }
 
-        /* Tile Image */
         .tile-image {
             position: absolute;
             width: 100%;
@@ -332,7 +302,6 @@
             background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
         }
 
-        /* Tile Content */
         .tile-content {
             position: absolute;
             bottom: 0;
@@ -369,15 +338,10 @@
             color: var(--accent-blue);
         }
 
-        /* Tile Hover Effects */
         .tile:hover {
-            transform: rotateY(5deg) rotateX(-5deg) scale(1.05);
-            box-shadow:
-                0 30px 60px rgba(10, 132, 255, 0.3),
-                0 0 100px rgba(10, 132, 255, 0.1),
-                inset 0 0 30px rgba(10, 132, 255, 0.05);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(10, 132, 255, 0.3);
             border-color: var(--accent-blue);
-            z-index: 10;
         }
 
         .tile:hover .tile-image {
@@ -388,10 +352,6 @@
             transform: scale(1.1);
         }
 
-        .tile:hover .tile-content {
-            padding-bottom: 30px;
-        }
-
         .tile:hover .tile-tags {
             opacity: 1;
             transform: translateY(0);
@@ -399,27 +359,8 @@
 
         .tile:hover .tile-title {
             color: var(--accent-blue);
-            transform: translateY(-5px);
         }
 
-        /* Special tile animations */
-        .tile.bounce {
-            animation: bounce 0.6s;
-        }
-
-        @keyframes bounce {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(0.95);
-            }
-        }
-
-        /* Project Modal */
         .modal {
             position: fixed;
             top: 0;
@@ -452,12 +393,12 @@
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
-            animation: modalSlideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation: modalSlideIn 0.5s ease;
         }
 
         @keyframes modalSlideIn {
             from {
-                transform: scale(0.8) translateY(100px);
+                transform: scale(0.9) translateY(50px);
                 opacity: 0;
             }
 
@@ -478,17 +419,39 @@
             overflow: hidden;
         }
 
-        .modal-header img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.7;
-        }
-
         .modal-header-icon {
             font-size: 100px;
             color: white;
             z-index: 1;
+        }
+
+        .viewer-toggle-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            background: rgba(10, 132, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 100px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 3;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .viewer-toggle-btn.show {
+            display: flex;
+        }
+
+        .viewer-toggle-btn:hover {
+            background: var(--accent-blue);
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(10, 132, 255, 0.5);
         }
 
         .modal-close {
@@ -561,33 +524,12 @@
             font-size: 14px;
             color: var(--accent-blue);
             transition: all 0.3s;
-            animation: skillPop 0.5s ease backwards;
-        }
-
-        .skill-tag:nth-child(even) {
-            animation-delay: 0.1s;
-        }
-
-        .skill-tag:nth-child(odd) {
-            animation-delay: 0.2s;
-        }
-
-        @keyframes skillPop {
-            from {
-                transform: scale(0);
-                opacity: 0;
-            }
-
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
         }
 
         .skill-tag:hover {
             background: var(--accent-blue);
             color: white;
-            transform: translateY(-3px) scale(1.1);
+            transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(10, 132, 255, 0.4);
         }
 
@@ -606,26 +548,6 @@
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .modal-link::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.6s;
-        }
-
-        .modal-link:hover::before {
-            width: 300px;
-            height: 300px;
         }
 
         .modal-link:hover {
@@ -633,121 +555,160 @@
             box-shadow: 0 15px 30px rgba(10, 132, 255, 0.4);
         }
 
-        /* Easter Egg Elements */
-        .floating-emoji {
+        .viewer-overlay {
             position: fixed;
-            font-size: 40px;
-            animation: floatUp 3s ease-out forwards;
-            pointer-events: none;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.98);
             z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        @keyframes floatUp {
-            from {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 1;
-            }
-
-            to {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
+        .viewer-overlay.active {
+            display: flex;
+            opacity: 1;
         }
 
-        /* Secret Button */
-        .secret-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-orange));
-            border: none;
+        .viewer-container {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            height: 80vh;
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.95), rgba(20, 20, 20, 0.95));
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(10, 132, 255, 0.3);
+        }
+
+        .viewer-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 30px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent);
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .viewer-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .viewer-close {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
             border-radius: 50%;
             color: white;
             font-size: 24px;
             cursor: pointer;
             transition: all 0.3s;
-            animation: secretPulse 2s infinite;
-            z-index: 100;
-            box-shadow: 0 10px 30px rgba(255, 55, 95, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        @keyframes secretPulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.1);
-            }
+        .viewer-close:hover {
+            background: var(--accent-pink);
+            transform: rotate(90deg) scale(1.1);
         }
 
-        .secret-btn:hover {
-            transform: scale(1.2) rotate(180deg);
-            box-shadow: 0 15px 40px rgba(255, 55, 95, 0.6);
+        .viewer-canvas {
+            width: 100%;
+            height: 100%;
         }
 
-        /* Rainbow Mode */
-        body.rainbow-mode {
-            animation: rainbowBg 5s linear infinite;
-        }
-
-        @keyframes rainbowBg {
-            0% {
-                filter: hue-rotate(0deg);
-            }
-
-            100% {
-                filter: hue-rotate(360deg);
-            }
-        }
-
-        /* Party Mode */
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: var(--accent-yellow);
-            animation: confettiFall 3s linear forwards;
-            z-index: 3000;
-        }
-
-        @keyframes confettiFall {
-            from {
-                transform: translateY(-100vh) rotate(0deg);
-                opacity: 1;
-            }
-
-            to {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        /* Achievement Toast */
-        .achievement {
-            position: fixed;
-            top: -100px;
+        .viewer-instructions {
+            position: absolute;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
-            color: white;
-            padding: 20px 40px;
+            padding: 12px 24px;
+            background: rgba(10, 132, 255, 0.9);
             border-radius: 100px;
-            font-weight: 600;
-            box-shadow: 0 20px 40px rgba(48, 209, 88, 0.4);
-            transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 3000;
+            color: white;
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 10;
+            white-space: nowrap;
+            max-width: 90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .achievement.show {
-            top: 100px;
+        .recenter-btn {
+            position: absolute;
+            top: 80px;
+            right: 30px;
+            padding: 10px 20px;
+            background: rgba(10, 132, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 100px;
+            color: white;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
         }
 
-        /* Responsive */
+        .recenter-btn:hover {
+            background: var(--accent-blue);
+            transform: scale(1.05);
+        }
+
+        .viewer-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            z-index: 10;
+        }
+
+        .viewer-loading.hidden {
+            display: none;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(10, 132, 255, 0.3);
+            border-top: 4px solid var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
         @media (max-width: 768px) {
             .tiles-grid {
                 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -765,16 +726,26 @@
             .modal-body {
                 padding: 24px;
             }
+
+            .viewer-container {
+                width: 95%;
+                height: 70vh;
+            }
+
+            .viewer-instructions {
+                font-size: 10px;
+                padding: 10px 16px;
+                bottom: 20px;
+            }
         }
 
-        /* Loading Shimmer */
         .shimmer {
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
             animation: shimmer 2s infinite;
         }
 
@@ -783,35 +754,16 @@
                 left: 100%;
             }
         }
-
-        /* Hover Ripple Effect */
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            transform: scale(0);
-            animation: ripple 0.6s ease-out;
-            pointer-events: none;
-        }
-
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
     </style>
 </head>
 
 <body>
-    <!-- Background Elements -->
     <div class="universe"></div>
     <div class="stars" id="stars"></div>
     <div class="orb orb1"></div>
     <div class="orb orb2"></div>
     <div class="orb orb3"></div>
 
-    <!-- Navigation -->
     <nav class="nav">
         <a href="index.html" class="back-btn">
             <span>←</span>
@@ -819,35 +771,30 @@
         </a>
     </nav>
 
-    <!-- Main Container -->
     <div class="container">
-        <!-- Header -->
         <header class="header">
-            <h1 class="title" id="mainTitle">Featured Projects</h1>
-            <p class="subtitle">Power electronics, Analog & Digital Circuits, PCB design, and Hardware Testing &
+            <h1 class="title">Featured Projects</h1>
+            <p class="subtitle">Power Electronics, Analog & Digital Circuits, PCB Design, and Hardware Testing &
                 Validation.</p>
         </header>
 
-        <!-- Project Tiles Grid -->
-        <div class="tiles-grid" id="tilesGrid">
-            <!-- Project 1: HVPB -->
-            <div class="tile" data-project="hvpb" data-icon="⚡">
+        <div class="tiles-grid">
+            <div class="tile" data-project="hvpb">
                 <div class="shimmer"></div>
                 <div class="tile-image">
-                    <img src="src/assets/Projects/Pictures/HVPB2.png" alt="HVPB Thumbnail">
+                    <img src="src/assets/Projects/Pictures/HVPB2.png" alt="HVPB">
                 </div>
                 <div class="tile-content">
                     <h3 class="tile-title">HVPB (HV Protection Board)</h3>
                     <div class="tile-tags">
                         <span class="tile-tag">600V</span>
                         <span class="tile-tag">Analog</span>
-                        <span class="tile-tag">Safety</span>
+                        <span class="tile-tag">HV Safety</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Project 2: EV6 -->
-            <div class="tile" data-project="ev6" data-icon="🏎️">
+            <div class="tile" data-project="ev6">
                 <div class="shimmer"></div>
                 <div class="tile-image">
                     <img src="src/assets/Projects/Pictures/car.jpeg" alt="EV6"
@@ -863,8 +810,7 @@
                 </div>
             </div>
 
-            <!-- Project 3: HIL -->
-            <div class="tile" data-project="hil" data-icon="🔧">
+            <div class="tile" data-project="hil">
                 <div class="shimmer"></div>
                 <div class="tile-image">
                     <img src="src/assets/Projects/Pictures/typhoon.png" alt="HIL"
@@ -873,15 +819,14 @@
                 <div class="tile-content">
                     <h3 class="tile-title">HIL Interface PCB</h3>
                     <div class="tile-tags">
-                        <span class="tile-tag">PCB</span>
-                        <span class="tile-tag">Testing</span>
                         <span class="tile-tag">HIL</span>
+                        <span class="tile-tag">Testing</span>
+                        <span class="tile-tag">PCB Design</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Project 4: APM -->
-            <div class="tile" data-project="apm" data-icon="📊">
+            <div class="tile" data-project="apm">
                 <div class="shimmer"></div>
                 <div class="tile-image">
                     <img src="src/assets/Projects/Pictures/paper.png" alt="APM"
@@ -891,14 +836,13 @@
                     <h3 class="tile-title">APM Buck Converter</h3>
                     <div class="tile-tags">
                         <span class="tile-tag">3.6kW</span>
-                        <span class="tile-tag">GaN</span>
+                        <span class="tile-tag">SiC</span>
                         <span class="tile-tag">Research</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Project 5: Business Card -->
-            <div class="tile" data-project="business-card" data-icon="💳">
+            <div class="tile" data-project="business-card">
                 <div class="shimmer"></div>
                 <div class="tile-image">
                     <span>💳</span>
@@ -907,7 +851,7 @@
                     <h3 class="tile-title">PCB Business Card</h3>
                     <div class="tile-tags">
                         <span class="tile-tag">NFC</span>
-                        <span class="tile-tag">Creative</span>
+                        <span class="tile-tag">Toolkit</span>
                         <span class="tile-tag">DFM</span>
                     </div>
                 </div>
@@ -915,11 +859,14 @@
         </div>
     </div>
 
-    <!-- Project Modal -->
     <div class="modal" id="projectModal">
         <div class="modal-content">
             <div class="modal-header" id="modalHeader">
                 <span class="modal-header-icon" id="modalIcon">⚡</span>
+                <button class="viewer-toggle-btn" id="viewerToggleBtn">
+                    <span>🔍</span>
+                    <span>View 3D Model</span>
+                </button>
                 <button class="modal-close" onclick="closeModal()">×</button>
             </div>
             <div class="modal-body">
@@ -934,25 +881,36 @@
         </div>
     </div>
 
-    <!-- Secret Button -->
-    <button class="secret-btn" id="secretBtn" title="Click me for surprises!">🎉</button>
-
-    <!-- Achievement Toast -->
-    <div class="achievement" id="achievement">🏆 Achievement Unlocked!</div>
+    <div class="viewer-overlay" id="viewerOverlay">
+        <div class="viewer-container">
+            <div class="viewer-header">
+                <div class="viewer-title">HVPB 3D Model</div>
+                <button class="viewer-close" onclick="close3DViewer()">×</button>
+            </div>
+            <button class="recenter-btn" onclick="recenterModel()">⟲ Reset View</button>
+            <canvas class="viewer-canvas" id="viewerCanvas"></canvas>
+            <div class="viewer-loading" id="viewerLoading">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading 3D Model...</div>
+            </div>
+            <div class="viewer-instructions">Left-click + drag to rotate • Right-click + drag to pan • Scroll to zoom
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Project Data
         const projects = {
             hvpb: {
                 title: "HVPB (HV Protection Board)",
                 description: "Designed and validated a fully analog high-voltage contactor control system featuring sequenced pre-charge, integrated IMD fault logic, and isolated voltage sensing via the AMC1411. Engineered for 600 V operation with robust creepage/clearance, galvanic isolation, and fault-safe latching to meet stringent FSAE safety requirements.",
-                skills: ["600V Systems", "Galvanic Isolation", "E-Fuse", "IMD", "Altium Designer", "High Power"],
+                skills: ["Altium Designer", "600V", "18 kW", "Galvanic Isolation", "E-Fuse", "IMD Logic", "Board Mount Contactors"],
                 links: [
                     { text: "Technical Documentation", url: "#" },
                     { text: "Test Results", url: "#" }
                 ],
                 icon: "⚡",
-                gradient: "linear-gradient(135deg, #FFD60A, #FF9500)"
+                gradient: "linear-gradient(135deg, #FFD60A, #FF9500)",
+                has3DModel: true
             },
             ev6: {
                 title: "EV6 Systems Integration",
@@ -979,7 +937,7 @@
             apm: {
                 title: "APM Interleaved Buck Converter",
                 description: "Co-authored IECON 2025 paper on optimized design methodology for a 3.6 kW Asymmetric Pulse Modulation two-stage architecture. Achieved ~96% peak efficiency through advanced optimization techniques.",
-                skills: ["3.6 kW", "GaN FETs", "98.2% Efficiency", "MATLAB Optimization", "IECON 2025"],
+                skills: ["3.6 kW", "SiC FETs", "95.9% Efficient", "Efficiency Mapping", "IECON 2025"],
                 links: [
                     { text: "Conference Paper", url: "#" },
                     { text: "Simulation Results", url: "#" }
@@ -1000,7 +958,6 @@
             }
         };
 
-        // Generate Stars
         function generateStars() {
             const starsContainer = document.getElementById('stars');
             for (let i = 0; i < 50; i++) {
@@ -1017,93 +974,40 @@
         }
         generateStars();
 
-        // Click counter for easter eggs
-        let clickCount = 0;
-        let lastClickTime = Date.now();
-
-        // Tile Click Handlers
         document.querySelectorAll('.tile').forEach(tile => {
-            // Add ripple effect on click
             tile.addEventListener('click', function (e) {
-                e.stopPropagation(); // Prevent event bubbling
-
-                // Create ripple
-                const ripple = document.createElement('div');
-                ripple.className = 'ripple';
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = e.clientX - rect.left - size / 2 + 'px';
-                ripple.style.top = e.clientY - rect.top - size / 2 + 'px';
-                this.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-
-                // Bounce animation
-                this.classList.add('bounce');
-                setTimeout(() => this.classList.remove('bounce'), 600);
-
-                // Open modal - THIS IS THE IMPORTANT PART
                 const projectId = this.dataset.project;
-                console.log('Opening modal for:', projectId); // Debug log
                 openModal(projectId);
-
-                // Click tracking for easter egg
-                clickCount++;
-                const currentTime = Date.now();
-                if (currentTime - lastClickTime < 500) { // Double click
-                    createFloatingEmoji(this.dataset.icon);
-                }
-                lastClickTime = currentTime;
-
-                // Achievement check
-                if (clickCount === 10) {
-                    showAchievement('🎯 Curious Explorer - Clicked 10 tiles!');
-                }
-            });
-
-            // Hover effects
-            tile.addEventListener('mouseenter', function () {
-                // Add random tilt
-                const tiltX = (Math.random() - 0.5) * 10;
-                const tiltY = (Math.random() - 0.5) * 10;
-                this.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.05)`;
-            });
-
-            tile.addEventListener('mouseleave', function () {
-                this.style.transform = '';
             });
         });
 
-        // Modal Functions
         function openModal(projectId) {
             const modal = document.getElementById('projectModal');
             const project = projects[projectId];
 
-            console.log('Project data:', project); // Debug log
+            if (!project) return;
 
-            if (!project) {
-                console.error('Project not found:', projectId);
-                return;
-            }
-
-            // Update modal content
             document.getElementById('modalIcon').textContent = project.icon;
             document.getElementById('modalTitle').textContent = project.title;
             document.getElementById('modalDescription').textContent = project.description;
             document.getElementById('modalHeader').style.background = project.gradient;
 
-            // Update skills
+            const viewerBtn = document.getElementById('viewerToggleBtn');
+            if (project.has3DModel) {
+                viewerBtn.classList.add('show');
+            } else {
+                viewerBtn.classList.remove('show');
+            }
+
             const skillsContainer = document.getElementById('modalSkills');
             skillsContainer.innerHTML = '';
-            project.skills.forEach((skill, index) => {
+            project.skills.forEach(skill => {
                 const skillTag = document.createElement('span');
                 skillTag.className = 'skill-tag';
                 skillTag.textContent = skill;
-                skillTag.style.animationDelay = index * 0.05 + 's';
                 skillsContainer.appendChild(skillTag);
             });
 
-            // Update links
             const linksContainer = document.getElementById('modalLinks');
             linksContainer.innerHTML = '';
             project.links.forEach(link => {
@@ -1114,246 +1018,462 @@
                 if (link.url !== '#') {
                     linkBtn.target = '_blank';
                 }
-                linkBtn.addEventListener('click', function (e) {
-                    if (link.url === '#') {
-                        e.preventDefault();
-                        showAchievement('📄 Documentation coming soon!');
-                    }
-                });
                 linksContainer.appendChild(linkBtn);
             });
 
-            // Show modal
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
-
-            // Animate modal content
-            setTimeout(() => {
-                const modalContent = modal.querySelector('.modal-content');
-                modalContent.style.animation = 'modalSlideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-            }, 10);
         }
 
         function closeModal() {
             const modal = document.getElementById('projectModal');
             modal.classList.remove('active');
             document.body.style.overflow = '';
-
-            // Reset animation
-            const modalContent = modal.querySelector('.modal-content');
-            modalContent.style.animation = '';
         }
 
-        // Close modal on background click
         document.getElementById('projectModal').addEventListener('click', function (e) {
             if (e.target === this) closeModal();
         });
 
-        // ESC key to close modal
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') closeModal();
-        });
-
-        // Secret Button Functions
-        let secretClickCount = 0;
-        const secretBtn = document.getElementById('secretBtn');
-        const secretModes = [
-            { name: '🌈 Rainbow Mode', action: () => toggleRainbowMode() },
-            { name: '🎊 Party Time', action: () => startParty() },
-            { name: '✨ Sparkle Effect', action: () => addSparkles() },
-            { name: '🎪 Circus Mode', action: () => circusMode() },
-            { name: '🚀 Space Launch', action: () => spaceLaunch() }
-        ];
-
-        secretBtn.addEventListener('click', function () {
-            const mode = secretModes[secretClickCount % secretModes.length];
-            showAchievement(mode.name + ' Activated!');
-            mode.action();
-            secretClickCount++;
-
-            // Rotate button
-            this.style.transform = `scale(1.2) rotate(${secretClickCount * 360}deg)`;
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 500);
-        });
-
-        // Easter Egg Functions
-        function toggleRainbowMode() {
-            document.body.classList.toggle('rainbow-mode');
-            if (document.body.classList.contains('rainbow-mode')) {
-                createConfetti(30);
+            if (e.key === 'Escape') {
+                closeModal();
+                close3DViewer();
             }
+        });
+
+        let scene, camera, renderer, pcbModel;
+        let isViewerInitialized = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        let rotation = { x: 0, y: 0 };
+        let targetRotation = { x: 0, y: 0 };
+        let panOffset = { x: 0, y: 0 };
+        let targetPanOffset = { x: 0, y: 0 };
+
+        document.getElementById('viewerToggleBtn').addEventListener('click', function () {
+            open3DViewer();
+        });
+
+        function open3DViewer() {
+            const overlay = document.getElementById('viewerOverlay');
+            overlay.classList.add('active');
+            document.getElementById('viewerLoading').classList.remove('hidden');
+
+            if (!isViewerInitialized) {
+                init3DViewer();
+                isViewerInitialized = true;
+            }
+
+            animate();
         }
 
-        function startParty() {
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => createConfetti(20), i * 200);
+        function close3DViewer() {
+            const overlay = document.getElementById('viewerOverlay');
+            overlay.classList.remove('active');
+        }
+
+        function recenterModel() {
+            if (!pcbModel) return;
+
+            // Reset pan offset
+            targetPanOffset.x = 0;
+            targetPanOffset.y = 0;
+            panOffset.x = 0;
+            panOffset.y = 0;
+
+            // Reset rotation to front view
+            targetRotation.x = 0;
+            targetRotation.y = 0;
+            rotation.x = 0;
+            rotation.y = 0;
+
+            // Reset camera FOV
+            camera.fov = 45;
+            camera.updateProjectionMatrix();
+        }
+
+        function init3DViewer() {
+            const canvas = document.getElementById('viewerCanvas');
+            const container = canvas.parentElement;
+
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xd0d0d0);
+
+            camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(0, 5, 10);
+
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.gammaFactor = 2.2;
+
+            // Store max anisotropy for later use
+            const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
+            window.maxAnisotropy = maxAnisotropy;  // Make it globally accessible
+
+            loadPCBModel();
+            setupControls(canvas);
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        function loadPCBModel() {
+            const objPath = 'src/assets/Projects/Models/hvpb.obj';
+            const mtlPath = 'src/assets/Projects/Models/hvpb.mtl';
+
+            const basePath = objPath.substring(0, objPath.lastIndexOf('/') + 1);
+
+            const mtlLoader = new THREE.MTLLoader();
+            mtlLoader.setPath(basePath);
+
+            mtlLoader.load(
+                mtlPath.substring(mtlPath.lastIndexOf('/') + 1),
+                function (materials) {
+                    materials.preload();
+
+                    Object.keys(materials.materials).forEach(key => {
+                        const mat = materials.materials[key];
+                        mat.side = THREE.DoubleSide;
+
+                        // Keep StandardMaterial but make it unlit
+                        mat.roughness = 1.0;  // Completely matte
+                        mat.metalness = 0.0;  // No metallic
+                        mat.emissive = mat.color ? mat.color.clone() : new THREE.Color(0x000000);
+                        mat.emissiveIntensity = 0.9;  // Self-lit
+
+                        // Force dark colors to pure black
+                        if (mat.color) {
+                            const r = mat.color.r;
+                            const g = mat.color.g;
+                            const b = mat.color.b;
+
+                            if (r < 0.2 && g < 0.2 && b < 0.2) {
+                                mat.color.setRGB(0, 0, 0);
+                                mat.emissive.setRGB(0, 0, 0);
+                            }
+                            // Darken bright whites (values above 0.85)
+                            if (r > 0.85 && g > 0.85 && b > 0.85) {
+                                mat.color.setRGB(0.45, 0.45, 0.45);  // Light gray instead of white
+                                mat.emissive.setRGB(0.7, 0.7, 0.7);
+                            }
+                        }
+                            // Texture filtering
+                            if (mat.map) {
+                                const maxAniso = renderer.capabilities.getMaxAnisotropy();
+                                mat.map.anisotropy = maxAniso;  // Use actual max, not hardcoded 16
+                                mat.map.minFilter = THREE.LinearMipMapLinearFilter;
+                                mat.map.magFilter = THREE.LinearFilter;
+                                mat.map.generateMipmaps = true;
+                                mat.map.needsUpdate = true;
+                                mat.emissiveMap = mat.map;
+
+                                // Apply same settings to emissive map
+                                if (mat.emissiveMap) {
+                                    mat.emissiveMap.anisotropy = maxAniso;
+                                    mat.emissiveMap.minFilter = THREE.LinearMipMapLinearFilter;
+                                    mat.emissiveMap.magFilter = THREE.LinearFilter;
+                                    mat.emissiveMap.generateMipmaps = true;
+                                    mat.emissiveMap.needsUpdate = true;
+                                }
+                            }
+                        });
+                    const objLoader = new THREE.OBJLoader();
+                    objLoader.setMaterials(materials);
+                    objLoader.setPath(basePath);
+
+                    objLoader.load(
+                        objPath.substring(objPath.lastIndexOf('/') + 1),
+                        function (object) {
+                            console.log('Model loaded successfully with materials!');
+                            setupLoadedModel(object);
+                        },
+                        function (xhr) {
+                            console.log('OBJ: ' + (xhr.loaded / xhr.total * 100) + '% loaded');
+                        },
+                        function (error) {
+                            console.error('Error loading OBJ:', error);
+                            createPlaceholderPCB();
+                        }
+                    );
+                },
+                function (xhr) {
+                    console.log('MTL: ' + (xhr.loaded / xhr.total * 100) + '% loaded');
+                },
+                function (error) {
+                    console.warn('MTL not found, loading OBJ without materials');
+                    loadOBJOnly(objPath);
+                }
+            );
+        }
+
+        function loadOBJOnly(objPath) {
+            const basePath = objPath.substring(0, objPath.lastIndexOf('/') + 1);
+            const objLoader = new THREE.OBJLoader();
+            objLoader.setPath(basePath);
+
+            objLoader.load(
+                objPath.substring(objPath.lastIndexOf('/') + 1),
+                function (object) {
+                    object.traverse(function (child) {
+                        if (child.isMesh && !child.material) {
+                            child.material = new THREE.MeshStandardMaterial({
+                                color: 0x2d5016,
+                                roughness: 0.6,
+                                metalness: 0.2,
+                                side: THREE.DoubleSide
+                            });
+                        }
+                    });
+                    console.log('Model loaded without MTL file');
+                    setupLoadedModel(object);
+                },
+                function (xhr) {
+                    console.log('OBJ: ' + (xhr.loaded / xhr.total * 100) + '% loaded');
+                },
+                function (error) {
+                    console.error('Error loading OBJ:', error);
+                    createPlaceholderPCB();
+                }
+            );
+        }
+
+        function setupLoadedModel(object) {
+            if (pcbModel) {
+                scene.remove(pcbModel);
             }
-            // Make tiles dance
-            document.querySelectorAll('.tile').forEach((tile, index) => {
-                setTimeout(() => {
-                    tile.style.animation = 'bounce 0.5s ease-out';
-                    setTimeout(() => {
-                        tile.style.animation = '';
-                    }, 500);
-                }, index * 100);
+
+            pcbModel = object;
+
+            const box = new THREE.Box3().setFromObject(pcbModel);
+            const size = box.getSize(new THREE.Vector3());
+            const center = box.getCenter(new THREE.Vector3());
+
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const scale = 8 / maxDim;
+            pcbModel.scale.setScalar(scale);
+
+            pcbModel.position.x = -center.x * scale;
+            pcbModel.position.y = -center.y * scale;
+            pcbModel.position.z = -center.z * scale;
+
+            scene.add(pcbModel);
+
+            camera.position.set(0, maxDim * 0.5, maxDim * 1.5);
+            camera.lookAt(0, 0, 0);
+
+            rotation.x = 0;
+            rotation.y = 0;
+            targetRotation.x = 0;
+            targetRotation.y = 0;
+
+            document.getElementById('viewerLoading').classList.add('hidden');
+
+            console.log('Model centered and scaled. Size:', size, 'Scale:', scale);
+        }
+
+        function createPlaceholderPCB() {
+            console.warn('Loading placeholder - OBJ/MTL files not found');
+
+            document.getElementById('viewerLoading').classList.add('hidden');
+
+            const group = new THREE.Group();
+
+            const boardGeometry = new THREE.BoxGeometry(8, 0.15, 6);
+            const boardMaterial = new THREE.MeshStandardMaterial({
+                color: 0x2d5016,
+                roughness: 0.7,
+                metalness: 0.3
             });
+            const board = new THREE.Mesh(boardGeometry, boardMaterial);
+            group.add(board);
+
+            for (let i = 0; i < 6; i++) {
+                const capGeometry = new THREE.CylinderGeometry(0.3, 0.3, 0.8);
+                const capMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x1a1a1a,
+                    roughness: 0.4,
+                    metalness: 0.6
+                });
+                const cap = new THREE.Mesh(capGeometry, capMaterial);
+                cap.position.set(-3 + i * 1.2, 0.5, -2);
+                cap.rotation.x = Math.PI / 2;
+                group.add(cap);
+            }
+
+            for (let i = 0; i < 3; i++) {
+                const icGeometry = new THREE.BoxGeometry(1.2, 0.3, 1.2);
+                const icMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x0a0a0a,
+                    roughness: 0.3,
+                    metalness: 0.8
+                });
+                const ic = new THREE.Mesh(icGeometry, icMaterial);
+                ic.position.set(-2 + i * 2, 0.25, 0.5);
+                group.add(ic);
+            }
+
+            const connGeometry = new THREE.BoxGeometry(1.5, 0.6, 0.8);
+            const connMaterial = new THREE.MeshStandardMaterial({
+                color: 0xcccccc,
+                roughness: 0.4,
+                metalness: 0.9
+            });
+            const conn1 = new THREE.Mesh(connGeometry, connMaterial);
+            conn1.position.set(-3, 0.4, 2.5);
+            group.add(conn1);
+
+            const conn2 = new THREE.Mesh(connGeometry, connMaterial);
+            conn2.position.set(3, 0.4, 2.5);
+            group.add(conn2);
+
+            const traceGeometry = new THREE.BoxGeometry(7, 0.01, 0.1);
+            const traceMaterial = new THREE.MeshStandardMaterial({
+                color: 0xb87333,
+                roughness: 0.2,
+                metalness: 0.9
+            });
+            for (let i = 0; i < 4; i++) {
+                const trace = new THREE.Mesh(traceGeometry, traceMaterial);
+                trace.position.set(0, 0.08, -2 + i * 1.5);
+                group.add(trace);
+            }
+
+            pcbModel = group;
+            scene.add(pcbModel);
+            pcbModel.rotation.x = -0.3;
         }
 
-        function addSparkles() {
-            const tiles = document.querySelectorAll('.tile');
-            tiles.forEach(tile => {
-                for (let i = 0; i < 3; i++) {
-                    setTimeout(() => {
-                        const sparkle = document.createElement('span');
-                        sparkle.textContent = '✨';
-                        sparkle.className = 'floating-emoji';
-                        sparkle.style.left = tile.offsetLeft + Math.random() * tile.offsetWidth + 'px';
-                        sparkle.style.top = tile.offsetTop + tile.offsetHeight + 'px';
-                        document.body.appendChild(sparkle);
-                        setTimeout(() => sparkle.remove(), 3000);
-                    }, i * 200);
+        function setupControls(canvas) {
+            let isPanning = false;
+            let isRotating = false;
+
+            canvas.addEventListener('mousedown', (e) => {
+                if (e.button === 0) {
+                    isPanning = false;
+                    isRotating = true;
+                } else if (e.button === 2) {
+                    isRotating = false;
+                    isPanning = true;
+                    e.preventDefault();
+                }
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+            });
+
+            canvas.addEventListener('mousemove', (e) => {
+                if (isRotating && pcbModel) {
+                    const deltaX = e.clientX - previousMousePosition.x;
+                    const deltaY = e.clientY - previousMousePosition.y;
+
+                    targetRotation.y += deltaX * 0.03;
+                    targetRotation.x += deltaY * 0.03;
+
+                    targetRotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, targetRotation.x));
+
+                    previousMousePosition = { x: e.clientX, y: e.clientY };
+                } else if (isPanning && pcbModel) {
+                    const deltaX = e.clientX - previousMousePosition.x;
+                    const deltaY = e.clientY - previousMousePosition.y;
+
+                    targetPanOffset.x += deltaX * 0.03;
+                    targetPanOffset.y -= deltaY * 0.03;
+
+                    previousMousePosition = { x: e.clientX, y: e.clientY };
                 }
             });
-        }
 
-        function circusMode() {
-            const emojis = ['🎪', '🤡', '🎭', '🎨', '🎯', '🎲'];
-            emojis.forEach((emoji, i) => {
-                setTimeout(() => createFloatingEmoji(emoji), i * 200);
+            canvas.addEventListener('mouseup', () => {
+                isPanning = false;
+                isRotating = false;
             });
-        }
 
-        function spaceLaunch() {
-            const rocket = document.createElement('div');
-            rocket.textContent = '🚀';
-            rocket.className = 'floating-emoji';
-            rocket.style.fontSize = '80px';
-            rocket.style.left = '50%';
-            rocket.style.bottom = '0';
-            rocket.style.animation = 'floatUp 2s ease-in forwards';
-            document.body.appendChild(rocket);
-
-            setTimeout(() => {
-                createConfetti(50);
-                rocket.remove();
-            }, 2000);
-        }
-
-        function createFloatingEmoji(emoji) {
-            const floater = document.createElement('div');
-            floater.className = 'floating-emoji';
-            floater.textContent = emoji;
-            floater.style.left = Math.random() * window.innerWidth + 'px';
-            floater.style.top = window.innerHeight + 'px';
-            document.body.appendChild(floater);
-            setTimeout(() => floater.remove(), 3000);
-        }
-
-        function createConfetti(count = 20) {
-            const colors = ['#FF375F', '#0A84FF', '#30D158', '#FFD60A', '#FF9500', '#5E5CE6'];
-            for (let i = 0; i < count; i++) {
-                setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + '%';
-                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.animationDuration = Math.random() * 2 + 2 + 's';
-                    document.body.appendChild(confetti);
-                    setTimeout(() => confetti.remove(), 3000);
-                }, i * 50);
-            }
-        }
-
-        function showAchievement(text) {
-            const achievement = document.getElementById('achievement');
-            achievement.textContent = text;
-            achievement.classList.add('show');
-            setTimeout(() => {
-                achievement.classList.remove('show');
-            }, 3000);
-        }
-
-        // Title Easter Egg - Click to make it dance
-        const mainTitle = document.getElementById('mainTitle');
-        let titleClickCount = 0;
-        mainTitle.style.cursor = 'pointer';
-        mainTitle.addEventListener('click', function () {
-            titleClickCount++;
-            this.style.animation = 'none';
-
-            if (titleClickCount === 1) {
-                this.textContent = 'Featured Projects 🎯';
-            } else if (titleClickCount === 2) {
-                this.textContent = 'Awesome Projects 🚀';
-            } else if (titleClickCount === 3) {
-                this.textContent = 'Epic Projects ⚡';
-            } else if (titleClickCount === 4) {
-                this.textContent = 'Legendary Projects 🏆';
-            } else if (titleClickCount >= 5) {
-                this.textContent = 'ULTIMATE PROJECTS 🔥';
-                showAchievement('🎊 Title Master - Found the secret!');
-                startParty();
-                titleClickCount = 0;
-            }
-
-            setTimeout(() => {
-                this.style.animation = 'gradientShift 8s ease infinite';
-            }, 100);
-        });
-
-        // Hover sound effect simulation (visual feedback)
-        document.querySelectorAll('.tile, .modal-link, .skill-tag, .back-btn').forEach(elem => {
-            elem.addEventListener('mouseenter', function () {
-                this.style.transition = 'all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            canvas.addEventListener('mouseleave', () => {
+                isPanning = false;
+                isRotating = false;
             });
-        });
 
-        // Keyboard shortcuts
-        let konamiCode = '';
-        document.addEventListener('keydown', function (e) {
-            konamiCode += e.key;
-            if (konamiCode.includes('ArrowUpArrowUpArrowDownArrowDown')) {
-                showAchievement('🎮 Konami Code Activated!');
-                document.body.style.transform = 'rotate(360deg)';
-                document.body.style.transition = 'transform 1s';
-                setTimeout(() => {
-                    document.body.style.transform = '';
-                }, 1000);
-                konamiCode = '';
-            }
-            // Clear after 2 seconds
-            setTimeout(() => { konamiCode = ''; }, 2000);
-        });
+            canvas.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+            });
 
-        // Track all tiles hover for achievement
-        const hoveredTiles = new Set();
-        document.querySelectorAll('.tile').forEach(tile => {
-            tile.addEventListener('mouseenter', function () {
-                hoveredTiles.add(this.dataset.project);
-                if (hoveredTiles.size === 5) {
-                    showAchievement('👀 Observer - Hovered all projects!');
+            canvas.addEventListener('wheel', (e) => {
+                e.preventDefault();
+
+                camera.fov += e.deltaY * 0.05;
+                camera.fov = Math.max(5, Math.min(75, camera.fov));
+                camera.updateProjectionMatrix();
+            });
+
+            let touchStartPos = { x: 0, y: 0 };
+            canvas.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    isRotating = true;
+                    touchStartPos = {
+                        x: e.touches[0].clientX,
+                        y: e.touches[0].clientY
+                    };
                 }
             });
-        });
 
-        // Page load animation
-        window.addEventListener('load', function () {
-            setTimeout(() => {
-                showAchievement('👋 Welcome to My Projects!');
-            }, 1000);
-        });
+            canvas.addEventListener('touchmove', (e) => {
+                if (isRotating && e.touches.length === 1 && pcbModel) {
+                    const deltaX = e.touches[0].clientX - touchStartPos.x;
+                    const deltaY = e.touches[0].clientY - touchStartPos.y;
 
-        // Create subtle background animation
-        setInterval(() => {
-            const orbs = document.querySelectorAll('.orb');
-            orbs.forEach(orb => {
-                if (Math.random() > 0.8) {
-                    orb.style.filter = `blur(${40 + Math.random() * 20}px)`;
+                    targetRotation.y += deltaX * 0.01;
+                    targetRotation.x += deltaY * 0.01;
+
+                    targetRotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, targetRotation.x));
+
+                    touchStartPos = {
+                        x: e.touches[0].clientX,
+                        y: e.touches[0].clientY
+                    };
                 }
             });
-        }, 3000);
+
+            canvas.addEventListener('touchend', () => {
+                isRotating = false;
+            });
+        }
+
+        function animate() {
+            if (!document.getElementById('viewerOverlay').classList.contains('active')) {
+                return;
+            }
+
+            requestAnimationFrame(animate);
+
+            if (pcbModel) {
+                rotation.x += (targetRotation.x - rotation.x) * 0.1;
+                rotation.y += (targetRotation.y - rotation.y) * 0.1;
+
+                pcbModel.rotation.x = rotation.x;
+                pcbModel.rotation.y = rotation.y;
+
+                panOffset.x += (targetPanOffset.x - panOffset.x) * 0.1;
+                panOffset.y += (targetPanOffset.y - panOffset.y) * 0.1;
+
+                pcbModel.position.x = panOffset.x;
+                pcbModel.position.y = panOffset.y;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            if (!renderer) return;
+
+            const container = document.getElementById('viewerCanvas').parentElement;
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+
+        document.getElementById('viewerOverlay').addEventListener('click', function (e) {
+            if (e.target === this) {
+                close3DViewer();
+            }
+        });
     </script>
 </body>
 
