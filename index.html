@@ -8,6 +8,14 @@
     <link rel="icon" href="src/assets/Pictures/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="src/assets/Pictures/favicon.ico" type="image/x-icon">
     <style>
+        :root {
+            --dark-mode: 1;
+        }
+
+        body.light-mode {
+            --dark-mode: 0;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -323,7 +331,7 @@
             transform-origin: left;
         }
 
-        /* Theme Toggle Button */
+        /* Theme Toggle Button Container*/
         .theme-toggle {
             position: fixed;
             bottom: 30px;
@@ -331,7 +339,7 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -339,18 +347,42 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform .3s ease, background-color .3s ease, border-color .3s ease;
             z-index: 50;
-            font-size: 22px;
         }
 
         .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background-color: rgba(255, 255, 255, 0.15);
             transform: scale(1.1);
         }
 
         .theme-toggle:active {
             transform: scale(0.95);
+        }
+
+        .theme-toggle .dm-icon {
+            width: 70%;
+            height: 70%;
+            display: block;
+            filter: invert(var(--dark-mode));
+            transform: rotate(calc(var(--dark-mode) * 180deg));
+            transition: transform .3s ease, filter .3s ease;
+            pointer-events: none;
+        }
+
+        body.light-mode .theme-toggle {
+            background-color: rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+        }
+
+        /* Mobile sizing */
+        @media (max-width: 768px) {
+            .theme-toggle {
+                width: 45px;
+                height: 45px;
+                bottom: 20px;
+                right: 20px;
+            }
         }
 
         /* Light Mode Styles */
@@ -545,7 +577,14 @@
     </section>
 
     <!-- Theme Toggle Button -->
-    <div class="theme-toggle" id="themeToggle">🌙</div>
+    <div class="theme-toggle" id="themeToggle" aria-label="Toggle theme" role="button">
+        <svg class="dm-icon" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle r="200" cx="200" cy="200" fill="#FFF" stroke="#000" stroke-width="0" />
+            <path d=" M 200 375 A 175 175 0 0 1 200 25" />
+            <path d=" M 200 300 A 100 100 0 0 1 200 100" fill="#FFF" />
+            <path d="M 200 100 A 100 100 180 0 1 200 300" />
+        </svg>
+    </div>
 
     <script>
         // Starfield
@@ -620,7 +659,6 @@
         themeToggle.addEventListener('click', () => {
             isDarkMode = !isDarkMode;
             document.body.classList.toggle('light-mode');
-            themeToggle.textContent = isDarkMode ? '🌙' : '☀️';
 
             // Clear canvas for immediate theme change effect
             const canvas = document.getElementById('starfield');
