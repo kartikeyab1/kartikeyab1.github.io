@@ -2,40 +2,12 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kartikeya Babhuta</title>
-
-    <!-- Favicon -->
     <link rel="icon" href="src/assets/Pictures/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="src/assets/Pictures/favicon.ico" type="image/x-icon">
-    />
-
     <style>
-        /* Global Variables */
-        :root {
-            --bg-color: #000;
-            --panel-bg: rgba(28, 28, 30, 0.82);
-            --tile-bg: rgba(255, 255, 255, 0.14);
-            --tile-hover: rgba(255, 255, 255, 0.22);
-            --tile-active: #3478f6;
-            --text-primary: #fff;
-            --text-secondary: rgba(255, 255, 255, 0.6);
-            --blur: blur(60px);
-            --brightness: 1;
-            --border-color: rgba(255, 255, 255, 0.08);
-        }
-
-        body.light-mode {
-            --bg-color: #f2f2f7;
-            --panel-bg: rgba(242, 242, 247, 0.82);
-            --tile-bg: rgba(255, 255, 255, 0.64);
-            --tile-hover: rgba(255, 255, 255, 0.8);
-            --text-primary: #000;
-            --text-secondary: rgba(0, 0, 0, 0.6);
-            --border-color: rgba(0, 0, 0, 0.08);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -45,46 +17,110 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background: var(--bg-color);
-            color: var(--text-primary);
+            background: #000;
+            color: #fff;
             min-height: 100vh;
-            filter: brightness(var(--brightness));
-            transition: filter 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             overflow-x: hidden;
         }
 
-        body.disco-mode {
-            animation: disco 0.5s linear infinite;
+        @font-face {
+            font-family: 'Nevanta';
+            src: url(src/assets/Fonts/Nevanta-Regular.otf) format('opentype');
         }
 
-        @keyframes disco {
-            0% {
-                filter: hue-rotate(0deg) brightness(1)
-            }
-
-            25% {
-                filter: hue-rotate(90deg) brightness(1.2)
-            }
-
-            50% {
-                filter: hue-rotate(180deg) brightness(1)
-            }
-
-            75% {
-                filter: hue-rotate(270deg) brightness(1.2)
-            }
-
-            100% {
-                filter: hue-rotate(360deg) brightness(1)
-            }
-        }
-
-        /* Main Container */
-        .main-container {
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(18, 18, 20, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
             display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-brand {
+            font-size: 18px;
+            font-weight: 600;
+            background: linear-gradient(180deg, #fff 0%, #999 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
             position: relative;
+        }
+
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #5b6fff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 24px;
+            height: 2px;
+            background: #fff;
+            transition: all 0.3s ease;
         }
 
         /* Starfield */
@@ -107,17 +143,20 @@
             position: relative;
             z-index: 10;
             padding: 20px;
+            padding-top: 80px;
+            /* Add space for navbar */
         }
 
         .hero-name {
+            font-family: 'Nevanta', sans-serif;
             font-size: clamp(2.5rem, 10vw, 5rem);
             font-weight: 650;
             background: linear-gradient(180deg, #fff 0%, #999 100%);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 1.25rem;
-            letter-spacing: -0.01em;
+            margin-bottom: 1.15rem;
+            letter-spacing: 0.03em;
             animation: fadeInScale 1s ease;
         }
 
@@ -127,6 +166,7 @@
             object-fit: cover;
             border-radius: 20px;
             margin-bottom: 1.5rem;
+            animation: fadeInScale 0.8s ease;
         }
 
         .subtitle-container {
@@ -208,7 +248,8 @@
         /* Typewriter */
         .typewriter-center {
             position: fixed;
-            top: 60px;
+            top: 80px;
+            /* Moved down to account for navbar */
             left: 50%;
             transform: translateX(-50%);
             z-index: 12;
@@ -239,7 +280,6 @@
             45%,
             55% {
                 width: calc(100% - 24px);
-                /* account for padding */
             }
 
             90%,
@@ -254,696 +294,6 @@
             }
         }
 
-        /* Scroll Indicator */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 15;
-            width: 48px;
-            height: 48px;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, .2);
-            background: rgba(255, 255, 255, .08);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, .1);
-            cursor: pointer;
-            transition: all .3s ease;
-            animation: bounce 2s ease-in-out infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .scroll-indicator:hover {
-            transform: translateX(-50%) translateY(-2px)
-        }
-
-        .scroll-indicator .chevron {
-            width: 0;
-            height: 0;
-            border-left: 6px solid transparent;
-            border-right: 6px solid transparent;
-            border-top: 6px solid rgba(255, 255, 255, .8);
-            animation: pulse 2s ease-in-out infinite
-        }
-
-        .scroll-indicator .chevron:nth-child(2) {
-            animation-delay: .2s
-        }
-
-        .scroll-indicator .chevron:nth-child(3) {
-            animation-delay: .4s
-        }
-
-        @keyframes bounce {
-
-            0%,
-            20%,
-            50%,
-            80%,
-            100% {
-                transform: translateX(-50%) translateY(0)
-            }
-
-            40% {
-                transform: translateX(-50%) translateY(-10px)
-            }
-
-            60% {
-                transform: translateX(-50%) translateY(-5px)
-            }
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: .4
-            }
-
-            50% {
-                opacity: 1
-            }
-        }
-
-        /* Control Center */
-        .control-center-section {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            /* I was stuck for HOURS because of ts */
-            background: rgba(0, 0, 0, .5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            position: relative;
-            z-index: 20;
-            padding-bottom: calc(40px + env(safe-area-inset-bottom));
-            padding-top: calc(40px + env(safe-area-inset-top));
-            overflow: hidden;
-        }
-
-        .control-center-content {
-            width: calc(100% - 40px);
-            max-width: 380px;
-            background: var(--panel-bg);
-            backdrop-filter: var(--blur);
-            -webkit-backdrop-filter: var(--blur);
-            border-radius: 20px;
-            padding: 10px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, .5);
-            border: 1px solid var(--border-color);
-            display: grid;
-            grid-template-rows: auto auto auto auto;
-            row-gap: 10px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-
-        /* Status bar INSIDE panel */
-        .panel-statusbar {
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 10px;
-            background: transparent;
-            border-bottom: 1px solid var(--border-color);
-            border-radius: 12px 12px 0 0;
-        }
-
-        .panel-statusbar .left,
-        .panel-statusbar .right {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .signal-bars {
-            display: flex;
-            gap: 2px;
-            align-items: flex-end;
-        }
-
-        .signal-bars .bar {
-            width: 3px;
-            background: #fff;
-            border-radius: 1px;
-        }
-
-        .signal-bars .bar:nth-child(1) {
-            height: 4px
-        }
-
-        .signal-bars .bar:nth-child(2) {
-            height: 6px
-        }
-
-        .signal-bars .bar:nth-child(3) {
-            height: 8px
-        }
-
-        .signal-bars .bar:nth-child(4) {
-            height: 10px
-        }
-
-        /* Add this new style for the grayed bar */
-        .signal-bars .bar.grayed {
-            opacity: 0.3;
-            /* makes it look grayed out but still visible */
-        }
-
-        /* If you want it grayed in light mode too */
-        body.light-mode .signal-bars .bar.grayed {
-            opacity: 0.3;
-        }
-
-        .panel-statusbar .battery {
-            width: 22px;
-            height: 10px;
-            border: 1px solid #fff;
-            border-radius: 2px;
-            position: relative;
-            background: rgba(255, 255, 255, .1)
-        }
-
-        .panel-statusbar .battery::after {
-            content: '';
-            position: absolute;
-            right: -3px;
-            top: 3px;
-            width: 2px;
-            height: 4px;
-            background: #fff;
-            border-radius: 0 1px 1px 0
-        }
-
-        .panel-statusbar .battery .battery-level {
-            height: 100%;
-            width: 75%;
-            background: #fff;
-            border-radius: 1px
-        }
-
-        /* Light mode: black text, bars, battery */
-        body.light-mode .panel-statusbar {
-            border-bottom: 1px solid #000;
-        }
-
-        /* Text (ROGERS, time) black */
-        body.light-mode .panel-statusbar .left span,
-        body.light-mode .panel-statusbar .right span {
-            color: #000;
-        }
-
-        /* Network bars black */
-        body.light-mode .panel-statusbar .signal-bars .bar {
-            background: #000;
-        }
-
-        /* Battery outline + fill black */
-        body.light-mode .panel-statusbar .battery {
-            border: 1px solid #000;
-            background: rgba(0, 0, 0, 0.05);
-            /* optional subtle gray bg */
-        }
-
-        body.light-mode .panel-statusbar .battery::after {
-            background: #000;
-        }
-
-        body.light-mode .panel-statusbar .battery .battery-level {
-            background: #000;
-        }
-
-
-        /* Now Playing */
-        .now-playing {
-            background: rgba(255, 255, 255, .08);
-            border-radius: 16px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            min-height: 84px;
-        }
-
-        .now-playing-title {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: inherit;
-            /* use same text color */
-            text-decoration: none;
-            /* remove underline */
-        }
-
-        .now-playing-title:hover {
-            text-decoration: underline;
-            /* Hover effect */
-        }
-
-        /* Light mode: black border around Now Playing tile */
-        body.light-mode .now-playing {
-            border: 1px solid #000;
-            background: rgba(0, 0, 0, 0.05);
-            /* Subtle gray bg */
-        }
-
-
-        .album-art {
-            width: 54px;
-            height: 54px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            object-fit: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            flex-shrink: 0;
-        }
-
-        .now-playing-info {
-            flex: 1;
-            min-width: 0
-        }
-
-        .now-playing-title {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis
-        }
-
-        .now-playing-artist {
-            font-size: 13px;
-            opacity: .6;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis
-        }
-
-        .playback-controls {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .playback-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, .15);
-            border: none;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all .2s;
-            font-size: 12px;
-            padding: 0;
-            margin: auto;
-            line-height: 1;
-        }
-
-        .playback-btn:active {
-            transform: scale(.95);
-            background: rgba(255, 255, 255, .25);
-        }
-
-        /* Light mode: black arrows + black border */
-        body.light-mode .playback-btn {
-            background: rgba(0, 0, 0, 0.08);
-            color: #000;
-            /* arrow color black */
-            border: 1px solid #000;
-            /* black border */
-        }
-
-        /* Click effect */
-        body.light-mode .playback-btn:active {
-            background: rgba(0, 0, 0, 0.15);
-            transform: scale(.95);
-        }
-
-        /* Grid rows */
-        .control-row-1 {
-            display: grid;
-            grid-template-columns: 0.6fr 0.4fr;
-            /* left cluster | right slider */
-            gap: 10px;
-            align-items: stretch;
-            /* makes right slider match left cluster height */
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .control-group-left {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            /* two equal rows */
-            gap: 10px;
-        }
-
-        /* ROW 2: left = tall volume, right = 2×2 small tiles */
-        .control-row-2 {
-            display: grid;
-            grid-template-columns: 0.4fr 0.6fr;
-            /* left slider | right cluster */
-            gap: 10px;
-            align-items: stretch;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .control-group-right {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        /* Tiles */
-        .control-tile {
-            aspect-ratio: 1;
-            background: var(--tile-bg);
-            border-radius: 100px;
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all .2s ease;
-            position: relative;
-            overflow: hidden;
-            min-height: 10px;
-        }
-
-        .control-tile:active {
-            transform: scale(.96)
-        }
-
-        .control-tile.active {
-            background: var(--tile-active)
-        }
-
-        .control-tile.active.warning {
-            background: #ff9500
-        }
-
-        .control-tile.focus-active {
-            background: linear-gradient(135deg, #8b5cf6, #6b21a8)
-        }
-
-        .control-icon {
-            font-size: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Light mode: black border for all tiles */
-        body.light-mode .control-tile {
-            border: 1px solid #000;
-            /* border */
-        }
-
-        /* White icons in dark mode */
-        body:not(.light-mode) .control-icon img {
-            width: 30px;
-            height: 30px;
-            filter: brightness(0) invert(1);
-            display: block;
-        }
-
-        /* Black icons in light mode */
-        body.light-mode .control-icon img {
-            width: 30px;
-            height: 30px;
-            filter: brightness(0);
-            display: block;
-        }
-
-        /* When active: tile turns white */
-        .lockTile.lock-active {
-            background: #fff;
-            /* white tile */
-            transition: background 0.3s ease;
-        }
-
-        /* When active: icon turns iOS red */
-        .lockTile.lock-active .control-icon img {
-            filter: invert(18%) sepia(97%) saturate(7487%) hue-rotate(359deg) brightness(91%) contrast(112%);
-        }
-
-        /* Vertical sliders */
-        .slider-tile-large {
-            background: var(--tile-bg);
-            border-radius: 30px;
-            backdrop-filter: blur(40px);
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 8px;
-            height: auto;
-            position: relative;
-            width: 100%;
-        }
-
-        /* Make slider borders black in light mode */
-        body.light-mode .slider-tile-large {
-            border: 1px solid #000;
-            /* Black border */
-        }
-
-        /* If you want the track itself also darker: */
-        body.light-mode .slider-track {
-            background: rgba(0, 0, 0, 0.25);
-            /* Darker track */
-        }
-
-        body.light-mode .slider-thumb {
-            background: #000;
-            /* Optional: black thumb in light mode */
-        }
-
-        .slider-icon-top {
-            font-size: 18px;
-            margin-bottom: 6px
-        }
-
-        .slider-track {
-            flex: 1;
-            width: 72%;
-            background: rgba(255, 255, 255, .25);
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-            touch-action: none;
-            user-select: none;
-        }
-
-        .slider-fill {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            background: #fff;
-            border-radius: 20px;
-            transition: height .12s ease
-        }
-
-        .slider-thumb {
-            position: absolute;
-            width: 34px;
-            height: 34px;
-            background: #fff;
-            border-radius: 50%;
-            left: 50%;
-            transform: translateX(-50%) translateY(50%);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
-            cursor: pointer;
-            touch-action: none;
-            user-select: none;
-        }
-
-        .slider-icon-bottom {
-            font-size: 14px;
-            opacity: .6;
-            margin-top: 6px
-        }
-
-        /* Portfolio */
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 2fr);
-            gap: 10px
-        }
-
-        .portfolio-tile {
-            aspect-ratio: 1;
-            background: var(--tile-bg);
-            border-radius: 20px;
-            padding: 12px 8px;
-            backdrop-filter: blur(40px);
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all .2s;
-        }
-
-        .portfolio-tile:active {
-            transform: scale(.94);
-            background: var(--tile-hover)
-        }
-
-        .portfolio-icon {
-            width: 32px;
-            height: 32px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Light mode: black border for portfolio tiles */
-        body.light-mode .portfolio-tile {
-            border: 1px solid #000;
-            color: #000;
-        }
-
-        body:not(.light-mode) .portfolio-icon img[alt="GitHub"] {
-            filter: brightness(0) invert(1);
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        /* light mode */
-        body.light-mode .portfolio-icon img[alt="GitHub"] {
-            filter: brightness(0);
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .portfolio-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .portfolio-icon.emoji {
-            font-size: 28px
-        }
-
-        .portfolio-label {
-            font-size: 12px;
-            font-weight: 500;
-            opacity: 0.9;
-            text-align: center;
-        }
-
-        /* Flying Airplane */
-        .flying-airplane {
-            position: fixed;
-            font-size: 40px;
-            z-index: 1000;
-            pointer-events: none;
-            animation: fly 3s ease-in-out;
-        }
-
-        @keyframes fly {
-            0% {
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%) rotate(0deg)
-            }
-
-            25% {
-                left: 80%;
-                top: 30%;
-                transform: rotate(20deg)
-            }
-
-            50% {
-                left: 20%;
-                top: 20%;
-                transform: rotate(-20deg)
-            }
-
-            75% {
-                left: 70%;
-                top: 70%;
-                transform: rotate(15deg)
-            }
-
-            100% {
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%) rotate(360deg);
-                opacity: 0
-            }
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 12px;
-            opacity: .6;
-        }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(.8);
-            background: var(--panel-bg);
-            padding: 20px 28px;
-            border-radius: 18px;
-            backdrop-filter: blur(60px);
-            opacity: 0;
-            pointer-events: none;
-            transition: all .3s cubic-bezier(.4, 0, .2, 1);
-            z-index: 300;
-            font-size: 15px;
-            font-weight: 500;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, .4);
-            border: 1px solid var(--border-color);
-        }
-
-        .notification.show {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1)
-        }
-
         .name-link {
             background: linear-gradient(180deg, #fff 0%, #999 100%);
             -webkit-background-clip: text;
@@ -951,7 +301,6 @@
             -webkit-text-fill-color: transparent;
             position: relative;
             text-decoration: none;
-            /* disable native underline */
         }
 
         .name-link::after {
@@ -959,11 +308,9 @@
             position: absolute;
             left: 0;
             bottom: -6px;
-            /* space below text */
             width: 100%;
             height: 3px;
             background: linear-gradient(180deg, #fff 0%, #999 100%);
-            /* underline */
             border-radius: 2px;
             transform: scaleX(0);
             transform-origin: right;
@@ -975,6 +322,187 @@
             transform: scaleX(1);
             transform-origin: left;
         }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 50;
+            font-size: 22px;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.1);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+
+        /* Light Mode Styles */
+        body.light-mode {
+            background: #f5f5f7;
+            color: #1d1d1f;
+        }
+
+        body.light-mode .navbar {
+            background: rgba(245, 245, 247, 0.8);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .nav-brand {
+            background: linear-gradient(135deg, #000 0%, #666 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light-mode .nav-link {
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        body.light-mode .nav-link:hover {
+            color: #000;
+        }
+
+        body.light-mode .nav-link::after {
+            background: #5b6fff;
+        }
+
+        body.light-mode .menu-toggle span {
+            background: #000;
+        }
+
+        body.light-mode .hero-name {
+            background: linear-gradient(180deg, #000 0%, #666 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light-mode .name-link {
+            background: linear-gradient(180deg, #000 0%, #666 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light-mode .name-link::after {
+            background: linear-gradient(180deg, #000 0%, #666 100%);
+        }
+
+        body.light-mode .subtitle-container {
+            background: rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .subtitle-text {
+            color: rgba(0, 0, 0, 0.85);
+        }
+
+        body.light-mode .typewriter-center {
+            color: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-right: 1px solid rgba(0, 0, 0, 0.6);
+        }
+
+        body.light-mode .theme-toggle {
+            background: rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+        }
+
+        /* Light mode mobile nav */
+        body.light-mode .nav-links {
+            border-bottom: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body.light-mode .nav-links {
+                background: rgba(245, 245, 247, 0.95);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            }
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: rgba(18, 18, 20, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 20px;
+                gap: 16px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(6px, 6px);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(6px, -6px);
+            }
+
+            .typewriter-center {
+                font-size: 12px;
+                top: 70px;
+            }
+
+            .theme-toggle {
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                display: flex;
+                /* centers child */
+                align-items: center;
+                /* centers child */
+                justify-content: center;
+                /* centers child */
+                cursor: pointer;
+                transition: all 0.3s ease;
+                z-index: 50;
+            }
+        }
     </style>
 </head>
 
@@ -982,392 +510,133 @@
     <!-- Starfield -->
     <canvas id="starfield"></canvas>
 
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-brand">Kartikeya Babhuta</div>
+        <div class="nav-links" id="navLinks">
+            <a href="skills.html" class="nav-link">Skills</a>
+            <a href="projects.html" class="nav-link">Projects</a>
+            <a href="https://linkedin.com/in/kbabhuta" target="_blank" class="nav-link">LinkedIn</a>
+            <a href="https://linktr.ee/kartikeyab" target="_blank" class="nav-link">Resume</a>
+            <a href="https://wave-english-539.notion.site/Kartikeya-Babhuta-b8fd9a2dbc1340db9e8df1c3fe323e25"
+                target="_blank" class="nav-link">Notion</a>
+            <a href="https://github.com/kartikeyab1" target="_blank" class="nav-link">GitHub</a>
+        </div>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
     <!-- Typewriter -->
     <div class="typewriter-center">Available Jan – Aug 2026 for Internships</div>
 
-    <div class="main-container">
-        <!-- Landing -->
-        <section class="landing-section">
-            <img src="src/assets/Pictures/me.JPG" alt="Kartikeya Babhuta" class="hero-image" />
-            <h1 class="hero-name"><a href="about.html" class="name-link">Kartikeya Babhuta</a></h1>
-            <div class="subtitle-container">
-                <div class="subtitle-text">⚡ Electrical Engineering @ McMaster University</div>
-                <div class="subtitle-text">👨🏻‍💻 Research Intern @ McMaster Automotive Resource Centre</div>
-                <div class="subtitle-text">🏎️ Electrical Director @ MAC Formula Electric</div>
-                <div class="subtitle-text">🌮🍕🥪 Will work for snacks</div>
-            </div>
-            <button class="scroll-indicator" onclick="scrollToControlCenter()" aria-label="Scroll to Control Center">
-                <div class="chevron"></div>
-                <div class="chevron"></div>
-                <div class="chevron"></div>
-            </button>
-        </section>
+    <!-- Landing Section -->
+    <section class="landing-section">
+        <img src="src/assets/Pictures/me.JPG" alt="Kartikeya Babhuta" class="hero-image" />
+        <h1 class="hero-name"><a href="about.html" class="name-link">Kartikeya Babhuta</a></h1>
+        <div class="subtitle-container">
+            <div class="subtitle-text">⚡ Electrical Engineering @ McMaster University</div>
+            <div class="subtitle-text">👨🏻‍💻 Research Intern @ McMaster Automotive Resource Centre</div>
+            <div class="subtitle-text">🏎️ Electrical Director @ MAC Formula Electric</div>
+            <div class="subtitle-text">🌮🍕🥪 Will work for snacks</div>
+        </div>
+    </section>
 
-        <!-- Control Center -->
-        <section class="control-center-section">
-            <div class="control-center-content">
-                <div class="panel-statusbar">
-                    <div class="left">
-                        <div class="signal-bars">
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar grayed"></div>
-                        </div>
-                        <span>ROGERS 5G+</span>
-                    </div>
-                    <div class="right">
-                        <span id="time">9:41</span>
-                        <div class="battery">
-                            <div class="battery-level"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Now Playing -->
-                <div class="now-playing">
-                    <img class="album-art" id="albumArt" alt="Album Art" src="">
-                    <div class="now-playing-info">
-                        <a class="now-playing-title" id="songTitle" href="#" target="_blank">Loading...</a>
-                        <div class="now-playing-artist" id="songArtist">...</div>
-                    </div>
-                    <div class="playback-controls">
-                        <button class="playback-btn" onclick="previousSong()">◀</button>
-                        <button class="playback-btn" onclick="nextSong()">▶</button>
-                    </div>
-                </div>
-
-                <!-- Row 1 -->
-                <div class="control-row-1">
-                    <div class="control-group-left">
-                        <div class="control-tile" id="airplaneMode" onclick="toggleAirplaneMode()"
-                            aria-label="Airplane Mode">
-                            <div class="control-icon">✈️</div>
-                        </div>
-                        <div class="control-tile" id="wifi" onclick="toggleWifi()" aria-label="Wi-Fi">
-                            <div class="control-icon">
-                                <img alt="WiFi" src="src/assets/logos/wifi.png" />
-                            </div>
-                        </div>
-                        <div class="control-tile" id="bluetooth" onclick="toggleBluetooth()" aria-label="Bluetooth">
-                            <div class="control-icon">
-                                <img alt="Bluetooth" src="https://simpleicons.org/icons/bluetooth.svg" />
-                            </div>
-
-                        </div>
-                        <div class="control-tile" id="flashlight" onclick="toggleFlashlight()" aria-label="Flashlight">
-                            <div class="control-icon">🔦</div>
-                        </div>
-                    </div>
-
-                    <div class="slider-tile-large" id="brightnessSlider">
-                        <div class="slider-icon-top">☀️</div>
-                        <div class="slider-track" id="brightnessTrack">
-                            <div class="slider-fill" id="brightnessFill" style="height: 100%"></div>
-                            <div class="slider-thumb" id="brightnessThumb" style="bottom: 100%"></div>
-                        </div>
-                        <div class="slider-icon-bottom">🔅</div>
-                    </div>
-                </div>
-
-                <!-- Row 2 -->
-                <div class="control-row-2">
-                    <div class="slider-tile-large" id="volumeSlider">
-                        <div class="slider-icon-top">🔊</div>
-                        <div class="slider-track" id="volumeTrack">
-                            <div class="slider-fill" id="volumeFill" style="height: 50%"></div>
-                            <div class="slider-thumb" id="volumeThumb" style="bottom: 50%"></div>
-                        </div>
-                        <div class="slider-icon-bottom">🔇</div>
-                    </div>
-
-                    <div class="control-group-right">
-                        <div class="control-tile focus-tile" id="focusTile" onclick="toggleFocus()" aria-label="Focus">
-                            <div class="control-icon">🌙</div>
-                        </div>
-                        <div class="control-tile warning" id="disco" onclick="toggleDisco()" aria-label="Disco">
-                            <div class="control-icon">💥</div>
-                        </div>
-                        <div class="control-tile" onclick="showNotification('🎯 Feature coming soon!')"
-                            aria-label="Soon">
-                            <div class="control-icon">🎯</div>
-                        </div>
-                        <div class="control-tile lockTile" onclick="toggleLock()" aria-label="Lock">
-                            <div class="control-icon">
-                                <img src="src/assets/logos/lock.png" alt="Lock" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Portfolio -->
-                <div class="portfolio-grid">
-                    <a href="skills.html" class="portfolio-tile">
-                        <div class="portfolio-icon emoji">💡</div>
-                        <div class="portfolio-label">Skills</div>
-                    </a>
-                    <a href="projects.html" class="portfolio-tile">
-                        <div class="portfolio-icon emoji">🚀</div>
-                        <div class="portfolio-label">Projects</div>
-                    </a>
-                    <a href="https://linkedin.com/in/kbabhuta" target="_blank" class="portfolio-tile">
-                        <div class="portfolio-icon">
-                            <img alt="LinkedIn"
-                                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230077B5'%3E%3Cpath d='M19 0H5C2.239 0 0 2.239 0 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5V5c0-2.761-2.238-5-5-5zM8 19H5V8h3v11zM6.5 6.732A1.75 1.75 0 116.5 3.204a1.75 1.75 0 010 3.528zM20 19h-3v-5.604c0-3.368-3.663-3.113-3.663 0V19h-3V8h3v1.765C14.733 7.179 20 6.988 20 12.241V19z'/%3E%3C/svg%3E" />
-                        </div>
-                        <div class="portfolio-label">LinkedIn</div>
-                    </a>
-                    <a href="https://linktr.ee/kartikeyab" target="_blank" class="portfolio-tile">
-                        <div class="portfolio-icon emoji">📄</div>
-                        <div class="portfolio-label">Resume</div>
-                    </a>
-                    <a href="https://wave-english-539.notion.site/Kartikeya-Babhuta-b8fd9a2dbc1340db9e8df1c3fe323e25"
-                        target="_blank" class="portfolio-tile">
-                        <div class="portfolio-icon">
-                            <img alt="Notion" src="src/assets/logos/notion.svg" viewBox='0 0 24 24' fill='white'
-                                %3E%3Cpath
-                                d='M4.459 4.208c.746 0 1.434-.155 2.089-.475.655-.32 1.53-1.054 2.089-1.721.592-.329 1.052-1.012 1.415-1.012.148 0 .307.029.466.085.16.056.338.149.518.255.18.106.377.258.575.451.198.193.418.44.64.729l1.733 2.871c1.112 1.936 1.671 3.276 1.671 4.019 0 .185-.013.366-.04.543a1.804 1.804 0 01-.117.469 1.883 1.883 0 01-.205.388c-.082.106-.18.2-.294.282l-5.889 3.509a.61.61 0 01-.744-.052 1.275 1.275 0 01-.423-.324 1.395 1.395 0 01-.296-.497 1.915 1.915 0 01-.106-.668c0-.296.071-.693.211-1.192.14-.499.397-1.119.77-1.862.193-.378.316-.631.372-.76.056-.128.083-.237.083-.328 0-.158-.085-.36-.255-.601-.17-.241-.5-.62-.987-1.137L4.458 4.208zm7.308 11.395c0 .363.212.902.637 1.616.425.714 1.266 1.952 2.522 3.713.174.246.371.394.588.442.217.048.4.024.545-.072l4.668-2.774c.246-.148.392-.336.439-.564.047-.228.035-.516-.036-.866-.071-.349-.225-.803-.46-1.362-.236-.559-.606-1.275-1.11-2.15-.988-1.717-1.854-2.993-2.596-3.829-.743-.835-1.362-1.391-1.86-1.666-.311-.172-.603-.278-.876-.316a1.419 1.419 0 00-.734.098c-.217.09-.408.249-.576.475-.167.227-.274.545-.318.956-.044.41.008.963.158 1.664.149.7.452 1.579.906 2.635l.137.328c.283.68.532 1.364.748 2.052.215.688.323 1.238.323 1.65z'
-                                /%3E%3C/svg%3E" />
-                        </div>
-                        <div class="portfolio-label">Notion</div>
-                    </a>
-                    <a href="https://github.com/kartikeyab1" target="_blank" class="portfolio-tile">
-                        <div class="portfolio-icon">
-                            <img alt="GitHub" src="src/assets/logos/github.svg" viewBox='0 0 24 24' fill='white'
-                                %3E%3Cpath
-                                d='M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604C6.32 17.706 3.518 16.677 3.518 12.08c0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23a10.55 10.55 0 016.009 0c2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.965 21.798 24.4 17.301 24.4 11.999 24 5.372 18.627 0 12 0z'
-                                /%3E%3C/svg%3E" />
-                        </div>
-                        <div class="portfolio-label">GitHub</div>
-                    </a>
-                </div>
-
-                <!-- Footer -->
-                <div class="footer">
-                    <p>© 2025 Kartikeya Babhuta.</p>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Notification -->
-    <div class="notification" id="notification"></div>
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle" id="themeToggle">🌙</div>
 
     <script>
-        const CONFIG = {
-            playlist: [
-                {
-                    title: "Careful Consideration",
-                    artist: "Jon Björk",
-                    icon: "https://cdn.epidemicsound.com/release-cover-images/19305425-c626-4d96-82c2-1669e1e13566/3000x3000.png?format=webp&width=320&height=320&quality=80",
-                    link: "https://www.epidemicsound.com/music/tracks/01de9e71-9581-3d5e-bfbd-2a53b4789fb5/"
-                },
-                {
-                    title: "Macumba",
-                    artist: "Cornelio",
-                    icon: "https://cdn.epidemicsound.com/release-cover-images/b90efc69-75d0-40de-a2f9-1890377d4a8b/3000x3000.png?format=webp&width=320&height=320&quality=80",
-                    link: "https://www.epidemicsound.com/music/tracks/32bd86b2-0c6b-43f5-a595-efceb92303d0/"
-                },
-                {
-                    title: "Queen Bee",
-                    artist: "Wanda Shakes",
-                    icon: "https://cdn.epidemicsound.com/release-cover-images/10442f43-fcc9-4603-aaab-2c0e93fd834c/3000x3000.png?format=webp&width=320&height=320&quality=80",
-                    link: "https://www.epidemicsound.com/music/tracks/42782dd1-7825-309e-a2cd-1e2f84ae6e39/"
-                },
-                {
-                    title: "Oolong",
-                    artist: "Viriya",
-                    icon: "https://cdn.epidemicsound.com/release-cover-images/63f8e5f1-3441-48d3-a71c-7600b8991c58/3000x3000.png?format=webp&width=320&height=320&quality=80",
-                    link: "https://www.epidemicsound.com/music/tracks/2345fbca-2c93-4016-8969-05a655a2863b/"
-                }
-            ]
-        };
+        // Starfield
+        let isDarkMode = true;
 
-        let state = {
-            darkMode: true,
-            airplaneMode: false,
-            wifiOn: false,
-            bluetoothConnected: false,
-            focusEnabled: false,
-            discoMode: false,
-            currentSongIndex: 0,
-            brightnessPercent: 100,
-            volumePercent: 50,
-            stars: [],
-            dragging: null
-        };
-
-        window.addEventListener('DOMContentLoaded', () => {
-            initStarfield();
-            initializeMusic();
-            updateTime();
-            setInterval(updateTime, 1000);
-            setInterval(nextSong, 8000);
-
-            setupVerticalSlider('brightness');
-            setupVerticalSlider('volume');
-
-            applyBrightness(state.brightnessPercent);
-            updateBrightnessSlider(state.brightnessPercent);
-            updateVolumeSlider(state.volumePercent);
-        });
-
-        function updateTime() {
-            const now = new Date();
-            const hh = now.getHours();
-            const mm = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('time').textContent = `${hh}:${mm}`;
-        }
-
-        function scrollToControlCenter() {
-            document.querySelector('.control-center-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        /* Starfield */
         function initStarfield() {
             const canvas = document.getElementById('starfield');
             const ctx = canvas.getContext('2d');
-            function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
-            resize(); addEventListener('resize', resize);
+            let stars = [];
+
+            function resize() {
+                canvas.width = innerWidth;
+                canvas.height = innerHeight;
+            }
+            resize();
+            addEventListener('resize', resize);
 
             for (let i = 0; i < 150; i++) {
-                state.stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, radius: Math.random() * 1.2, alpha: Math.random(), speed: Math.random() * 0.3 + 0.1, twinkleSpeed: Math.random() * 0.02 });
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1.2,
+                    alpha: Math.random(),
+                    speed: Math.random() * 0.3 + 0.1,
+                    twinkleSpeed: Math.random() * 0.02
+                });
             }
+
             (function animate() {
-                ctx.fillStyle = 'rgba(0,0,0,0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                state.stars.forEach(s => {
-                    ctx.beginPath(); ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255,255,255,${s.alpha})`; ctx.fill();
-                    s.alpha += Math.sin(Date.now() * s.twinkleSpeed) * 0.01; s.alpha = Math.max(0.2, Math.min(1, s.alpha));
-                    s.y += s.speed; if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
+                // Draw background based on theme
+                if (isDarkMode) {
+                    ctx.fillStyle = 'rgba(0,0,0,0.05)';
+                } else {
+                    ctx.fillStyle = 'rgba(255,255,255,0.05)';
+                }
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                stars.forEach(s => {
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+                    // Draw stars based on theme
+                    if (isDarkMode) {
+                        ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+                    } else {
+                        ctx.fillStyle = `rgba(0,0,0,${s.alpha})`;
+                    }
+                    ctx.fill();
+                    s.alpha += Math.sin(Date.now() * s.twinkleSpeed) * 0.01;
+                    s.alpha = Math.max(0.2, Math.min(1, s.alpha));
+                    s.y += s.speed;
+                    if (s.y > canvas.height) {
+                        s.y = 0;
+                        s.x = Math.random() * canvas.width;
+                    }
                 });
                 requestAnimationFrame(animate);
             })();
         }
 
-        /* Controls */
-        function toggleAirplaneMode() {
-            const tile = document.getElementById('airplaneMode');
-            if (!state.airplaneMode) {
-                tile.classList.add('active', 'warning');
-                state.airplaneMode = true;
-                showNotification('✈️ Airplane Mode On');
-                setTimeout(() => {
-                    const airplane = document.createElement('div');
-                    airplane.className = 'flying-airplane'; airplane.textContent = '✈️'; document.body.appendChild(airplane);
-                    setTimeout(() => { airplane.remove(); }, 3000);
-                }, 100);
-            } else {
-                tile.classList.remove('active', 'warning');
-                state.airplaneMode = false;
-                showNotification('✈️ Airplane Mode Off');
-            }
-        }
-        function toggleWifi() {
-            state.wifiOn = !state.wifiOn;
-            document.getElementById('wifi').classList.toggle('active');
-            showNotification(state.wifiOn ? '📶 Wi-Fi Connected' : '📵 Wi-Fi Disconnected');
-        }
-        function toggleBluetooth() {
-            state.bluetoothConnected = !state.bluetoothConnected;
-            document.getElementById('bluetooth').classList.toggle('active');
-            const device = navigator.platform || 'Device';
-            showNotification(state.bluetoothConnected ? `Connected to ${device}` : `Disconnected from ${device}`);
-        }
-        function toggleFlashlight() {
-            state.darkMode = !state.darkMode;
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+
+        themeToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
             document.body.classList.toggle('light-mode');
-            document.getElementById('flashlight').classList.toggle('active');
-        }
-        function toggleFocus() {
-            state.focusEnabled = !state.focusEnabled;
-            const tile = document.getElementById('focusTile');
-            if (state.focusEnabled) {
-                tile.classList.add('focus-active');
-                document.body.style.filter = 'hue-rotate(280deg) brightness(0.9)';
-                showNotification('🌙 Focus Mode On');
+            themeToggle.textContent = isDarkMode ? '🌙' : '☀️';
+
+            // Clear canvas for immediate theme change effect
+            const canvas = document.getElementById('starfield');
+            const ctx = canvas.getContext('2d');
+            if (isDarkMode) {
+                ctx.fillStyle = 'rgba(0,0,0,1)';
             } else {
-                tile.classList.remove('focus-active');
-                document.body.style.filter = `brightness(${mapBrightness(state.brightnessPercent)})`;
-                showNotification('Focus Mode Off');
+                ctx.fillStyle = 'rgba(255,255,255,1)';
             }
-        }
-        function toggleDisco() {
-            state.discoMode = !state.discoMode;
-            document.getElementById('disco').classList.toggle('active');
-            document.body.classList.toggle('disco-mode');
-            if (state.discoMode) {
-                showNotification('🕺 PARTY MODE ACTIVATED! 💃');
-                const audio = new AudioContext();
-                const osc = audio.createOscillator(); const g = audio.createGain();
-                osc.connect(g); g.connect(audio.destination);
-                osc.frequency.value = 440; g.gain.setValueAtTime(0, audio.currentTime);
-                g.gain.linearRampToValueAtTime(0.3, audio.currentTime + 0.1);
-                g.gain.exponentialRampToValueAtTime(0.01, audio.currentTime + 0.5);
-                osc.start(audio.currentTime); osc.stop(audio.currentTime + 0.5);
-            } else {
-                showNotification('Party mode deactivated 🥺');
-            }
-        }
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        });
 
-        function toggleLock() {
-            const tile = document.querySelector('.lockTile');
-            tile.classList.toggle('lock-active');
-            if (tile.classList.contains('lock-active')) {
-                showNotification('🔴 Orientation Lock On');
-            } else {
-                showNotification('⚪ Orientation Lock Off');
-            }
-        }
-
-        /* Sliders (drag + click) */
-        function setupVerticalSlider(kind) {
-            const track = document.getElementById(kind === 'brightness' ? 'brightnessTrack' : 'volumeTrack');
-            const onMove = (clientY) => {
-                const rect = track.getBoundingClientRect();
-                let p = (1 - (clientY - rect.top) / rect.height) * 100;
-                p = Math.max(0, Math.min(100, p));
-                if (kind === 'brightness') {
-                    state.brightnessPercent = p; applyBrightness(p); updateBrightnessSlider(p);
-                } else {
-                    state.volumePercent = p; updateVolumeSlider(p);
-                    const icon = p > 50 ? '🔊' : p > 0 ? '🔉' : '🔇';
-                    showNotification(`${icon} Volume: ${Math.round(p)}%`);
-                }
-            };
-            const start = (e) => { onMove(getClientY(e)); addEventListener('mousemove', move); addEventListener('mouseup', end, { once: true }); addEventListener('touchmove', move, { passive: false }); addEventListener('touchend', end, { once: true }); };
-            const move = (e) => { e.preventDefault?.(); onMove(getClientY(e)); };
-            const end = () => { removeEventListener('mousemove', move); removeEventListener('touchmove', move); };
-            track.addEventListener('mousedown', start);
-            track.addEventListener('touchstart', start, { passive: false });
-        }
-        function getClientY(e) { return (e.touches && e.touches[0]) ? e.touches[0].clientY : e.clientY; }
-
-        function updateBrightnessSlider(p) { document.getElementById('brightnessFill').style.height = p + '%'; document.getElementById('brightnessThumb').style.bottom = p + '%'; }
-        function updateVolumeSlider(p) { document.getElementById('volumeFill').style.height = p + '%'; document.getElementById('volumeThumb').style.bottom = p + '%'; }
-        function mapBrightness(p) { const min = 0.30, max = 1.00; return (min + (max - min) * (p / 100)).toFixed(3); }
-        function applyBrightness(p) { document.documentElement.style.setProperty('--brightness', mapBrightness(p)); }
-
-        /* Music */
-        function initializeMusic() { updateNowPlaying(); }
-        function updateNowPlaying() {
-            const s = CONFIG.playlist[state.currentSongIndex];
-            const albumArtEl = document.getElementById('albumArt');
-            albumArtEl.src = s.icon;
-            const titleLink = document.getElementById('songTitle');
-            titleLink.textContent = s.title;
-            titleLink.href = s.link || '#'; // fallback if no link
-            document.getElementById('songArtist').textContent = s.artist;
-        }
-        function nextSong() { state.currentSongIndex = (state.currentSongIndex + 1) % CONFIG.playlist.length; updateNowPlaying(); }
-        function previousSong() { state.currentSongIndex = state.currentSongIndex ? state.currentSongIndex - 1 : CONFIG.playlist.length - 1; updateNowPlaying(); }
-
-        /* Notification */
-        function showNotification(msg) {
-            const n = document.getElementById('notification');
-            n.textContent = msg; n.classList.add('show');
-            clearTimeout(n._t); n._t = setTimeout(() => n.classList.remove('show'), 2500);
-        }
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            initStarfield();
+        });
     </script>
 </body>
 
