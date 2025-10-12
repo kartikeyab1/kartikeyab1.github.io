@@ -16,196 +16,107 @@
         }
 
         :root {
-            --primary: #000000;
-            --surface: rgba(255, 255, 255, 0.02);
-            --text: #ffffff;
-            --text-dim: rgba(255, 255, 255, 0.6);
-            --accent-blue: #0A84FF;
-            --accent-purple: #5E5CE6;
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #141414;
+            --bg-card: #1a1a1a;
+            --bg-hover: #222222;
+            --text-primary: #f0f0f0;
+            --text-secondary: #999999;
+            --text-dim: #666666;
+            --accent: #4A9EFF;
+            --accent-bright: #66B3FF;
+            --accent-dim: #2E5F8A;
             --accent-pink: #FF375F;
-            --accent-green: #30D158;
-            --accent-yellow: #FFD60A;
-            --accent-orange: #FF9500;
-            --border: rgba(255, 255, 255, 0.1);
-            --glow: 0 0 40px rgba(10, 132, 255, 0.5);
+            --accent-blue: #0A84FF;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(74, 158, 255, 0.3);
+            --glow: rgba(74, 158, 255, 0.4);
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
-            background: #000;
-            color: var(--text);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
             overflow-x: hidden;
-            min-height: 100vh;
+            position: relative;
         }
 
-        .universe {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: radial-gradient(ellipse at center, #0a0a0a 0%, #000 100%);
-            z-index: -2;
-        }
-
-        .stars {
+        /* Subtle background gradient */
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            right: 0;
+            height: 100vh;
+            background: radial-gradient(ellipse at top, #0f1419 0%, var(--bg-primary) 50%);
             z-index: -1;
         }
 
-        .star {
-            position: absolute;
-            background: white;
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            animation: twinkle 4s infinite;
-        }
-
-        @keyframes twinkle {
-
-            0%,
-            100% {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.25;
-            animation: float 20s infinite ease-in-out;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .orb1 {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, var(--accent-blue), transparent);
-            top: -200px;
-            left: -200px;
-        }
-
-        .orb2 {
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, var(--accent-purple), transparent);
-            bottom: -150px;
-            right: -150px;
-            animation-delay: -10s;
-        }
-
-        .orb3 {
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle, var(--accent-pink), transparent);
-            top: 50%;
-            left: 50%;
-            animation-delay: -5s;
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            25% {
-                transform: translate(100px, -100px) scale(1.1);
-            }
-
-            50% {
-                transform: translate(-100px, 100px) scale(0.9);
-            }
-
-            75% {
-                transform: translate(50px, 50px) scale(1.05);
-            }
-        }
-
+        /* Navigation */
         .nav {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            padding: 20px 40px;
-            z-index: 1000;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent);
+            padding: 24px 32px;
+            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.95), transparent);
             backdrop-filter: blur(20px);
+            z-index: 100;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .back-btn {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            color: var(--text);
+            gap: 8px;
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 500;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
         }
 
         .back-btn:hover {
-            transform: translateX(-5px);
-            border-color: var(--accent-blue);
-            box-shadow: var(--glow);
+            color: var(--accent);
+            transform: translateX(-4px);
         }
 
-        .container {
-            position: relative;
-            min-height: 100vh;
-            padding: 100px 20px 40px;
-            z-index: 1;
+        .back-btn:hover::before {
+            width: 100%;
         }
 
+        /* Header */
         .header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .title {
-            font-size: clamp(48px, 8vw, 72px);
-            font-weight: 700;
-            background: linear-gradient(135deg, #fff, var(--accent-blue), var(--accent-purple), #fff);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientShift 8s ease infinite;
-            margin-bottom: 10px;
-        }
-
-        @keyframes gradientShift {
-
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-        }
-
-        .subtitle {
-            font-size: 18px;
-            color: var(--text-dim);
-            animation: fadeInUp 1s ease;
+            padding: 140px 32px 80px;
+            max-width: 900px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease;
         }
 
         @keyframes fadeInUp {
@@ -220,341 +131,524 @@
             }
         }
 
-        .tiles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .tile {
-            position: relative;
-            height: 400px;
-            border-radius: 24px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            animation: tileEntry 0.8s ease backwards;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-            border: 1px solid var(--border);
-        }
-
-        .tile:nth-child(1) {
-            animation-delay: 0.1s;
-        }
-
-        .tile:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .tile:nth-child(3) {
-            animation-delay: 0.3s;
-        }
-
-        .tile:nth-child(4) {
-            animation-delay: 0.4s;
-        }
-
-        .tile:nth-child(5) {
-            animation-delay: 0.5s;
-        }
-
-        @keyframes tileEntry {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .tile-image {
-            position: absolute;
-            width: 100%;
-            height: 60%;
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 72px;
-            transition: all 0.5s;
-            overflow: hidden;
-        }
-
-        .tile-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s;
-        }
-
-        .tile-image::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100px;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-        }
-
-        .tile-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 24px;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6));
-            backdrop-filter: blur(10px);
-            transition: all 0.4s;
-        }
-
-        .tile-title {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            transition: all 0.3s;
-        }
-
-        .tile-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.4s;
-        }
-
-        .tile-tag {
-            padding: 4px 12px;
-            background: rgba(10, 132, 255, 0.2);
-            border: 1px solid var(--accent-blue);
-            border-radius: 100px;
-            font-size: 11px;
-            color: var(--accent-blue);
-        }
-
-        .tile:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 30px 60px rgba(10, 132, 255, 0.3);
-            border-color: var(--accent-blue);
-        }
-
-        .tile:hover .tile-image {
-            height: 50%;
-        }
-
-        .tile:hover .tile-image img {
-            transform: scale(1.1);
-        }
-
-        .tile:hover .tile-tags {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .tile:hover .tile-title {
-            color: var(--accent-blue);
-        }
-
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(20px);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            border: 1px solid var(--border);
-            border-radius: 32px;
-            max-width: 900px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            animation: modalSlideIn 0.5s ease;
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                transform: scale(0.9) translateY(50px);
-                opacity: 0;
-            }
-
-            to {
-                transform: scale(1) translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-header {
-            position: relative;
-            height: 250px;
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
-            border-radius: 32px 32px 0 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .modal-header-icon {
-            font-size: 100px;
-            color: white;
-            z-index: 1;
-        }
-
-        .viewer-toggle-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 12px 24px;
-            background: rgba(10, 132, 255, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 100px;
-            color: white;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            z-index: 3;
-            display: none;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .viewer-toggle-btn.show {
-            display: flex;
-        }
-
-        .viewer-toggle-btn:hover {
-            background: var(--accent-blue);
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(10, 132, 255, 0.5);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            transition: all 0.3s;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-close:hover {
-            background: var(--accent-pink);
-            transform: rotate(90deg) scale(1.1);
-        }
-
-        .modal-body {
-            padding: 40px;
-        }
-
-        .modal-title {
-            font-size: 36px;
+        .title {
+            font-size: clamp(36px, 5vw, 56px);
             font-weight: 700;
             margin-bottom: 16px;
-            background: linear-gradient(135deg, var(--text), var(--accent-blue));
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-bright));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .modal-description {
-            font-size: 16px;
-            line-height: 1.8;
-            color: var(--text-dim);
-            margin-bottom: 32px;
-        }
-
-        .modal-skills {
-            margin-bottom: 32px;
-        }
-
-        .modal-skills-title {
+        .subtitle {
             font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: var(--accent-blue);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 700px;
         }
 
-        .modal-skills-grid {
+        /* Timeline Container */
+        .timeline-container {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 32px 120px;
+        }
+
+        /* Progress Indicator */
+        .progress-track {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 200px;
+            width: 2px;
+            background: var(--border);
+            z-index: 50;
+            opacity: 0;
+            animation: fadeIn 1s ease 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(to bottom, var(--accent), var(--accent-bright));
+            transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 1px;
+            box-shadow: 0 0 10px var(--glow);
+        }
+
+        .progress-dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .progress-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .progress-dot:hover {
+            transform: translateX(-50%) scale(1.5);
+            border-color: var(--accent);
+        }
+
+        .progress-dot.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: translateX(-50%) scale(1.4);
+            box-shadow: 0 0 15px var(--glow);
+        }
+
+        /* Timeline Line */
+        .timeline-line {
+            position: absolute;
+            left: 60px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom,
+                    transparent 0%,
+                    var(--border) 10%,
+                    var(--border) 90%,
+                    transparent 100%);
+            opacity: 0;
+            animation: fadeIn 1s ease 0.3s forwards;
+        }
+
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            opacity: 0;
+            animation: glowPulse 3s ease infinite;
+        }
+
+        @keyframes glowPulse {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+
+            50% {
+                opacity: 0.3;
+                transform: translateY(100%);
+            }
+        }
+
+        /* Project Items */
+        .project-item {
+            position: relative;
+            margin-bottom: 60px;
+            padding-left: 100px;
+            opacity: 0;
+            animation: slideInLeft 0.6s ease forwards;
+        }
+
+        .project-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .project-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .project-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .project-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .project-item:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .project-node {
+            position: absolute;
+            left: 48px;
+            top: 8px;
+            width: 24px;
+            height: 24px;
+            background: var(--bg-secondary);
+            border: 3px solid var(--accent-dim);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+        }
+
+        .project-node::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-node:hover {
+            transform: scale(1.3);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--glow);
+        }
+
+        .project-node:hover::before {
+            opacity: 1;
+        }
+
+        .project-item.expanded .project-node {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: scale(1.2);
+            box-shadow: 0 0 25px var(--glow);
+        }
+
+        .project-item.expanded .project-node::before {
+            opacity: 1;
+        }
+
+        .project-date {
+            position: absolute;
+            left: -80px;
+            top: 10px;
+            color: var(--text-dim);
+            font-size: 13px;
+            font-weight: 500;
+            text-align: right;
+            width: 100px;
+            letter-spacing: 0.05em;
+        }
+
+        .project-content {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .project-header {
+            padding: 20px 28px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-item:hover .project-header {
+            border-color: var(--border-hover);
+            transform: translateX(8px);
+            background: var(--bg-hover);
+        }
+
+        .project-item:hover .project-header::before {
+            opacity: 1;
+        }
+
+        .project-item.expanded .project-header {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-hover));
+            border-color: var(--accent);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            box-shadow: 0 -2px 20px rgba(74, 158, 255, 0.1);
+        }
+
+        .project-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .project-brief {
+            font-size: 14px;
+            color: var(--text-secondary);
+            padding-right: 120px;
+        }
+
+        .expand-indicator {
+            position: absolute;
+            right: 28px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dim);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 16px;
+        }
+
+        .click-hint {
+            position: absolute;
+            right: 28px;
+            bottom: 20px;
+            font-size: 12px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: gentlePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes gentlePulse {
+
+            0%,
+            100% {
+                opacity: 0.7;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .project-item:hover .click-hint {
+            opacity: 1;
+            transform: translateX(-4px);
+        }
+
+        .project-item.expanded .click-hint {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .project-item.expanded .expand-indicator {
+            transform: translateY(-50%) rotate(180deg);
+            color: var(--accent);
+        }
+
+        /* Expandable Details */
+        .project-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .project-item.expanded .project-details {
+            max-height: 800px;
+        }
+
+        .details-content {
+            padding: 32px;
+            background: linear-gradient(to bottom, var(--bg-hover), var(--bg-card));
+            border: 1px solid var(--accent);
+            border-top: none;
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .project-description {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+        }
+
+        .project-skills {
+            margin-bottom: 24px;
+        }
+
+        .skills-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+        }
+
+        .skills-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
         }
 
         .skill-tag {
-            padding: 10px 20px;
-            background: rgba(10, 132, 255, 0.1);
-            border: 1px solid rgba(10, 132, 255, 0.3);
-            border-radius: 100px;
-            font-size: 14px;
-            color: var(--accent-blue);
-            transition: all 0.3s;
+            padding: 6px 14px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
         }
 
         .skill-tag:hover {
-            background: var(--accent-blue);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(10, 132, 255, 0.4);
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 158, 255, 0.2);
         }
 
-        .modal-links {
+        .project-links {
             display: flex;
             gap: 16px;
             flex-wrap: wrap;
         }
 
-        .modal-link {
-            padding: 12px 28px;
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-            border: none;
-            border-radius: 100px;
-            color: white;
+        .project-link {
+            color: var(--accent);
             text-decoration: none;
+            font-size: 14px;
             font-weight: 500;
-            transition: all 0.3s;
+            padding: 10px 20px;
+            border: 1px solid var(--accent-dim);
+            border-radius: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+            position: relative;
+            overflow: hidden;
         }
 
-        .modal-link:hover {
+        .project-link::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--accent);
+            transition: all 0.5s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .project-link:hover {
+            color: var(--bg-primary);
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(10, 132, 255, 0.4);
+            box-shadow: 0 6px 20px rgba(74, 158, 255, 0.4);
+            border-color: var(--accent);
         }
 
+        .project-link:hover::before {
+            width: 150%;
+            height: 150%;
+        }
+
+        .project-link span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .header {
+                padding: 100px 20px 60px;
+            }
+
+            .title {
+                font-size: 32px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .timeline-container {
+                padding: 0 20px 80px;
+            }
+
+            .timeline-line {
+                left: 30px;
+            }
+
+            .project-item {
+                padding-left: 60px;
+                margin-bottom: 40px;
+            }
+
+            .project-node {
+                left: 18px;
+            }
+
+            .project-date {
+                position: static;
+                margin-bottom: 8px;
+                text-align: left;
+                width: auto;
+                color: var(--accent);
+            }
+
+            .progress-track {
+                display: none;
+            }
+
+            .details-content {
+                padding: 24px;
+            }
+        }
+
+        /* Loading animation for initial page load */
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 3D Viewer Styles */
         .viewer-overlay {
             position: fixed;
             top: 0;
@@ -709,61 +803,54 @@
             font-weight: 500;
         }
 
-        @media (max-width: 768px) {
-            .tiles-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 20px;
-            }
-
-            .tile {
-                height: 350px;
-            }
-
-            .title {
-                font-size: 36px;
-            }
-
-            .modal-body {
-                padding: 24px;
-            }
-
-            .viewer-container {
-                width: 95%;
-                height: 70vh;
-            }
-
-            .viewer-instructions {
-                font-size: 10px;
-                padding: 10px 16px;
-                bottom: 20px;
-            }
+        .model-btn {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 20px;
+            border: 1px solid var(--accent-dim);
+            border-radius: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
         }
 
-        .shimmer {
+        .model-btn::before {
+            content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-            animation: shimmer 2s infinite;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--accent);
+            transition: all 0.5s ease;
+            transform: translate(-50%, -50%);
         }
 
-        @keyframes shimmer {
-            100% {
-                left: 100%;
-            }
+        .model-btn:hover {
+            color: var(--bg-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(74, 158, 255, 0.4);
+            border-color: var(--accent);
+        }
+
+        .model-btn:hover::before {
+            width: 150%;
+            height: 150%;
+        }
+
+        .model-btn span {
+            position: relative;
+            z-index: 1;
         }
     </style>
 </head>
 
 <body>
-    <div class="universe"></div>
-    <div class="stars" id="stars"></div>
-    <div class="orb orb1"></div>
-    <div class="orb orb2"></div>
-    <div class="orb orb3"></div>
-
     <nav class="nav">
         <a href="index.html" class="back-btn">
             <span>←</span>
@@ -771,112 +858,209 @@
         </a>
     </nav>
 
-    <div class="container">
-        <header class="header">
-            <h1 class="title">Featured Projects</h1>
-            <p class="subtitle">Power Electronics, Analog & Digital Circuits, PCB Design, and Hardware Testing &
-                Validation.</p>
-        </header>
+    <header class="header">
+        <h1 class="title">Featured Projects</h1>
+        <p class="subtitle">Power Electronics, Analog & Digital Circuits, PCB Design, and Hardware Testing & Validation.
+        </p>
+    </header>
 
-        <div class="tiles-grid">
-            <div class="tile" data-project="hvpb">
-                <div class="shimmer"></div>
-                <div class="tile-image">
-                    <img src="src/assets/Projects/Pictures/HVPB2.png" alt="HVPB">
-                </div>
-                <div class="tile-content">
-                    <h3 class="tile-title">HVPB (HV Protection Board)</h3>
-                    <div class="tile-tags">
-                        <span class="tile-tag">600V</span>
-                        <span class="tile-tag">Analog</span>
-                        <span class="tile-tag">HV Safety</span>
-                    </div>
-                </div>
-            </div>
+    <div class="timeline-container">
+        <div class="timeline-line"></div>
 
-            <div class="tile" data-project="ev6">
-                <div class="shimmer"></div>
-                <div class="tile-image">
-                    <img src="src/assets/Projects/Pictures/car.jpeg" alt="EV6"
-                        onerror="this.style.display='none'; this.parentElement.innerHTML='🏎️';">
-                </div>
-                <div class="tile-content">
-                    <h3 class="tile-title">EV6 Systems Integration</h3>
-                    <div class="tile-tags">
-                        <span class="tile-tag">FSAE</span>
-                        <span class="tile-tag">Integration</span>
-                        <span class="tile-tag">Testing</span>
-                    </div>
-                </div>
-            </div>
+        <!-- Progress Indicator -->
+        <div class="progress-track" id="progressTrack">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-dots" id="progressDots"></div>
+        </div>
 
-            <div class="tile" data-project="hil">
-                <div class="shimmer"></div>
-                <div class="tile-image">
-                    <img src="src/assets/Projects/Pictures/typhoon.png" alt="HIL"
-                        onerror="this.style.display='none'; this.parentElement.innerHTML='🔧';">
+        <!-- HVPB Project -->
+        <div class="project-item" data-project="hvpb">
+            <div class="project-date">2024</div>
+            <div class="project-node"></div>
+            <div class="project-content">
+                <div class="project-header">
+                    <h3 class="project-title">HVPB (HV Protection Board)</h3>
+                    <p class="project-brief">600V contactor control system with integrated safety features</p>
+                    <span class="expand-indicator">▼</span>
+                    <span class="click-hint">Click to expand →</span>
                 </div>
-                <div class="tile-content">
-                    <h3 class="tile-title">HIL Interface PCB</h3>
-                    <div class="tile-tags">
-                        <span class="tile-tag">HIL</span>
-                        <span class="tile-tag">Testing</span>
-                        <span class="tile-tag">PCB Design</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tile" data-project="apm">
-                <div class="shimmer"></div>
-                <div class="tile-image">
-                    <img src="src/assets/Projects/Pictures/paper.png" alt="APM"
-                        onerror="this.style.display='none'; this.parentElement.innerHTML='📊';">
-                </div>
-                <div class="tile-content">
-                    <h3 class="tile-title">APM Buck Converter</h3>
-                    <div class="tile-tags">
-                        <span class="tile-tag">3.6kW</span>
-                        <span class="tile-tag">SiC</span>
-                        <span class="tile-tag">Research</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tile" data-project="business-card">
-                <div class="shimmer"></div>
-                <div class="tile-image">
-                    <span>💳</span>
-                </div>
-                <div class="tile-content">
-                    <h3 class="tile-title">PCB Business Card</h3>
-                    <div class="tile-tags">
-                        <span class="tile-tag">NFC</span>
-                        <span class="tile-tag">Toolkit</span>
-                        <span class="tile-tag">DFM</span>
+                <div class="project-details">
+                    <div class="details-content">
+                        <p class="project-description">
+                            Designed and validated a fully analog high-voltage contactor control system featuring
+                            sequenced pre-charge, integrated IMD fault logic, and isolated voltage sensing via the
+                            AMC1411. Engineered for 600 V operation with robust creepage/clearance, galvanic isolation,
+                            and fault-safe latching to meet stringent FSAE safety requirements.
+                        </p>
+                        <div class="project-skills">
+                            <div class="skills-label">Technologies & Skills</div>
+                            <div class="skills-list">
+                                <span class="skill-tag">Altium Designer</span>
+                                <span class="skill-tag">600V</span>
+                                <span class="skill-tag">18 kW</span>
+                                <span class="skill-tag">Galvanic Isolation</span>
+                                <span class="skill-tag">E-Fuse</span>
+                                <span class="skill-tag">IMD Logic</span>
+                                <span class="skill-tag">Board Mount Contactors</span>
+                            </div>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><span>Technical Documentation</span></a>
+                            <a href="#" class="project-link"><span>Test Results</span></a>
+                            <button class="model-btn" onclick="open3DViewer()"><span>🔍 View 3D Model</span></button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="modal" id="projectModal">
-        <div class="modal-content">
-            <div class="modal-header" id="modalHeader">
-                <span class="modal-header-icon" id="modalIcon">⚡</span>
-                <button class="viewer-toggle-btn" id="viewerToggleBtn">
-                    <span>🔍</span>
-                    <span>View 3D Model</span>
-                </button>
-                <button class="modal-close" onclick="closeModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <h2 class="modal-title" id="modalTitle">Project Title</h2>
-                <p class="modal-description" id="modalDescription">Description</p>
-                <div class="modal-skills">
-                    <h3 class="modal-skills-title">Technologies & Skills</h3>
-                    <div class="modal-skills-grid" id="modalSkills"></div>
+        <!-- EV6 Project -->
+        <div class="project-item" data-project="ev6">
+            <div class="project-date">2024</div>
+            <div class="project-node"></div>
+            <div class="project-content">
+                <div class="project-header">
+                    <h3 class="project-title">EV6 Systems Integration</h3>
+                    <p class="project-brief">FSAE electric vehicle validation and integration</p>
+                    <span class="expand-indicator">▼</span>
+                    <span class="click-hint">Click to expand →</span>
                 </div>
-                <div class="modal-links" id="modalLinks"></div>
+                <div class="project-details">
+                    <div class="details-content">
+                        <p class="project-description">
+                            Led the validation and integration of HV/LV subsystems for MAC Formula Electric, achieving
+                            the team's first fully operational Formula SAE electric vehicle. Implemented comprehensive
+                            safety protocols and testing procedures.
+                        </p>
+                        <div class="project-skills">
+                            <div class="skills-label">Technologies & Skills</div>
+                            <div class="skills-list">
+                                <span class="skill-tag">144s NMC Battery</span>
+                                <span class="skill-tag">Contactor Logic</span>
+                                <span class="skill-tag">Fault Handling</span>
+                                <span class="skill-tag">CAN Bus</span>
+                                <span class="skill-tag">Hardware Development</span>
+                                <span class="skill-tag">Integration</span>
+                                <span class="skill-tag">Troubleshooting</span>
+                            </div>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://macformularacing.com/" class="project-link" target="_blank"><span>Team
+                                    Page</span></a>
+                            <a href="https://legacy.sae.org/binaries//content/assets/cm/content/attend/student-events/results/formula-sae/fsae_ev_2024_results.pdf"
+                                class="project-link" target="_blank"><span>Competition Results</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HIL Project -->
+        <div class="project-item" data-project="hil">
+            <div class="project-date">2024</div>
+            <div class="project-node"></div>
+            <div class="project-content">
+                <div class="project-header">
+                    <h3 class="project-title">HIL Interface PCB</h3>
+                    <p class="project-brief">Hardware-in-the-loop testing interface board</p>
+                    <span class="expand-indicator">▼</span>
+                </div>
+                <div class="project-details">
+                    <div class="details-content">
+                        <p class="project-description">
+                            Developing a HIL interface board to connect power converter evaluation hardware to Typhoon
+                            HIL systems with precision measurement and robust debugging features.
+                        </p>
+                        <div class="project-skills">
+                            <div class="skills-label">Technologies & Skills</div>
+                            <div class="skills-list">
+                                <span class="skill-tag">Altium Designer</span>
+                                <span class="skill-tag">Typhoon HIL</span>
+                                <span class="skill-tag">4-Layer PCB</span>
+                                <span class="skill-tag">Test Points</span>
+                                <span class="skill-tag">Signal Conditioning</span>
+                            </div>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><span>Design Files</span></a>
+                            <a href="#" class="project-link"><span>Test Methodology</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- APM Project -->
+        <div class="project-item" data-project="apm">
+            <div class="project-date">2025</div>
+            <div class="project-node"></div>
+            <div class="project-content">
+                <div class="project-header">
+                    <h3 class="project-title">APM Interleaved Buck Converter</h3>
+                    <p class="project-brief">3.6kW high-efficiency power converter research</p>
+                    <span class="expand-indicator">▼</span>
+                </div>
+                <div class="project-details">
+                    <div class="details-content">
+                        <p class="project-description">
+                            Co-authored IECON 2025 paper on optimized design methodology for a 3.6 kW Asymmetric Pulse
+                            Modulation two-stage architecture. Achieved ~96% peak efficiency through advanced
+                            optimization techniques.
+                        </p>
+                        <div class="project-skills">
+                            <div class="skills-label">Technologies & Skills</div>
+                            <div class="skills-list">
+                                <span class="skill-tag">3.6 kW</span>
+                                <span class="skill-tag">SiC FETs</span>
+                                <span class="skill-tag">95.9% Efficient</span>
+                                <span class="skill-tag">Efficiency Mapping</span>
+                                <span class="skill-tag">IECON 2025</span>
+                            </div>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><span>Conference Paper</span></a>
+                            <a href="#" class="project-link"><span>Simulation Results</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Card Project -->
+        <div class="project-item" data-project="business-card">
+            <div class="project-date">2024</div>
+            <div class="project-node"></div>
+            <div class="project-content">
+                <div class="project-header">
+                    <h3 class="project-title">PCB Business Card (Picture Coming Soon)</h3>
+                    <p class="project-brief">Functional PCB with NFC and embedded tools</p>
+                    <span class="expand-indicator">▼</span>
+                </div>
+                <div class="project-details">
+                    <div class="details-content">
+                        <p class="project-description">
+                            Created a custom PCB business card integrating NFC for digital contact sharing, embedded PCB
+                            design tools, and a functional ruler. Engineered with a unique layout feature that reduces
+                            reflow manufacturing time by more than 50%, blending manufacturibility with practical
+                            utility.
+                        </p>
+                        <div class="project-skills">
+                            <div class="skills-label">Technologies & Skills</div>
+                            <div class="skills-list">
+                                <span class="skill-tag">PCB Layout</span>
+                                <span class="skill-tag">DFA & DFM</span>
+                                <span class="skill-tag">RF</span>
+                                <span class="skill-tag">Planar Coils</span>
+                                <span class="skill-tag">Utility</span>
+                                <span class="skill-tag">PCB Designer Toolkit</span>
+                            </div>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><span>Build Documentation</span></a>
+                            <a href="#" class="project-link"><span>Reflow Process</span></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -899,149 +1083,172 @@
     </div>
 
     <script>
-        const projects = {
-            hvpb: {
-                title: "HVPB (HV Protection Board)",
-                description: "Designed and validated a fully analog high-voltage contactor control system featuring sequenced pre-charge, integrated IMD fault logic, and isolated voltage sensing via the AMC1411. Engineered for 600 V operation with robust creepage/clearance, galvanic isolation, and fault-safe latching to meet stringent FSAE safety requirements.",
-                skills: ["Altium Designer", "600V", "18 kW", "Galvanic Isolation", "E-Fuse", "IMD Logic", "Board Mount Contactors"],
-                links: [
-                    { text: "Technical Documentation", url: "#" },
-                    { text: "Test Results", url: "#" }
-                ],
-                icon: "⚡",
-                gradient: "linear-gradient(135deg, #FFD60A, #FF9500)",
-                has3DModel: true
-            },
-            ev6: {
-                title: "EV6 Systems Integration",
-                description: "Led the validation and integration of HV/LV subsystems for MAC Formula Electric, achieving the team's first fully operational Formula SAE electric vehicle. Implemented comprehensive safety protocols and testing procedures.",
-                skills: ["144s NMC Battery", "Contactor Logic", "Fault Handling", "CAN Bus", "Hardware Development", "Integration", "Troubleshooting"],
-                links: [
-                    { text: "Team Page", url: "https://macformularacing.com/" },
-                    { text: "Competition Results", url: "https://legacy.sae.org/binaries//content/assets/cm/content/attend/student-events/results/formula-sae/fsae_ev_2024_results.pdf" }
-                ],
-                icon: "🏎️",
-                gradient: "linear-gradient(135deg, #FF375F, #5E5CE6)"
-            },
-            hil: {
-                title: "HIL Interface PCB",
-                description: "Developing a HIL interface board to connect power converter evaluation hardware to Typhoon HIL systems with precision measurement and robust debugging features.",
-                skills: ["Altium Designer", "Typhoon HIL", "4-Layer PCB", "Test Points", "Signal Conditioning"],
-                links: [
-                    { text: "Design Files", url: "#" },
-                    { text: "Test Methodology", url: "#" }
-                ],
-                icon: "🔧",
-                gradient: "linear-gradient(135deg, #30D158, #0A84FF)"
-            },
-            apm: {
-                title: "APM Interleaved Buck Converter",
-                description: "Co-authored IECON 2025 paper on optimized design methodology for a 3.6 kW Asymmetric Pulse Modulation two-stage architecture. Achieved ~96% peak efficiency through advanced optimization techniques.",
-                skills: ["3.6 kW", "SiC FETs", "95.9% Efficient", "Efficiency Mapping", "IECON 2025"],
-                links: [
-                    { text: "Conference Paper", url: "#" },
-                    { text: "Simulation Results", url: "#" }
-                ],
-                icon: "📊",
-                gradient: "linear-gradient(135deg, #0A84FF, #5E5CE6)"
-            },
-            "business-card": {
-                title: "PCB Business Card (Picture Coming Soon)",
-                description: "Created a custom PCB business card integrating NFC for digital contact sharing, embedded PCB design tools, and a functional ruler. Engineered with a unique layout feature that reduces reflow manufacturing time by more than 50%, blending manufacturibililty with practical utility.",
-                skills: ["PCB Layout", "DFA & DFM", "RF", "Planar Coils", "Utility", "PCB Designer Toolkit"],
-                links: [
-                    { text: "Build Documentation", url: "#" },
-                    { text: "Reflow Process", url: "#" }
-                ],
-                icon: "💳",
-                gradient: "linear-gradient(135deg, #FF9500, #FF375F)"
+        // Project expansion
+        const projectItems = document.querySelectorAll('.project-item');
+        const progressDots = document.getElementById('progressDots');
+        const progressBar = document.getElementById('progressBar');
+
+        // Create progress dots
+        projectItems.forEach((item, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'progress-dot';
+            dot.style.top = `${(index / (projectItems.length - 1)) * 100}%`;
+            dot.setAttribute('data-index', index);
+            progressDots.appendChild(dot);
+
+            // Click on dot to scroll to project
+            dot.addEventListener('click', () => {
+                projectItems[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                updateProgressDots(index);
+            });
+        });
+
+        // Handle project expansion
+        projectItems.forEach((item, index) => {
+            const header = item.querySelector('.project-header');
+            const node = item.querySelector('.project-node');
+
+            const toggleProject = () => {
+                const isExpanded = item.classList.contains('expanded');
+
+                // Close all other projects
+                projectItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('expanded');
+                    }
+                });
+
+                // Toggle current project
+                item.classList.toggle('expanded');
+
+                // Update progress dots
+                updateProgressDots(isExpanded ? -1 : index);
+
+                // Smooth scroll to project if expanding
+                if (!isExpanded) {
+                    setTimeout(() => {
+                        const rect = item.getBoundingClientRect();
+                        const scrollTop = window.scrollY;
+                        const targetY = rect.top + scrollTop - 100;
+                        window.scrollTo({
+                            top: targetY,
+                            behavior: 'smooth'
+                        });
+                    }, 100);
+                }
+            };
+
+            header.addEventListener('click', toggleProject);
+            node.addEventListener('click', toggleProject);
+        });
+
+        // Update progress indicator
+        function updateProgressDots(activeIndex) {
+            const dots = progressDots.querySelectorAll('.progress-dot');
+            dots.forEach((dot, index) => {
+                if (index === activeIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+
+            // Update progress bar
+            if (activeIndex >= 0) {
+                const progress = ((activeIndex + 1) / projectItems.length) * 100;
+                progressBar.style.height = `${progress}%`;
+            } else {
+                // Reset to current scroll position
+                updateScrollProgress();
             }
+        }
+
+        // Scroll progress tracking
+        function updateScrollProgress() {
+            const scrollTop = window.scrollY;
+            const windowHeight = window.innerHeight;
+
+            let closestIndex = 0;
+            let closestDistance = Infinity;
+
+            projectItems.forEach((item, index) => {
+                const rect = item.getBoundingClientRect();
+                const itemCenter = rect.top + rect.height / 2;
+                const distance = Math.abs(itemCenter - windowHeight * 0.5);
+
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestIndex = index;
+                }
+            });
+
+            // Only update if no project is expanded
+            const hasExpanded = document.querySelector('.project-item.expanded');
+            if (!hasExpanded) {
+                const progress = ((closestIndex + 1) / projectItems.length) * 100;
+                progressBar.style.height = `${progress}%`;
+
+                // Update dots based on scroll
+                const dots = progressDots.querySelectorAll('.progress-dot');
+                dots.forEach((dot, index) => {
+                    if (index <= closestIndex) {
+                        dot.style.opacity = '1';
+                    } else {
+                        dot.style.opacity = '0.5';
+                    }
+                });
+            }
+        }
+
+        window.addEventListener('scroll', updateScrollProgress);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const expanded = document.querySelector('.project-item.expanded');
+            const currentIndex = expanded ? Array.from(projectItems).indexOf(expanded) : -1;
+
+            if (e.key === 'ArrowDown' && currentIndex < projectItems.length - 1) {
+                e.preventDefault();
+                if (currentIndex === -1) {
+                    projectItems[0].querySelector('.project-header').click();
+                } else {
+                    projectItems[currentIndex + 1].querySelector('.project-header').click();
+                }
+            } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+                e.preventDefault();
+                projectItems[currentIndex - 1].querySelector('.project-header').click();
+            } else if (e.key === 'Escape' && expanded) {
+                expanded.classList.remove('expanded');
+                updateProgressDots(-1);
+            }
+        });
+
+        // Initialize
+        updateScrollProgress();
+
+        // Add smooth reveal for project items as they come into view
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
         };
 
-        function generateStars() {
-            const starsContainer = document.getElementById('stars');
-            for (let i = 0; i < 50; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.width = Math.random() * 15 + 'px';
-                star.style.height = star.style.width;
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 4 + 's';
-                star.style.animationDuration = Math.random() * 3 + 2 + 's';
-                starsContainer.appendChild(star);
-            }
-        }
-        generateStars();
-
-        document.querySelectorAll('.tile').forEach(tile => {
-            tile.addEventListener('click', function (e) {
-                const projectId = this.dataset.project;
-                openModal(projectId);
-            });
-        });
-
-        function openModal(projectId) {
-            const modal = document.getElementById('projectModal');
-            const project = projects[projectId];
-
-            if (!project) return;
-
-            document.getElementById('modalIcon').textContent = project.icon;
-            document.getElementById('modalTitle').textContent = project.title;
-            document.getElementById('modalDescription').textContent = project.description;
-            document.getElementById('modalHeader').style.background = project.gradient;
-
-            const viewerBtn = document.getElementById('viewerToggleBtn');
-            if (project.has3DModel) {
-                viewerBtn.classList.add('show');
-            } else {
-                viewerBtn.classList.remove('show');
-            }
-
-            const skillsContainer = document.getElementById('modalSkills');
-            skillsContainer.innerHTML = '';
-            project.skills.forEach(skill => {
-                const skillTag = document.createElement('span');
-                skillTag.className = 'skill-tag';
-                skillTag.textContent = skill;
-                skillsContainer.appendChild(skillTag);
-            });
-
-            const linksContainer = document.getElementById('modalLinks');
-            linksContainer.innerHTML = '';
-            project.links.forEach(link => {
-                const linkBtn = document.createElement('a');
-                linkBtn.className = 'modal-link';
-                linkBtn.href = link.url;
-                linkBtn.textContent = link.text;
-                if (link.url !== '#') {
-                    linkBtn.target = '_blank';
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateX(0)';
                 }
-                linksContainer.appendChild(linkBtn);
             });
+        }, observerOptions);
 
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+        // Observe all project items after initial animation
+        setTimeout(() => {
+            projectItems.forEach(item => {
+                observer.observe(item);
+            });
+        }, 600);
 
-        function closeModal() {
-            const modal = document.getElementById('projectModal');
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        document.getElementById('projectModal').addEventListener('click', function (e) {
-            if (e.target === this) closeModal();
-        });
-
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                closeModal();
-                close3DViewer();
-            }
-        });
-
+        // 3D Viewer functionality
         let scene, camera, renderer, pcbModel;
         let isViewerInitialized = false;
         let previousMousePosition = { x: 0, y: 0 };
@@ -1049,10 +1256,6 @@
         let targetRotation = { x: 0, y: 0 };
         let panOffset = { x: 0, y: 0 };
         let targetPanOffset = { x: 0, y: 0 };
-
-        document.getElementById('viewerToggleBtn').addEventListener('click', function () {
-            open3DViewer();
-        });
 
         function open3DViewer() {
             const overlay = document.getElementById('viewerOverlay');
@@ -1157,26 +1360,26 @@
                                 mat.emissive.setRGB(0.7, 0.7, 0.7);
                             }
                         }
-                            // Texture filtering
-                            if (mat.map) {
-                                const maxAniso = renderer.capabilities.getMaxAnisotropy();
-                                mat.map.anisotropy = maxAniso;  // Use actual max, not hardcoded 16
-                                mat.map.minFilter = THREE.LinearMipMapLinearFilter;
-                                mat.map.magFilter = THREE.LinearFilter;
-                                mat.map.generateMipmaps = true;
-                                mat.map.needsUpdate = true;
-                                mat.emissiveMap = mat.map;
+                        // Texture filtering
+                        if (mat.map) {
+                            const maxAniso = renderer.capabilities.getMaxAnisotropy();
+                            mat.map.anisotropy = maxAniso;  // Use actual max, not hardcoded 16
+                            mat.map.minFilter = THREE.LinearMipMapLinearFilter;
+                            mat.map.magFilter = THREE.LinearFilter;
+                            mat.map.generateMipmaps = true;
+                            mat.map.needsUpdate = true;
+                            mat.emissiveMap = mat.map;
 
-                                // Apply same settings to emissive map
-                                if (mat.emissiveMap) {
-                                    mat.emissiveMap.anisotropy = maxAniso;
-                                    mat.emissiveMap.minFilter = THREE.LinearMipMapLinearFilter;
-                                    mat.emissiveMap.magFilter = THREE.LinearFilter;
-                                    mat.emissiveMap.generateMipmaps = true;
-                                    mat.emissiveMap.needsUpdate = true;
-                                }
+                            // Apply same settings to emissive map
+                            if (mat.emissiveMap) {
+                                mat.emissiveMap.anisotropy = maxAniso;
+                                mat.emissiveMap.minFilter = THREE.LinearMipMapLinearFilter;
+                                mat.emissiveMap.magFilter = THREE.LinearFilter;
+                                mat.emissiveMap.generateMipmaps = true;
+                                mat.emissiveMap.needsUpdate = true;
                             }
-                        });
+                        }
+                    });
                     const objLoader = new THREE.OBJLoader();
                     objLoader.setMaterials(materials);
                     objLoader.setPath(basePath);
