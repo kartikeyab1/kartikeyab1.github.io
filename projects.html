@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Projects - Kartikeya Babhuta</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/MTLLoader.js"></script>
@@ -42,19 +42,16 @@
             position: relative;
         }
 
-        /* Subtle background gradient */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            inset: 0 0 auto 0;
             height: 100vh;
             background: radial-gradient(ellipse at top, #0f1419 0%, var(--bg-primary) 50%);
             z-index: -1;
         }
 
-        /* Navigation */
+        /* Nav */
         .nav {
             position: fixed;
             top: 0;
@@ -64,19 +61,6 @@
             background: linear-gradient(to bottom, rgba(10, 10, 10, 0.95), transparent);
             backdrop-filter: blur(20px);
             z-index: 100;
-            animation: slideDown 0.5s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
         }
 
         .back-btn {
@@ -87,8 +71,8 @@
             text-decoration: none;
             font-size: 15px;
             font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            transition: color .3s;
         }
 
         .back-btn::before {
@@ -99,7 +83,7 @@
             width: 0;
             height: 1px;
             background: var(--accent);
-            transition: width 0.3s ease;
+            transition: width .3s;
         }
 
         .back-btn:hover {
@@ -113,28 +97,15 @@
 
         /* Header */
         .header {
-            padding: 140px 32px 80px;
-            max-width: 900px;
+            padding: 140px 40px 32px;
+            max-width: 1400px;
             margin: 0 auto;
-            animation: fadeInUp 0.8s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .title {
             font-size: clamp(36px, 5vw, 56px);
             font-weight: 700;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             letter-spacing: -0.03em;
             background: linear-gradient(135deg, var(--text-primary), var(--accent-bright));
             -webkit-background-clip: text;
@@ -145,220 +116,39 @@
         .subtitle {
             font-size: 18px;
             color: var(--text-secondary);
-            line-height: 1.6;
-            max-width: 700px;
+            max-width: 820px;
         }
 
-        /* Timeline Container */
+        /* --- TILE GRID LAYOUT (wide & consistent height) --- */
         .timeline-container {
-            position: relative;
-            max-width: 900px;
+            /* Reusing this class name to avoid touching your HTML; it’s now a tile grid */
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 32px 120px;
+            padding: 24px 40px 120px;
+            display: grid;
+            gap: 28px;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
         }
 
-        /* Progress Indicator */
+        /* Hide timeline relics (kept in DOM but invisible if present) */
+        .timeline-line,
+        .project-node,
+        .project-date,
         .progress-track {
-            position: fixed;
-            right: 40px;
-            top: 50%;
-            transform: translateY(-50%);
-            height: 200px;
-            width: 2px;
-            background: var(--border);
-            z-index: 50;
-            opacity: 0;
-            animation: fadeIn 1s ease 0.5s forwards;
+            display: none !important;
         }
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        .progress-bar {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            background: linear-gradient(to bottom, var(--accent), var(--accent-bright));
-            transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 1px;
-            box-shadow: 0 0 10px var(--glow);
-        }
-
-        .progress-dots {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .progress-dot {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            border-radius: 50%;
-            left: 50%;
-            transform: translateX(-50%);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-        }
-
-        .progress-dot:hover {
-            transform: translateX(-50%) scale(1.5);
-            border-color: var(--accent);
-        }
-
-        .progress-dot.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            transform: translateX(-50%) scale(1.4);
-            box-shadow: 0 0 15px var(--glow);
-        }
-
-        /* Timeline Line */
-        .timeline-line {
-            position: absolute;
-            left: 60px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom,
-                    transparent 0%,
-                    var(--border) 10%,
-                    var(--border) 90%,
-                    transparent 100%);
-            opacity: 0;
-            animation: fadeIn 1s ease 0.3s forwards;
-        }
-
-        .timeline-line::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--accent), transparent);
-            opacity: 0;
-            animation: glowPulse 3s ease infinite;
-        }
-
-        @keyframes glowPulse {
-
-            0%,
-            100% {
-                opacity: 0;
-                transform: translateY(-100%);
-            }
-
-            50% {
-                opacity: 0.3;
-                transform: translateY(100%);
-            }
-        }
-
-        /* Project Items */
+        /* Tile cards */
         .project-item {
-            position: relative;
-            margin-bottom: 60px;
-            padding-left: 100px;
-            opacity: 0;
-            animation: slideInLeft 0.6s ease forwards;
-        }
-
-        .project-item:nth-child(1) {
-            animation-delay: 0.1s;
-        }
-
-        .project-item:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .project-item:nth-child(3) {
-            animation-delay: 0.3s;
-        }
-
-        .project-item:nth-child(4) {
-            animation-delay: 0.4s;
-        }
-
-        .project-item:nth-child(5) {
-            animation-delay: 0.5s;
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .project-node {
-            position: absolute;
-            left: 48px;
-            top: 8px;
-            width: 24px;
-            height: 24px;
-            background: var(--bg-secondary);
-            border: 3px solid var(--accent-dim);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 2;
-        }
-
-        .project-node::before {
-            content: '';
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .project-node:hover {
-            transform: scale(1.3);
-            border-color: var(--accent);
-            box-shadow: 0 0 20px var(--glow);
-        }
-
-        .project-node:hover::before {
+            display: flex;
             opacity: 1;
-        }
-
-        .project-item.expanded .project-node {
-            background: var(--accent);
-            border-color: var(--accent);
-            transform: scale(1.2);
-            box-shadow: 0 0 25px var(--glow);
-        }
-
-        .project-item.expanded .project-node::before {
-            opacity: 1;
-        }
-
-        .project-date {
-            position: absolute;
-            left: -80px;
-            top: 10px;
-            color: var(--text-dim);
-            font-size: 13px;
-            font-weight: 500;
-            text-align: right;
-            width: 100px;
-            letter-spacing: 0.05em;
+            transform: none;
         }
 
         .project-content {
-            cursor: pointer;
-            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .project-header {
@@ -366,9 +156,14 @@
             background: var(--bg-card);
             border-radius: 16px;
             border: 1px solid var(--border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all .25s ease;
             position: relative;
             overflow: hidden;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* uniform collapsed height */
         }
 
         .project-header::before {
@@ -380,87 +175,80 @@
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--accent), transparent);
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity .25s ease;
         }
 
         .project-item:hover .project-header {
-            border-color: var(--border-hover);
-            transform: translateX(8px);
             background: var(--bg-hover);
+            border-color: var(--border-hover);
+            box-shadow: 0 6px 20px rgba(74, 158, 255, 0.25), inset 0 0 0 1px var(--border-hover);
+            transform: none;
         }
 
         .project-item:hover .project-header::before {
             opacity: 1;
         }
 
-        .project-item.expanded .project-header {
-            background: linear-gradient(135deg, var(--bg-card), var(--bg-hover));
-            border-color: var(--accent);
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-            box-shadow: 0 -2px 20px rgba(74, 158, 255, 0.1);
-        }
-
         .project-title {
             font-size: 22px;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             color: var(--text-primary);
         }
 
         .project-brief {
             font-size: 14px;
             color: var(--text-secondary);
-            padding-right: 120px;
+            padding-right: 96px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 42px;
+            /* clamp + reserve two lines */
         }
 
         .expand-indicator {
             position: absolute;
-            right: 28px;
+            right: 20px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-dim);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform .25s ease, color .25s ease;
             font-size: 16px;
         }
 
         .click-hint {
             position: absolute;
-            right: 28px;
-            bottom: 20px;
+            right: 20px;
+            bottom: 16px;
             font-size: 12px;
             color: var(--accent);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: .05em;
             font-weight: 600;
-            opacity: 0.7;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            animation: gentlePulse 2s ease-in-out infinite;
+            opacity: .7;
         }
 
-        @keyframes gentlePulse {
-
-            0%,
-            100% {
-                opacity: 0.7;
-            }
-
-            50% {
-                opacity: 1;
-            }
+        /* Expandable details INSIDE the tile — grows tile height and pushes others down */
+        .project-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .45s cubic-bezier(.4, 0, .2, 1);
         }
 
-        .project-item:hover .click-hint {
-            opacity: 1;
-            transform: translateX(-4px);
+        .project-item.expanded .project-details {
+            max-height: 900px;
         }
 
-        .project-item.expanded .click-hint {
-            opacity: 0;
-            pointer-events: none;
+        /* Seamless edge between header and details when expanded */
+        .project-item.expanded .project-header {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-hover));
+            border-color: var(--accent);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            box-shadow: 0 -2px 20px rgba(74, 158, 255, 0.1);
+            border-bottom: 0;
         }
 
         .project-item.expanded .expand-indicator {
@@ -468,15 +256,9 @@
             color: var(--accent);
         }
 
-        /* Expandable Details */
-        .project-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .project-item.expanded .project-details {
-            max-height: 800px;
+        .project-item.expanded .click-hint {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .details-content {
@@ -487,24 +269,17 @@
             border-bottom-left-radius: 16px;
             border-bottom-right-radius: 16px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            margin-top: -1px;
+            border-top: 1px solid var(--accent);
+            /* remove seam */
         }
 
-        .project-description {
-            font-size: 15px;
-            line-height: 1.8;
-            color: var(--text-secondary);
-            margin-bottom: 28px;
-        }
-
-        .project-skills {
-            margin-bottom: 24px;
-        }
-
+        /* Skills & links */
         .skills-label {
             font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: .1em;
             color: var(--text-dim);
             margin-bottom: 12px;
         }
@@ -513,6 +288,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+            margin-bottom: 24px;
         }
 
         .skill-tag {
@@ -522,7 +298,7 @@
             border-radius: 20px;
             font-size: 13px;
             color: var(--text-secondary);
-            transition: all 0.2s ease;
+            transition: all .2s;
         }
 
         .skill-tag:hover {
@@ -538,7 +314,8 @@
             flex-wrap: wrap;
         }
 
-        .project-link {
+        .project-link,
+        .model-btn {
             color: var(--accent);
             text-decoration: none;
             font-size: 14px;
@@ -546,13 +323,15 @@
             padding: 10px 20px;
             border: 1px solid var(--accent-dim);
             border-radius: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all .25s;
             background: transparent;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
-        .project-link::before {
+        .project-link::before,
+        .model-btn::before {
             content: '';
             position: absolute;
             top: 50%;
@@ -561,35 +340,34 @@
             height: 0;
             border-radius: 50%;
             background: var(--accent);
-            transition: all 0.5s ease;
+            transition: all .5s ease;
             transform: translate(-50%, -50%);
         }
 
-        .project-link:hover {
+        .project-link:hover,
+        .model-btn:hover {
             color: var(--bg-primary);
-            transform: translateY(-3px);
+            transform: none;
             box-shadow: 0 6px 20px rgba(74, 158, 255, 0.4);
             border-color: var(--accent);
         }
 
-        .project-link:hover::before {
+        .project-link:hover::before,
+        .model-btn:hover::before {
             width: 150%;
             height: 150%;
         }
 
-        .project-link span {
+        .project-link span,
+        .model-btn span {
             position: relative;
             z-index: 1;
         }
 
-        /* Mobile Styles */
-        @media (max-width: 768px) {
+        /* Mobile */
+        @media (max-width:768px) {
             .header {
-                padding: 100px 20px 60px;
-            }
-
-            .title {
-                font-size: 32px;
+                padding: 110px 20px 20px;
             }
 
             .subtitle {
@@ -597,32 +375,17 @@
             }
 
             .timeline-container {
-                padding: 0 20px 80px;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 18px;
+                padding: 16px 20px 80px;
             }
 
-            .timeline-line {
-                left: 30px;
+            .project-header {
+                min-height: 140px;
             }
 
-            .project-item {
-                padding-left: 60px;
-                margin-bottom: 40px;
-            }
-
-            .project-node {
-                left: 18px;
-            }
-
-            .project-date {
-                position: static;
-                margin-bottom: 8px;
-                text-align: left;
-                width: auto;
-                color: var(--accent);
-            }
-
-            .progress-track {
-                display: none;
+            .project-brief {
+                padding-right: 72px;
             }
 
             .details-content {
@@ -630,38 +393,22 @@
             }
         }
 
-        /* Loading animation for initial page load */
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.5;
-            }
-        }
-
-        /* Smooth scroll behavior */
+        /* Smooth scroll */
         html {
             scroll-behavior: smooth;
         }
 
-        /* 3D Viewer Styles */
+        /* 3D Viewer */
         .viewer-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background: rgba(0, 0, 0, 0.98);
             z-index: 3000;
             display: none;
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity .3s ease;
         }
 
         .viewer-overlay.active {
@@ -697,7 +444,7 @@
         .viewer-title {
             font-size: 24px;
             font-weight: 600;
-            color: white;
+            color: #fff;
         }
 
         .viewer-close {
@@ -706,10 +453,10 @@
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--border);
             border-radius: 50%;
-            color: white;
+            color: #fff;
             font-size: 24px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all .3s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -733,7 +480,7 @@
             padding: 12px 24px;
             background: rgba(10, 132, 255, 0.9);
             border-radius: 100px;
-            color: white;
+            color: #fff;
             font-size: 13px;
             font-weight: 500;
             z-index: 10;
@@ -751,11 +498,11 @@
             background: rgba(10, 132, 255, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 100px;
-            color: white;
+            color: #fff;
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all .3s;
             z-index: 10;
         }
 
@@ -770,7 +517,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            color: white;
+            color: #fff;
             z-index: 10;
         }
 
@@ -802,60 +549,12 @@
             font-size: 16px;
             font-weight: 500;
         }
-
-        .model-btn {
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 10px 20px;
-            border: 1px solid var(--accent-dim);
-            border-radius: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: transparent;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .model-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: var(--accent);
-            transition: all 0.5s ease;
-            transform: translate(-50%, -50%);
-        }
-
-        .model-btn:hover {
-            color: var(--bg-primary);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(74, 158, 255, 0.4);
-            border-color: var(--accent);
-        }
-
-        .model-btn:hover::before {
-            width: 150%;
-            height: 150%;
-        }
-
-        .model-btn span {
-            position: relative;
-            z-index: 1;
-        }
     </style>
 </head>
 
 <body>
     <nav class="nav">
-        <a href="index.html" class="back-btn">
-            <span>←</span>
-            <span>Back to Home</span>
-        </a>
+        <a href="index.html" class="back-btn"><span>←</span><span>Back to Home</span></a>
     </nav>
 
     <header class="header">
@@ -865,24 +564,14 @@
     </header>
 
     <div class="timeline-container">
-        <div class="timeline-line"></div>
-
-        <!-- Progress Indicator -->
-        <div class="progress-track" id="progressTrack">
-            <div class="progress-bar" id="progressBar"></div>
-            <div class="progress-dots" id="progressDots"></div>
-        </div>
-
         <!-- HVPB Project -->
         <div class="project-item" data-project="hvpb">
-            <div class="project-date">2024</div>
-            <div class="project-node"></div>
             <div class="project-content">
                 <div class="project-header">
                     <h3 class="project-title">HVPB (HV Protection Board)</h3>
                     <p class="project-brief">600V contactor control system with integrated safety features</p>
                     <span class="expand-indicator">▼</span>
-                    <span class="click-hint">Click to expand →</span>
+                    <span class="click-hint">Expand</span>
                 </div>
                 <div class="project-details">
                     <div class="details-content">
@@ -916,14 +605,12 @@
 
         <!-- EV6 Project -->
         <div class="project-item" data-project="ev6">
-            <div class="project-date">2024</div>
-            <div class="project-node"></div>
             <div class="project-content">
                 <div class="project-header">
                     <h3 class="project-title">EV6 Systems Integration</h3>
                     <p class="project-brief">FSAE electric vehicle validation and integration</p>
                     <span class="expand-indicator">▼</span>
-                    <span class="click-hint">Click to expand →</span>
+                    <span class="click-hint">Expand</span>
                 </div>
                 <div class="project-details">
                     <div class="details-content">
@@ -957,13 +644,12 @@
 
         <!-- HIL Project -->
         <div class="project-item" data-project="hil">
-            <div class="project-date">2024</div>
-            <div class="project-node"></div>
             <div class="project-content">
                 <div class="project-header">
                     <h3 class="project-title">HIL Interface PCB</h3>
                     <p class="project-brief">Hardware-in-the-loop testing interface board</p>
                     <span class="expand-indicator">▼</span>
+                    <span class="click-hint">Expand</span>
                 </div>
                 <div class="project-details">
                     <div class="details-content">
@@ -992,13 +678,12 @@
 
         <!-- APM Project -->
         <div class="project-item" data-project="apm">
-            <div class="project-date">2025</div>
-            <div class="project-node"></div>
             <div class="project-content">
                 <div class="project-header">
                     <h3 class="project-title">APM Interleaved Buck Converter</h3>
                     <p class="project-brief">3.6kW high-efficiency power converter research</p>
                     <span class="expand-indicator">▼</span>
+                    <span class="click-hint">Expand</span>
                 </div>
                 <div class="project-details">
                     <div class="details-content">
@@ -1028,13 +713,12 @@
 
         <!-- Business Card Project -->
         <div class="project-item" data-project="business-card">
-            <div class="project-date">2024</div>
-            <div class="project-node"></div>
             <div class="project-content">
                 <div class="project-header">
                     <h3 class="project-title">PCB Business Card (Picture Coming Soon)</h3>
                     <p class="project-brief">Functional PCB with NFC and embedded tools</p>
                     <span class="expand-indicator">▼</span>
+                    <span class="click-hint">Expand</span>
                 </div>
                 <div class="project-details">
                     <div class="details-content">
@@ -1065,6 +749,7 @@
         </div>
     </div>
 
+    <!-- 3D Viewer -->
     <div class="viewer-overlay" id="viewerOverlay">
         <div class="viewer-container">
             <div class="viewer-header">
@@ -1083,172 +768,53 @@
     </div>
 
     <script>
-        // Project expansion
+        // --- Tile expand/collapse ---
         const projectItems = document.querySelectorAll('.project-item');
-        const progressDots = document.getElementById('progressDots');
-        const progressBar = document.getElementById('progressBar');
 
-        // Create progress dots
-        projectItems.forEach((item, index) => {
-            const dot = document.createElement('div');
-            dot.className = 'progress-dot';
-            dot.style.top = `${(index / (projectItems.length - 1)) * 100}%`;
-            dot.setAttribute('data-index', index);
-            progressDots.appendChild(dot);
-
-            // Click on dot to scroll to project
-            dot.addEventListener('click', () => {
-                projectItems[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
-                updateProgressDots(index);
-            });
-        });
-
-        // Handle project expansion
-        projectItems.forEach((item, index) => {
+        projectItems.forEach((item) => {
             const header = item.querySelector('.project-header');
-            const node = item.querySelector('.project-node');
+            if (!header) return;
 
             const toggleProject = () => {
                 const isExpanded = item.classList.contains('expanded');
-
-                // Close all other projects
-                projectItems.forEach(otherItem => {
-                    if (otherItem !== item) {
-                        otherItem.classList.remove('expanded');
-                    }
-                });
-
-                // Toggle current project
+                // Close all other tiles
+                projectItems.forEach(other => { if (other !== item) other.classList.remove('expanded'); });
+                // Toggle this tile
                 item.classList.toggle('expanded');
 
-                // Update progress dots
-                updateProgressDots(isExpanded ? -1 : index);
-
-                // Smooth scroll to project if expanding
+                // Scroll opened tile into view
                 if (!isExpanded) {
                     setTimeout(() => {
                         const rect = item.getBoundingClientRect();
-                        const scrollTop = window.scrollY;
-                        const targetY = rect.top + scrollTop - 100;
-                        window.scrollTo({
-                            top: targetY,
-                            behavior: 'smooth'
-                        });
+                        const targetY = window.scrollY + rect.top - 100;
+                        window.scrollTo({ top: targetY, behavior: 'smooth' });
                     }, 100);
                 }
             };
 
             header.addEventListener('click', toggleProject);
-            node.addEventListener('click', toggleProject);
         });
 
-        // Update progress indicator
-        function updateProgressDots(activeIndex) {
-            const dots = progressDots.querySelectorAll('.progress-dot');
-            dots.forEach((dot, index) => {
-                if (index === activeIndex) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-
-            // Update progress bar
-            if (activeIndex >= 0) {
-                const progress = ((activeIndex + 1) / projectItems.length) * 100;
-                progressBar.style.height = `${progress}%`;
-            } else {
-                // Reset to current scroll position
-                updateScrollProgress();
-            }
-        }
-
-        // Scroll progress tracking
-        function updateScrollProgress() {
-            const scrollTop = window.scrollY;
-            const windowHeight = window.innerHeight;
-
-            let closestIndex = 0;
-            let closestDistance = Infinity;
-
-            projectItems.forEach((item, index) => {
-                const rect = item.getBoundingClientRect();
-                const itemCenter = rect.top + rect.height / 2;
-                const distance = Math.abs(itemCenter - windowHeight * 0.5);
-
-                if (distance < closestDistance) {
-                    closestDistance = distance;
-                    closestIndex = index;
-                }
-            });
-
-            // Only update if no project is expanded
-            const hasExpanded = document.querySelector('.project-item.expanded');
-            if (!hasExpanded) {
-                const progress = ((closestIndex + 1) / projectItems.length) * 100;
-                progressBar.style.height = `${progress}%`;
-
-                // Update dots based on scroll
-                const dots = progressDots.querySelectorAll('.progress-dot');
-                dots.forEach((dot, index) => {
-                    if (index <= closestIndex) {
-                        dot.style.opacity = '1';
-                    } else {
-                        dot.style.opacity = '0.5';
-                    }
-                });
-            }
-        }
-
-        window.addEventListener('scroll', updateScrollProgress);
-
-        // Keyboard navigation
+        // Keyboard navigation (Up/Down to move between expanded tiles, Esc to collapse)
         document.addEventListener('keydown', (e) => {
+            const items = Array.from(projectItems);
             const expanded = document.querySelector('.project-item.expanded');
-            const currentIndex = expanded ? Array.from(projectItems).indexOf(expanded) : -1;
+            const idx = expanded ? items.indexOf(expanded) : -1;
 
-            if (e.key === 'ArrowDown' && currentIndex < projectItems.length - 1) {
+            if (e.key === 'ArrowDown') {
                 e.preventDefault();
-                if (currentIndex === -1) {
-                    projectItems[0].querySelector('.project-header').click();
-                } else {
-                    projectItems[currentIndex + 1].querySelector('.project-header').click();
-                }
-            } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+                const next = Math.min(items.length - 1, idx + 1);
+                items[next].querySelector('.project-header').click();
+            } else if (e.key === 'ArrowUp') {
                 e.preventDefault();
-                projectItems[currentIndex - 1].querySelector('.project-header').click();
+                const prev = Math.max(0, idx - 1);
+                items[prev].querySelector('.project-header').click();
             } else if (e.key === 'Escape' && expanded) {
                 expanded.classList.remove('expanded');
-                updateProgressDots(-1);
             }
         });
 
-        // Initialize
-        updateScrollProgress();
-
-        // Add smooth reveal for project items as they come into view
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateX(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Observe all project items after initial animation
-        setTimeout(() => {
-            projectItems.forEach(item => {
-                observer.observe(item);
-            });
-        }, 600);
-
-        // 3D Viewer functionality
+        // --- 3D Viewer (unchanged functionality) ---
         let scene, camera, renderer, pcbModel;
         let isViewerInitialized = false;
         let previousMousePosition = { x: 0, y: 0 };
@@ -1266,33 +832,20 @@
                 init3DViewer();
                 isViewerInitialized = true;
             }
-
             animate();
         }
 
         function close3DViewer() {
-            const overlay = document.getElementById('viewerOverlay');
-            overlay.classList.remove('active');
+            document.getElementById('viewerOverlay').classList.remove('active');
         }
 
         function recenterModel() {
             if (!pcbModel) return;
-
-            // Reset pan offset
-            targetPanOffset.x = 0;
-            targetPanOffset.y = 0;
-            panOffset.x = 0;
-            panOffset.y = 0;
-
-            // Reset rotation to front view
-            targetRotation.x = 0;
-            targetRotation.y = 0;
-            rotation.x = 0;
-            rotation.y = 0;
-
-            // Reset camera FOV
-            camera.fov = 15;
-            camera.updateProjectionMatrix();
+            targetPanOffset.x = 0; targetPanOffset.y = 0;
+            panOffset.x = 0; panOffset.y = 0;
+            targetRotation.x = 0; targetRotation.y = 0;
+            rotation.x = 0; rotation.y = 0;
+            camera.fov = 15; camera.updateProjectionMatrix();
         }
 
         function init3DViewer() {
@@ -1311,9 +864,8 @@
             renderer.outputEncoding = THREE.sRGBEncoding;
             renderer.gammaFactor = 2.2;
 
-            // Store max anisotropy for later use
             const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
-            window.maxAnisotropy = maxAnisotropy;  // Make it globally accessible
+            window.maxAnisotropy = maxAnisotropy;
 
             loadPCBModel();
             setupControls(canvas);
@@ -1323,7 +875,6 @@
         function loadPCBModel() {
             const objPath = 'src/assets/Projects/Models/hvpb.obj';
             const mtlPath = 'src/assets/Projects/Models/hvpb.mtl';
-
             const basePath = objPath.substring(0, objPath.lastIndexOf('/') + 1);
 
             const mtlLoader = new THREE.MTLLoader();
@@ -1333,79 +884,40 @@
                 mtlPath.substring(mtlPath.lastIndexOf('/') + 1),
                 function (materials) {
                     materials.preload();
-
                     Object.keys(materials.materials).forEach(key => {
                         const mat = materials.materials[key];
                         mat.side = THREE.DoubleSide;
-
-                        // Keep StandardMaterial but make it unlit
-                        mat.roughness = 1.0;  // Completely matte
-                        mat.metalness = 0.0;  // No metallic
+                        mat.roughness = 1.0; mat.metalness = 0.0;
                         mat.emissive = mat.color ? mat.color.clone() : new THREE.Color(0x000000);
-                        mat.emissiveIntensity = 0.9;  // Self-lit
-
-                        // Force dark colors to pure black
+                        mat.emissiveIntensity = 0.9;
                         if (mat.color) {
-                            const r = mat.color.r;
-                            const g = mat.color.g;
-                            const b = mat.color.b;
-
-                            if (r < 0.2 && g < 0.2 && b < 0.2) {
-                                mat.color.setRGB(0, 0, 0);
-                                mat.emissive.setRGB(0, 0, 0);
-                            }
-                            // Darken bright whites (values above 0.85)
-                            if (r > 0.85 && g > 0.85 && b > 0.85) {
-                                mat.color.setRGB(0.45, 0.45, 0.45);  // Light gray instead of white
-                                mat.emissive.setRGB(0.7, 0.7, 0.7);
-                            }
+                            const { r, g, b } = mat.color;
+                            if (r < 0.2 && g < 0.2 && b < 0.2) { mat.color.setRGB(0, 0, 0); mat.emissive.setRGB(0, 0, 0); }
+                            if (r > 0.85 && g > 0.85 && b > 0.85) { mat.color.setRGB(0.45, 0.45, 0.45); mat.emissive.setRGB(0.7, 0.7, 0.7); }
                         }
-                        // Texture filtering
                         if (mat.map) {
                             const maxAniso = renderer.capabilities.getMaxAnisotropy();
-                            mat.map.anisotropy = maxAniso;  // Use actual max, not hardcoded 16
-                            mat.map.minFilter = THREE.LinearMipMapLinearFilter;
-                            mat.map.magFilter = THREE.LinearFilter;
-                            mat.map.generateMipmaps = true;
-                            mat.map.needsUpdate = true;
-                            mat.emissiveMap = mat.map;
-
-                            // Apply same settings to emissive map
+                            mat.map.anisotropy = maxAniso; mat.map.minFilter = THREE.LinearMipMapLinearFilter; mat.map.magFilter = THREE.LinearFilter;
+                            mat.map.generateMipmaps = true; mat.map.needsUpdate = true; mat.emissiveMap = mat.map;
                             if (mat.emissiveMap) {
-                                mat.emissiveMap.anisotropy = maxAniso;
-                                mat.emissiveMap.minFilter = THREE.LinearMipMapLinearFilter;
-                                mat.emissiveMap.magFilter = THREE.LinearFilter;
-                                mat.emissiveMap.generateMipmaps = true;
-                                mat.emissiveMap.needsUpdate = true;
+                                mat.emissiveMap.anisotropy = maxAniso; mat.emissiveMap.minFilter = THREE.LinearMipMapLinearFilter;
+                                mat.emissiveMap.magFilter = THREE.LinearFilter; mat.emissiveMap.generateMipmaps = true; mat.emissiveMap.needsUpdate = true;
                             }
                         }
                     });
+
                     const objLoader = new THREE.OBJLoader();
                     objLoader.setMaterials(materials);
                     objLoader.setPath(basePath);
-
                     objLoader.load(
                         objPath.substring(objPath.lastIndexOf('/') + 1),
-                        function (object) {
-                            console.log('Model loaded successfully with materials!');
-                            setupLoadedModel(object);
-                        },
-                        function (xhr) {
-                            console.log('OBJ: ' + (xhr.loaded / xhr.total * 100) + '% loaded');
-                        },
-                        function (error) {
-                            console.error('Error loading OBJ:', error);
-                            createPlaceholderPCB();
-                        }
+                        setupLoadedModel,
+                        (xhr) => console.log('OBJ: ' + (xhr.loaded / xhr.total * 100) + '% loaded'),
+                        (error) => { console.error('Error loading OBJ:', error); createPlaceholderPCB(); }
                     );
                 },
-                function (xhr) {
-                    console.log('MTL: ' + (xhr.loaded / xhr.total * 100) + '% loaded');
-                },
-                function (error) {
-                    console.warn('MTL not found, loading OBJ without materials');
-                    loadOBJOnly(objPath);
-                }
+                (xhr) => console.log('MTL: ' + (xhr.loaded / xhr.total * 100) + '% loaded'),
+                (error) => { console.warn('MTL not found, loading OBJ without materials'); loadOBJOnly(objPath); }
             );
         }
 
@@ -1413,269 +925,141 @@
             const basePath = objPath.substring(0, objPath.lastIndexOf('/') + 1);
             const objLoader = new THREE.OBJLoader();
             objLoader.setPath(basePath);
-
             objLoader.load(
                 objPath.substring(objPath.lastIndexOf('/') + 1),
                 function (object) {
                     object.traverse(function (child) {
                         if (child.isMesh && !child.material) {
                             child.material = new THREE.MeshStandardMaterial({
-                                color: 0x2d5016,
-                                roughness: 0.6,
-                                metalness: 0.2,
-                                side: THREE.DoubleSide
+                                color: 0x2d5016, roughness: 0.6, metalness: 0.2, side: THREE.DoubleSide
                             });
                         }
                     });
-                    console.log('Model loaded without MTL file');
                     setupLoadedModel(object);
                 },
-                function (xhr) {
-                    console.log('OBJ: ' + (xhr.loaded / xhr.total * 100) + '% loaded');
-                },
-                function (error) {
-                    console.error('Error loading OBJ:', error);
-                    createPlaceholderPCB();
-                }
+                (xhr) => console.log('OBJ: ' + (xhr.loaded / xhr.total * 100) + '% loaded'),
+                (error) => { console.error('Error loading OBJ:', error); createPlaceholderPCB(); }
             );
         }
 
         function setupLoadedModel(object) {
-            if (pcbModel) {
-                scene.remove(pcbModel);
-            }
-
+            if (pcbModel) scene.remove(pcbModel);
             pcbModel = object;
 
             const box = new THREE.Box3().setFromObject(pcbModel);
             const size = box.getSize(new THREE.Vector3());
             const center = box.getCenter(new THREE.Vector3());
-
             const maxDim = Math.max(size.x, size.y, size.z);
             const scale = 8 / maxDim;
-            pcbModel.scale.setScalar(scale);
 
+            pcbModel.scale.setScalar(scale);
             pcbModel.position.x = -center.x * scale;
             pcbModel.position.y = -center.y * scale;
             pcbModel.position.z = -center.z * scale;
-
             scene.add(pcbModel);
 
             camera.position.set(0, maxDim * 0.5, maxDim * 1.5);
             camera.lookAt(0, 0, 0);
 
-            rotation.x = 0;
-            rotation.y = 0;
-            targetRotation.x = 0;
-            targetRotation.y = 0;
-
+            rotation.x = 0; rotation.y = 0; targetRotation.x = 0; targetRotation.y = 0;
             document.getElementById('viewerLoading').classList.add('hidden');
-
-            console.log('Model centered and scaled. Size:', size, 'Scale:', scale);
         }
 
         function createPlaceholderPCB() {
-            console.warn('Loading placeholder - OBJ/MTL files not found');
-
             document.getElementById('viewerLoading').classList.add('hidden');
-
             const group = new THREE.Group();
-
-            const boardGeometry = new THREE.BoxGeometry(8, 0.15, 6);
-            const boardMaterial = new THREE.MeshStandardMaterial({
-                color: 0x2d5016,
-                roughness: 0.7,
-                metalness: 0.3
-            });
-            const board = new THREE.Mesh(boardGeometry, boardMaterial);
+            const board = new THREE.Mesh(new THREE.BoxGeometry(8, 0.15, 6),
+                new THREE.MeshStandardMaterial({ color: 0x2d5016, roughness: 0.7, metalness: 0.3 }));
             group.add(board);
-
             for (let i = 0; i < 6; i++) {
-                const capGeometry = new THREE.CylinderGeometry(0.3, 0.3, 0.8);
-                const capMaterial = new THREE.MeshStandardMaterial({
-                    color: 0x1a1a1a,
-                    roughness: 0.4,
-                    metalness: 0.6
-                });
-                const cap = new THREE.Mesh(capGeometry, capMaterial);
-                cap.position.set(-3 + i * 1.2, 0.5, -2);
-                cap.rotation.x = Math.PI / 2;
-                group.add(cap);
+                const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.8),
+                    new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.4, metalness: 0.6 }));
+                cap.position.set(-3 + i * 1.2, 0.5, -2); cap.rotation.x = Math.PI / 2; group.add(cap);
             }
-
             for (let i = 0; i < 3; i++) {
-                const icGeometry = new THREE.BoxGeometry(1.2, 0.3, 1.2);
-                const icMaterial = new THREE.MeshStandardMaterial({
-                    color: 0x0a0a0a,
-                    roughness: 0.3,
-                    metalness: 0.8
-                });
-                const ic = new THREE.Mesh(icGeometry, icMaterial);
-                ic.position.set(-2 + i * 2, 0.25, 0.5);
-                group.add(ic);
+                const ic = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.3, 1.2),
+                    new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.3, metalness: 0.8 }));
+                ic.position.set(-2 + i * 2, 0.25, 0.5); group.add(ic);
             }
-
-            const connGeometry = new THREE.BoxGeometry(1.5, 0.6, 0.8);
-            const connMaterial = new THREE.MeshStandardMaterial({
-                color: 0xcccccc,
-                roughness: 0.4,
-                metalness: 0.9
-            });
-            const conn1 = new THREE.Mesh(connGeometry, connMaterial);
-            conn1.position.set(-3, 0.4, 2.5);
-            group.add(conn1);
-
-            const conn2 = new THREE.Mesh(connGeometry, connMaterial);
-            conn2.position.set(3, 0.4, 2.5);
-            group.add(conn2);
-
-            const traceGeometry = new THREE.BoxGeometry(7, 0.01, 0.1);
-            const traceMaterial = new THREE.MeshStandardMaterial({
-                color: 0xb87333,
-                roughness: 0.2,
-                metalness: 0.9
-            });
+            for (let i = 0; i < 2; i++) {
+                const conn = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.6, 0.8),
+                    new THREE.MeshStandardMaterial({ color: 0xcccccc, roughness: 0.4, metalness: 0.9 }));
+                conn.position.set(i ? 3 : -3, 0.4, 2.5); group.add(conn);
+            }
+            const traceMat = new THREE.MeshStandardMaterial({ color: 0xb87333, roughness: 0.2, metalness: 0.9 });
             for (let i = 0; i < 4; i++) {
-                const trace = new THREE.Mesh(traceGeometry, traceMaterial);
-                trace.position.set(0, 0.08, -2 + i * 1.5);
-                group.add(trace);
+                const trace = new THREE.Mesh(new THREE.BoxGeometry(7, 0.01, 0.1), traceMat);
+                trace.position.set(0, 0.08, -2 + i * 1.5); group.add(trace);
             }
-
-            pcbModel = group;
-            scene.add(pcbModel);
-            pcbModel.rotation.x = -0.3;
+            pcbModel = group; scene.add(pcbModel); pcbModel.rotation.x = -0.3;
         }
 
         function setupControls(canvas) {
-            let isPanning = false;
-            let isRotating = false;
-
+            let isPanning = false, isRotating = false;
             canvas.addEventListener('mousedown', (e) => {
-                if (e.button === 0) {
-                    isPanning = false;
-                    isRotating = true;
-                } else if (e.button === 2) {
-                    isRotating = false;
-                    isPanning = true;
-                    e.preventDefault();
-                }
+                if (e.button === 0) { isRotating = true; isPanning = false; }
+                else if (e.button === 2) { isPanning = true; isRotating = false; e.preventDefault(); }
                 previousMousePosition = { x: e.clientX, y: e.clientY };
             });
-
             canvas.addEventListener('mousemove', (e) => {
                 if (isRotating && pcbModel) {
-                    const deltaX = e.clientX - previousMousePosition.x;
-                    const deltaY = e.clientY - previousMousePosition.y;
-
-                    targetRotation.y += deltaX * 0.03;
-                    targetRotation.x += deltaY * 0.03;
-
+                    const dx = e.clientX - previousMousePosition.x, dy = e.clientY - previousMousePosition.y;
+                    targetRotation.y += dx * 0.03; targetRotation.x += dy * 0.03;
                     targetRotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, targetRotation.x));
-
                     previousMousePosition = { x: e.clientX, y: e.clientY };
                 } else if (isPanning && pcbModel) {
-                    const deltaX = e.clientX - previousMousePosition.x;
-                    const deltaY = e.clientY - previousMousePosition.y;
-
-                    targetPanOffset.x += deltaX * 0.03;
-                    targetPanOffset.y -= deltaY * 0.03;
-
+                    const dx = e.clientX - previousMousePosition.x, dy = e.clientY - previousMousePosition.y;
+                    targetPanOffset.x += dx * 0.03; targetPanOffset.y -= dy * 0.03;
                     previousMousePosition = { x: e.clientX, y: e.clientY };
                 }
             });
-
-            canvas.addEventListener('mouseup', () => {
-                isPanning = false;
-                isRotating = false;
-            });
-
-            canvas.addEventListener('mouseleave', () => {
-                isPanning = false;
-                isRotating = false;
-            });
-
-            canvas.addEventListener('contextmenu', (e) => {
-                e.preventDefault();
-            });
-
+            canvas.addEventListener('mouseup', () => { isPanning = false; isRotating = false; });
+            canvas.addEventListener('mouseleave', () => { isPanning = false; isRotating = false; });
+            canvas.addEventListener('contextmenu', (e) => e.preventDefault());
             canvas.addEventListener('wheel', (e) => {
-                e.preventDefault();
-
-                camera.fov += e.deltaY * 0.05;
-                camera.fov = Math.max(5, Math.min(75, camera.fov));
+                e.preventDefault(); camera.fov += e.deltaY * 0.05; camera.fov = Math.max(5, Math.min(75, camera.fov));
                 camera.updateProjectionMatrix();
             });
-
             let touchStartPos = { x: 0, y: 0 };
             canvas.addEventListener('touchstart', (e) => {
                 if (e.touches.length === 1) {
-                    isRotating = true;
-                    touchStartPos = {
-                        x: e.touches[0].clientX,
-                        y: e.touches[0].clientY
-                    };
+                    isRotating = true; touchStartPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
                 }
             });
-
             canvas.addEventListener('touchmove', (e) => {
                 if (isRotating && e.touches.length === 1 && pcbModel) {
-                    const deltaX = e.touches[0].clientX - touchStartPos.x;
-                    const deltaY = e.touches[0].clientY - touchStartPos.y;
-
-                    targetRotation.y += deltaX * 0.01;
-                    targetRotation.x += deltaY * 0.01;
-
+                    const dx = e.touches[0].clientX - touchStartPos.x, dy = e.touches[0].clientY - touchStartPos.y;
+                    targetRotation.y += dx * 0.01; targetRotation.x += dy * 0.01;
                     targetRotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, targetRotation.x));
-
-                    touchStartPos = {
-                        x: e.touches[0].clientX,
-                        y: e.touches[0].clientY
-                    };
+                    touchStartPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
                 }
             });
-
-            canvas.addEventListener('touchend', () => {
-                isRotating = false;
-            });
+            canvas.addEventListener('touchend', () => { isRotating = false; });
         }
 
         function animate() {
-            if (!document.getElementById('viewerOverlay').classList.contains('active')) {
-                return;
-            }
-
+            if (!document.getElementById('viewerOverlay').classList.contains('active')) return;
             requestAnimationFrame(animate);
-
             if (pcbModel) {
                 rotation.x += (targetRotation.x - rotation.x) * 0.1;
                 rotation.y += (targetRotation.y - rotation.y) * 0.1;
-
-                pcbModel.rotation.x = rotation.x;
-                pcbModel.rotation.y = rotation.y;
-
+                pcbModel.rotation.x = rotation.x; pcbModel.rotation.y = rotation.y;
                 panOffset.x += (targetPanOffset.x - panOffset.x) * 0.1;
                 panOffset.y += (targetPanOffset.y - panOffset.y) * 0.1;
-
-                pcbModel.position.x = panOffset.x;
-                pcbModel.position.y = panOffset.y;
+                pcbModel.position.x = panOffset.x; pcbModel.position.y = panOffset.y;
             }
-
             renderer.render(scene, camera);
         }
 
         function onWindowResize() {
             if (!renderer) return;
-
             const container = document.getElementById('viewerCanvas').parentElement;
-            camera.aspect = container.clientWidth / container.clientHeight;
-            camera.updateProjectionMatrix();
+            camera.aspect = container.clientWidth / container.clientHeight; camera.updateProjectionMatrix();
             renderer.setSize(container.clientWidth, container.clientHeight);
         }
 
         document.getElementById('viewerOverlay').addEventListener('click', function (e) {
-            if (e.target === this) {
-                close3DViewer();
-            }
+            if (e.target === this) close3DViewer();
         });
     </script>
 </body>
