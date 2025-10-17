@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects - Kartikeya Babhuta</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/MTLLoader.js"></script>
@@ -16,21 +16,19 @@
         }
 
         :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #141414;
-            --bg-card: #1a1a1a;
-            --bg-hover: #222222;
-            --text-primary: #f0f0f0;
-            --text-secondary: #999999;
-            --text-dim: #666666;
-            --accent: #4A9EFF;
-            --accent-bright: #66B3FF;
-            --accent-dim: #2E5F8A;
-            --accent-pink: #FF375F;
-            --accent-blue: #0A84FF;
-            --border: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(74, 158, 255, 0.3);
-            --glow: rgba(74, 158, 255, 0.4);
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-card: #111111;
+            --cyan: #4DD0C7;
+            --cyan-bright: #66D9D0;
+            --cyan-dim: #3AA59E;
+            --cyan-dark: #2C7A75;
+            --green: #52C7BD;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0B0;
+            --text-dim: #707070;
+            --border: rgba(77, 208, 199, 0.12);
+            --glow: rgba(77, 208, 199, 0.3);
         }
 
         body {
@@ -40,27 +38,66 @@
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
+            cursor: default;
         }
 
+        /* Animated grid background */
         body::before {
             content: '';
             position: fixed;
-            inset: 0 0 auto 0;
-            height: 100vh;
-            background: radial-gradient(ellipse at top, #0f1419 0%, var(--bg-primary) 50%);
+            inset: 0;
+            background-image:
+                linear-gradient(var(--cyan) 1px, transparent 1px),
+                linear-gradient(90deg, var(--cyan) 1px, transparent 1px);
+            background-size: 100px 100px;
+            opacity: 0.03;
+            animation: gridMove 20s linear infinite;
             z-index: -1;
         }
 
-        /* Nav */
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(100px, 100px);
+            }
+        }
+
+        /* Gradient overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, transparent 0%, var(--bg-primary) 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Navigation */
         .nav {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            padding: 24px 32px;
-            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.95), transparent);
+            padding: 24px 40px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), transparent);
             backdrop-filter: blur(20px);
             z-index: 100;
+            animation: slideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .back-btn {
@@ -72,215 +109,354 @@
             font-size: 15px;
             font-weight: 500;
             position: relative;
-            transition: color .3s;
+            transition: all 0.3s ease;
         }
 
-        .back-btn::before {
+        .back-btn::after {
             content: '';
             position: absolute;
-            bottom: -2px;
+            bottom: -4px;
             left: 0;
             width: 0;
-            height: 1px;
-            background: var(--accent);
-            transition: width .3s;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyan), var(--green));
+            transition: width 0.3s ease;
         }
 
         .back-btn:hover {
-            color: var(--accent);
-            transform: translateX(-4px);
+            color: var(--cyan);
+            transform: translateX(-5px);
         }
 
-        .back-btn:hover::before {
+        .back-btn:hover::after {
             width: 100%;
         }
 
         /* Header */
         .header {
-            padding: 140px 40px 32px;
+            padding: 140px 40px 60px;
             max-width: 1400px;
             margin: 0 auto;
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .title {
-            font-size: clamp(36px, 5vw, 56px);
-            font-weight: 700;
-            margin-bottom: 12px;
+            font-size: clamp(42px, 6vw, 72px);
+            font-weight: 800;
+            margin-bottom: 16px;
             letter-spacing: -0.03em;
-            background: linear-gradient(135deg, var(--text-primary), var(--accent-bright));
+            background: linear-gradient(135deg, var(--cyan), var(--green), var(--cyan-bright));
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: gradientShift 4s ease infinite;
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
         }
 
         .subtitle {
             font-size: 18px;
             color: var(--text-secondary);
-            max-width: 820px;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
         }
 
-        /* --- TILE GRID LAYOUT (wide & consistent height) --- */
-        .timeline-container {
-            /* Reusing this class name to avoid touching your HTML; it’s now a tile grid */
+        /* Projects Grid */
+        .projects-grid {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 24px 40px 120px;
+            padding: 0 40px 120px;
             display: grid;
-            gap: 28px;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 32px;
         }
 
-        /* Hide timeline relics (kept in DOM but invisible if present) */
-        .timeline-line,
-        .project-node,
-        .project-date,
-        .progress-track {
-            display: none !important;
-        }
-
-        /* Tile cards */
-        .project-item {
-            display: flex;
-            opacity: 1;
-            transform: none;
-        }
-
-        .project-content {
+        /* Project Tile */
+        .project-tile {
+            position: relative;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: tileEntry 0.6s cubic-bezier(0.4, 0, 0.2, 1) backwards;
             display: flex;
             flex-direction: column;
-            height: 100%;
         }
 
-        .project-header {
-            padding: 20px 28px;
-            background: var(--bg-card);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            transition: all .25s ease;
+        .project-tile:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .project-tile:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .project-tile:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .project-tile:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .project-tile:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes tileEntry {
+            from {
+                opacity: 0;
+                transform: translateY(30px) rotateX(-10deg);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+            }
+        }
+
+        /* Project Thumbnail */
+        .project-thumbnail {
+            width: 100%;
+            height: 500px;
             position: relative;
             overflow: hidden;
-            min-height: 150px;
+            background: linear-gradient(135deg, var(--cyan-dark), var(--bg-secondary));
             display: flex;
-            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            /* uniform collapsed height */
+            font-size: 80px;
+            transition: all 0.3s ease;
         }
 
-        .project-header::before {
+        .project-tile:hover .project-thumbnail {
+            transform: scale(1.02);
+        }
+
+        .project-thumbnail::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(0, 0, 0, 0.3));
+        }
+
+        /* Unique gradient for each project */
+        .project-tile[data-project="hvpb"] .project-thumbnail {
+            background: url('src/assets/Projects/Pictures/HVPB.png') center/cover;
+        }
+
+        .project-tile[data-project="ev6"] .project-thumbnail {
+            background: url('src/assets/Projects/Pictures/car.jpeg') center/cover;
+        }
+
+        .project-tile[data-project="hil"] .project-thumbnail {
+            background: url('src/assets/Projects/Pictures/typhoon.png') center/cover;
+        }
+
+        .project-tile[data-project="apm"] .project-thumbnail {
+            background: url('src/assets/Projects/Pictures/paper.png') center/cover;
+        }
+
+        .project-tile[data-project="business-card"] .project-thumbnail {
+            background: linear-gradient(135deg, #3AA59E, #2C7A75);
+        }
+
+        .thumbnail-icon {
+            font-size: 100px;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));
+        }
+
+        /* Tile Header - Always visible */
+        .tile-header {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            position: relative;
+            background: var(--bg-card);
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        /* Subtle glow effect on hover */
+        .project-tile::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(135deg, var(--cyan), var(--green));
+            border-radius: 20px;
             opacity: 0;
-            transition: opacity .25s ease;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            filter: blur(15px);
         }
 
-        .project-item:hover .project-header {
-            background: var(--bg-hover);
-            border-color: var(--border-hover);
-            box-shadow: 0 6px 20px rgba(74, 158, 255, 0.25), inset 0 0 0 1px var(--border-hover);
-            transform: none;
+        .project-tile:hover::before {
+            opacity: 0.15;
         }
 
-        .project-item:hover .project-header::before {
-            opacity: 1;
+        .project-tile:hover {
+            transform: translateY(-5px);
+            border-color: rgba(77, 208, 199, 0.3);
+        }
+
+        .tile-top {
+            position: relative;
+            z-index: 2;
+        }
+
+        .project-icon {
+            display: none;
         }
 
         .project-title {
             font-size: 22px;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 8px;
             color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        .project-tile:hover .project-title {
+            color: var(--cyan-bright);
         }
 
         .project-brief {
             font-size: 14px;
             color: var(--text-secondary);
-            padding-right: 96px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            min-height: 42px;
-            /* clamp + reserve two lines */
+            line-height: 1.6;
+            margin-bottom: 16px;
         }
 
-        .expand-indicator {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-dim);
-            transition: transform .25s ease, color .25s ease;
-            font-size: 16px;
+        .tile-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .click-hint {
-            position: absolute;
-            right: 20px;
-            bottom: 16px;
-            font-size: 12px;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: .05em;
+        .project-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            background: rgba(0, 255, 224, 0.1);
+            border: 1px solid rgba(0, 255, 224, 0.3);
+            border-radius: 8px;
+            font-size: 11px;
+            color: var(--cyan);
             font-weight: 600;
-            opacity: .7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* Expandable details INSIDE the tile — grows tile height and pushes others down */
-        .project-details {
+        .expand-btn {
+            padding: 8px 20px;
+            background: rgba(0, 255, 224, 0.1);
+            border: 2px solid var(--cyan);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--cyan);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .project-tile:hover .expand-btn {
+            background: var(--cyan);
+            color: var(--bg-primary);
+            transform: scale(1.05);
+        }
+
+        .project-tile.expanded .expand-btn {
+            background: var(--cyan);
+            color: var(--bg-primary);
+        }
+
+        /* Expanded Details */
+        .tile-details {
             max-height: 0;
             overflow: hidden;
-            transition: max-height .45s cubic-bezier(.4, 0, .2, 1);
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .project-item.expanded .project-details {
-            max-height: 900px;
-        }
-
-        /* Seamless edge between header and details when expanded */
-        .project-item.expanded .project-header {
-            background: linear-gradient(135deg, var(--bg-card), var(--bg-hover));
-            border-color: var(--accent);
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-            box-shadow: 0 -2px 20px rgba(74, 158, 255, 0.1);
-            border-bottom: 0;
-        }
-
-        .project-item.expanded .expand-indicator {
-            transform: translateY(-50%) rotate(180deg);
-            color: var(--accent);
-        }
-
-        .project-item.expanded .click-hint {
-            opacity: 0;
-            pointer-events: none;
+        .project-tile.expanded .tile-details {
+            max-height: 600px;
         }
 
         .details-content {
-            padding: 32px;
-            background: linear-gradient(to bottom, var(--bg-hover), var(--bg-card));
-            border: 1px solid var(--accent);
-            border-top: none;
-            border-bottom-left-radius: 16px;
-            border-bottom-right-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            margin-top: -1px;
-            border-top: 1px solid var(--accent);
-            /* remove seam */
+            padding: 0 32px 32px;
+            animation: fadeInUp 0.4s ease;
         }
 
-        /* Skills & links */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-description {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .skills-section {
+            margin-bottom: 24px;
+        }
+
         .skills-label {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: .1em;
-            color: var(--text-dim);
+            letter-spacing: 1px;
+            color: var(--cyan);
             margin-bottom: 12px;
         }
 
@@ -288,24 +464,23 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 24px;
         }
 
         .skill-tag {
-            padding: 6px 14px;
+            padding: 8px 16px;
             background: var(--bg-secondary);
             border: 1px solid var(--border);
-            border-radius: 20px;
+            border-radius: 12px;
             font-size: 13px;
             color: var(--text-secondary);
-            transition: all .2s;
+            transition: all 0.2s ease;
         }
 
         .skill-tag:hover {
-            border-color: var(--accent);
-            color: var(--accent);
+            border-color: var(--cyan);
+            color: var(--cyan);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(74, 158, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 255, 224, 0.2);
         }
 
         .project-links {
@@ -316,15 +491,15 @@
 
         .project-link,
         .model-btn {
-            color: var(--accent);
+            padding: 12px 24px;
+            background: transparent;
+            border: 2px solid var(--cyan);
+            border-radius: 12px;
+            color: var(--cyan);
             text-decoration: none;
             font-size: 14px;
-            font-weight: 500;
-            padding: 10px 20px;
-            border: 1px solid var(--accent-dim);
-            border-radius: 10px;
-            transition: all .25s;
-            background: transparent;
+            font-weight: 600;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
             cursor: pointer;
@@ -338,24 +513,23 @@
             left: 50%;
             width: 0;
             height: 0;
+            background: var(--cyan);
             border-radius: 50%;
-            background: var(--accent);
-            transition: all .5s ease;
             transform: translate(-50%, -50%);
+            transition: all 0.5s ease;
+        }
+
+        .project-link:hover::before,
+        .model-btn:hover::before {
+            width: 300%;
+            height: 300%;
         }
 
         .project-link:hover,
         .model-btn:hover {
             color: var(--bg-primary);
-            transform: none;
-            box-shadow: 0 6px 20px rgba(74, 158, 255, 0.4);
-            border-color: var(--accent);
-        }
-
-        .project-link:hover::before,
-        .model-btn:hover::before {
-            width: 150%;
-            height: 150%;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 224, 0.4);
         }
 
         .project-link span,
@@ -364,51 +538,20 @@
             z-index: 1;
         }
 
-        /* Mobile */
-        @media (max-width:768px) {
-            .header {
-                padding: 110px 20px 20px;
-            }
-
-            .subtitle {
-                font-size: 16px;
-            }
-
-            .timeline-container {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-                gap: 18px;
-                padding: 16px 20px 80px;
-            }
-
-            .project-header {
-                min-height: 140px;
-            }
-
-            .project-brief {
-                padding-right: 72px;
-            }
-
-            .details-content {
-                padding: 24px;
-            }
-        }
-
-        /* Smooth scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* 3D Viewer */
+        /* 3D Viewer Styles */
         .viewer-overlay {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.98);
             z-index: 3000;
             display: none;
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: opacity .3s ease;
+            transition: opacity 0.3s ease;
         }
 
         .viewer-overlay.active {
@@ -422,10 +565,9 @@
             max-width: 1200px;
             height: 80vh;
             background: linear-gradient(135deg, rgba(10, 10, 10, 0.95), rgba(20, 20, 20, 0.95));
-            border: 1px solid var(--border);
+            border: 2px solid #000000;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 30px 80px rgba(10, 132, 255, 0.3);
         }
 
         .viewer-header {
@@ -444,26 +586,27 @@
         .viewer-title {
             font-size: 24px;
             font-weight: 600;
-            color: #fff;
+            color: #FFFFFF;
         }
 
         .viewer-close {
             width: 40px;
             height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--border);
+            background: rgba(0, 2, 2, 0.1);
+            border: 2px solid #FFFFFF;
             border-radius: 50%;
-            color: #fff;
+            color: #FFFFFF;
             font-size: 24px;
             cursor: pointer;
-            transition: all .3s;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .viewer-close:hover {
-            background: var(--accent-pink);
+            background: #333333;
+            color: #FFFFFF;
             transform: rotate(90deg) scale(1.1);
         }
 
@@ -478,11 +621,11 @@
             left: 50%;
             transform: translateX(-50%);
             padding: 12px 24px;
-            background: rgba(10, 132, 255, 0.9);
+            background: rgba(0, 255, 224, 0.9);
             border-radius: 100px;
-            color: #fff;
+            color: var(--bg-primary);
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             z-index: 10;
             white-space: nowrap;
             max-width: 90%;
@@ -495,19 +638,20 @@
             top: 80px;
             right: 30px;
             padding: 10px 20px;
-            background: rgba(10, 132, 255, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(0, 255, 224, 0.1);
+            border: 2px solid #000000;
             border-radius: 100px;
-            color: #fff;
+            color: #000000;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: all .3s;
+            transition: all 0.3s;
             z-index: 10;
         }
 
         .recenter-btn:hover {
-            background: var(--accent-blue);
+            background: var(--cyan);
+            color: var(--bg-primary);
             transform: scale(1.05);
         }
 
@@ -517,7 +661,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            color: #fff;
+            color: #000000;
             z-index: 10;
         }
 
@@ -528,8 +672,8 @@
         .loading-spinner {
             width: 50px;
             height: 50px;
-            border: 4px solid rgba(10, 132, 255, 0.3);
-            border-top: 4px solid var(--accent-blue);
+            border: 4px solid rgba(0, 0, 0, 0.3);
+            border-top: 4px solid #333333;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
@@ -549,12 +693,105 @@
             font-size: 16px;
             font-weight: 500;
         }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 120px 20px 40px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 0 20px 80px;
+            }
+
+            .project-tile {
+                max-width: 100%;
+                min-height: 85vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .project-thumbnail {
+                height: 50vh;
+                min-height: 300px;
+            }
+
+            /* HVPB auto-scroll animation - MOBILE ONLY */
+            .project-tile[data-project="hvpb"] .project-thumbnail {
+                background-size: cover;
+                animation: hvpbScroll 11s ease-in-out infinite;
+            }
+
+            @keyframes hvpbScroll {
+
+                0%,
+                100% {
+                    background-position: left center;
+                }
+
+                50% {
+                    background-position: right center;
+                }
+            }
+            /* EV6 auto-scroll animation - MOBILE ONLY */
+            .project-tile[data-project="ev6"] .project-thumbnail {
+                background-size: cover;
+                animation: ev6Scroll 11s ease-in-out infinite;
+            }
+
+            @keyframes ev6Scroll {
+
+                0%,
+                100% {
+                    background-position: left center;
+                }
+
+                50% {
+                    background-position: right center;
+                }
+            }
+
+            .thumbnail-icon {
+                font-size: 120px;
+            }
+
+            .tile-header {
+                padding: 24px;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+
+            .project-title {
+                font-size: 24px;
+            }
+
+            .project-brief {
+                font-size: 15px;
+            }
+
+            .viewer-container {
+                width: 95%;
+                height: 70vh;
+            }
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
     </style>
 </head>
 
 <body>
     <nav class="nav">
-        <a href="index.html" class="back-btn"><span>←</span><span>Back to Home</span></a>
+        <a href="index.html" class="back-btn">
+            <span>←</span>
+            <span>Back to Home</span>
+        </a>
     </nav>
 
     <header class="header">
@@ -563,193 +800,233 @@
         </p>
     </header>
 
-    <div class="timeline-container">
+    <div class="projects-grid">
         <!-- HVPB Project -->
-        <div class="project-item" data-project="hvpb">
-            <div class="project-content">
-                <div class="project-header">
+        <div class="project-tile" data-project="hvpb">
+            <div class="project-thumbnail">
+            </div>
+            <div class="tile-header">
+                <div class="tile-top">
+                    <div class="project-icon">⚡</div>
                     <h3 class="project-title">HVPB (HV Protection Board)</h3>
                     <p class="project-brief">600V contactor control system with integrated safety features</p>
-                    <span class="expand-indicator">▼</span>
-                    <span class="click-hint">Expand</span>
                 </div>
-                <div class="project-details">
-                    <div class="details-content">
-                        <p class="project-description">
-                            Designed and validated a fully analog high-voltage contactor control system featuring
-                            sequenced pre-charge, integrated IMD fault logic, and isolated voltage sensing via the
-                            AMC1411. Engineered for 600 V operation with robust creepage/clearance, galvanic isolation,
-                            and fault-safe latching to meet stringent FSAE safety requirements.
-                        </p>
-                        <div class="project-skills">
-                            <div class="skills-label">Technologies & Skills</div>
-                            <div class="skills-list">
-                                <span class="skill-tag">Altium Designer</span>
-                                <span class="skill-tag">600V</span>
-                                <span class="skill-tag">18 kW</span>
-                                <span class="skill-tag">Galvanic Isolation</span>
-                                <span class="skill-tag">E-Fuse</span>
-                                <span class="skill-tag">IMD Logic</span>
-                                <span class="skill-tag">Board Mount Contactors</span>
-                            </div>
+                <div class="tile-bottom">
+                    <div class="project-tags">
+                        <span class="tag">18kW</span>
+                        <span class="tag">Analog</span>
+                    </div>
+                    <div class="expand-btn">Expand</div>
+                </div>
+            </div>
+            <div class="tile-details">
+                <div class="details-content">
+                    <p class="project-description">
+                        Designed and validated a fully analog high-voltage contactor control system featuring sequenced
+                        pre-charge, integrated IMD fault logic, and isolated voltage sensing via the AMC1411. Engineered
+                        for 600 V operation with robust creepage/clearance, galvanic isolation, and fault-safe latching
+                        to meet stringent FSAE safety requirements.
+                    </p>
+                    <div class="skills-section">
+                        <div class="skills-label">Technologies & Skills</div>
+                        <div class="skills-list">
+                            <span class="skill-tag">Altium Designer</span>
+                            <span class="skill-tag">600V</span>
+                            <span class="skill-tag">18 kW</span>
+                            <span class="skill-tag">Galvanic Isolation</span>
+                            <span class="skill-tag">E-Fuse</span>
+                            <span class="skill-tag">IMD Logic</span>
+                            <span class="skill-tag">Board Mount Contactors</span>
                         </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link"><span>Technical Documentation</span></a>
-                            <a href="#" class="project-link"><span>Test Results</span></a>
-                            <button class="model-btn" onclick="open3DViewer()"><span>🔍 View 3D Model</span></button>
-                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link"><span>Technical Documentation</span></a>
+                        <a href="#" class="project-link"><span>Test Results</span></a>
+                        <button class="model-btn" onclick="open3DViewer()"><span>🔍 View 3D Model</span></button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- EV6 Project -->
-        <div class="project-item" data-project="ev6">
-            <div class="project-content">
-                <div class="project-header">
+        <div class="project-tile" data-project="ev6">
+            <div class="project-thumbnail">
+            </div>
+            <div class="tile-header">
+                <div class="tile-top">
+                    <div class="project-icon">🏎️</div>
                     <h3 class="project-title">EV6 Systems Integration</h3>
                     <p class="project-brief">FSAE electric vehicle validation and integration</p>
-                    <span class="expand-indicator">▼</span>
-                    <span class="click-hint">Expand</span>
                 </div>
-                <div class="project-details">
-                    <div class="details-content">
-                        <p class="project-description">
-                            Led the validation and integration of HV/LV subsystems for MAC Formula Electric, achieving
-                            the team's first fully operational Formula SAE electric vehicle. Implemented comprehensive
-                            safety protocols and testing procedures.
-                        </p>
-                        <div class="project-skills">
-                            <div class="skills-label">Technologies & Skills</div>
-                            <div class="skills-list">
-                                <span class="skill-tag">144s NMC Battery</span>
-                                <span class="skill-tag">Contactor Logic</span>
-                                <span class="skill-tag">Fault Handling</span>
-                                <span class="skill-tag">CAN Bus</span>
-                                <span class="skill-tag">Hardware Development</span>
-                                <span class="skill-tag">Integration</span>
-                                <span class="skill-tag">Troubleshooting</span>
-                            </div>
+                <div class="tile-bottom">
+                    <div class="project-tags">
+                        <span class="tag">FSAE</span>
+                        <span class="tag">Design</span>
+                    </div>
+                    <div class="expand-btn">Expand</div>
+                </div>
+            </div>
+            <div class="tile-details">
+                <div class="details-content">
+                    <p class="project-description">
+                        Led the validation and integration of HV/LV subsystems for MAC Formula Electric, achieving the
+                        team's first fully operational Formula SAE electric vehicle. Implemented comprehensive safety
+                        protocols and testing procedures.
+                    </p>
+                    <div class="skills-section">
+                        <div class="skills-label">Technologies & Skills</div>
+                        <div class="skills-list">
+                            <span class="skill-tag">144s NMC Battery</span>
+                            <span class="skill-tag">Contactor Logic</span>
+                            <span class="skill-tag">Fault Handling</span>
+                            <span class="skill-tag">CAN Bus</span>
+                            <span class="skill-tag">Hardware Development</span>
+                            <span class="skill-tag">Integration</span>
+                            <span class="skill-tag">Troubleshooting</span>
                         </div>
-                        <div class="project-links">
-                            <a href="https://macformularacing.com/" class="project-link" target="_blank"><span>Team
-                                    Page</span></a>
-                            <a href="https://legacy.sae.org/binaries//content/assets/cm/content/attend/student-events/results/formula-sae/fsae_ev_2024_results.pdf"
-                                class="project-link" target="_blank"><span>Competition Results</span></a>
-                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://macformularacing.com/" class="project-link" target="_blank"><span>Team
+                                Page</span></a>
+                        <a href="https://legacy.sae.org/binaries//content/assets/cm/content/attend/student-events/results/formula-sae/fsae_ev_2024_results.pdf"
+                            class="project-link" target="_blank"><span>Competition Results</span></a>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- HIL Project -->
-        <div class="project-item" data-project="hil">
-            <div class="project-content">
-                <div class="project-header">
+        <div class="project-tile" data-project="hil">
+            <div class="project-thumbnail">
+            </div>
+            <div class="tile-header">
+                <div class="tile-top">
+                    <div class="project-icon">🔧</div>
                     <h3 class="project-title">HIL Interface PCB</h3>
                     <p class="project-brief">Hardware-in-the-loop testing interface board</p>
-                    <span class="expand-indicator">▼</span>
-                    <span class="click-hint">Expand</span>
                 </div>
-                <div class="project-details">
-                    <div class="details-content">
-                        <p class="project-description">
-                            Developing a HIL interface board to connect power converter evaluation hardware to Typhoon
-                            HIL systems with precision measurement and robust debugging features.
-                        </p>
-                        <div class="project-skills">
-                            <div class="skills-label">Technologies & Skills</div>
-                            <div class="skills-list">
-                                <span class="skill-tag">Altium Designer</span>
-                                <span class="skill-tag">Typhoon HIL</span>
-                                <span class="skill-tag">4-Layer PCB</span>
-                                <span class="skill-tag">Test Points</span>
-                                <span class="skill-tag">Signal Conditioning</span>
-                            </div>
+                <div class="tile-bottom">
+                    <div class="project-tags">
+                        <span class="tag">HIL</span>
+                        <span class="tag">PCB</span>
+                    </div>
+                    <div class="expand-btn">Expand</div>
+                </div>
+            </div>
+            <div class="tile-details">
+                <div class="details-content">
+                    <p class="project-description">
+                        Developing a HIL interface board to connect power converter evaluation hardware to Typhoon HIL
+                        systems with precision measurement and robust debugging features.
+                    </p>
+                    <div class="skills-section">
+                        <div class="skills-label">Technologies & Skills</div>
+                        <div class="skills-list">
+                            <span class="skill-tag">Altium Designer</span>
+                            <span class="skill-tag">Typhoon HIL</span>
+                            <span class="skill-tag">4-Layer PCB</span>
+                            <span class="skill-tag">Test Points</span>
+                            <span class="skill-tag">Signal Conditioning</span>
                         </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link"><span>Design Files</span></a>
-                            <a href="#" class="project-link"><span>Test Methodology</span></a>
-                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link"><span>Design Files</span></a>
+                        <a href="#" class="project-link"><span>Test Methodology</span></a>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- APM Project -->
-        <div class="project-item" data-project="apm">
-            <div class="project-content">
-                <div class="project-header">
+        <div class="project-tile" data-project="apm">
+            <div class="project-thumbnail">
+            </div>
+            <div class="tile-header">
+                <div class="tile-top">
+                    <div class="project-icon">📊</div>
                     <h3 class="project-title">APM Interleaved Buck Converter</h3>
                     <p class="project-brief">3.6kW high-efficiency power converter research</p>
-                    <span class="expand-indicator">▼</span>
-                    <span class="click-hint">Expand</span>
                 </div>
-                <div class="project-details">
-                    <div class="details-content">
-                        <p class="project-description">
-                            Co-authored IECON 2025 paper on optimized design methodology for a 3.6 kW Asymmetric Pulse
-                            Modulation two-stage architecture. Achieved ~96% peak efficiency through advanced
-                            optimization techniques.
-                        </p>
-                        <div class="project-skills">
-                            <div class="skills-label">Technologies & Skills</div>
-                            <div class="skills-list">
-                                <span class="skill-tag">3.6 kW</span>
-                                <span class="skill-tag">SiC FETs</span>
-                                <span class="skill-tag">95.9% Efficient</span>
-                                <span class="skill-tag">Efficiency Mapping</span>
-                                <span class="skill-tag">IECON 2025</span>
-                            </div>
+                <div class="tile-bottom">
+                    <div class="project-tags">
+                        <span class="tag">SiC</span>
+                        <span class="tag">Research</span>
+                    </div>
+                    <div class="expand-btn">Expand</div>
+                </div>
+            </div>
+            <div class="tile-details">
+                <div class="details-content">
+                    <p class="project-description">
+                        Co-authored IECON 2025 paper on optimized design methodology for a 3.6 kW Asymmetric Pulse
+                        Modulation two-stage architecture. Achieved ~96% peak efficiency through advanced optimization
+                        techniques.
+                    </p>
+                    <div class="skills-section">
+                        <div class="skills-label">Technologies & Skills</div>
+                        <div class="skills-list">
+                            <span class="skill-tag">3.6 kW</span>
+                            <span class="skill-tag">SiC FETs</span>
+                            <span class="skill-tag">95.9% Efficient</span>
+                            <span class="skill-tag">Efficiency Mapping</span>
+                            <span class="skill-tag">IECON 2025</span>
                         </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link"><span>Conference Paper</span></a>
-                            <a href="#" class="project-link"><span>Simulation Results</span></a>
-                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link"><span>Conference Paper</span></a>
+                        <a href="#" class="project-link"><span>Simulation Results</span></a>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Business Card Project -->
-        <div class="project-item" data-project="business-card">
-            <div class="project-content">
-                <div class="project-header">
+        <div class="project-tile" data-project="business-card">
+            <div class="project-thumbnail">
+                <div class="thumbnail-icon">💳</div>
+            </div>
+            <div class="tile-header">
+                <div class="tile-top">
+                    <div class="project-icon">💳</div>
                     <h3 class="project-title">PCB Business Card (Picture Coming Soon)</h3>
                     <p class="project-brief">Functional PCB with NFC and embedded tools</p>
-                    <span class="expand-indicator">▼</span>
-                    <span class="click-hint">Expand</span>
                 </div>
-                <div class="project-details">
-                    <div class="details-content">
-                        <p class="project-description">
-                            Created a custom PCB business card integrating NFC for digital contact sharing, embedded PCB
-                            design tools, and a functional ruler. Engineered with a unique layout feature that reduces
-                            reflow manufacturing time by more than 50%, blending manufacturibility with practical
-                            utility.
-                        </p>
-                        <div class="project-skills">
-                            <div class="skills-label">Technologies & Skills</div>
-                            <div class="skills-list">
-                                <span class="skill-tag">PCB Layout</span>
-                                <span class="skill-tag">DFA & DFM</span>
-                                <span class="skill-tag">RF</span>
-                                <span class="skill-tag">Planar Coils</span>
-                                <span class="skill-tag">Utility</span>
-                                <span class="skill-tag">PCB Designer Toolkit</span>
-                            </div>
+                <div class="tile-bottom">
+                    <div class="project-tags">
+                        <span class="tag">NFC</span>
+                        <span class="tag">DFM</span>
+                    </div>
+                    <div class="expand-btn">Expand</div>
+                </div>
+            </div>
+            <div class="tile-details">
+                <div class="details-content">
+                    <p class="project-description">
+                        Created a custom PCB business card integrating NFC for digital contact sharing, embedded PCB
+                        design tools, and a functional ruler. Engineered with a unique layout feature that reduces
+                        reflow manufacturing time by more than 50%, blending manufacturibility with practical utility.
+                    </p>
+                    <div class="skills-section">
+                        <div class="skills-label">Technologies & Skills</div>
+                        <div class="skills-list">
+                            <span class="skill-tag">PCB Layout</span>
+                            <span class="skill-tag">DFA & DFM</span>
+                            <span class="skill-tag">RF</span>
+                            <span class="skill-tag">Planar Coils</span>
+                            <span class="skill-tag">Utility</span>
+                            <span class="skill-tag">PCB Designer Toolkit</span>
                         </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link"><span>Build Documentation</span></a>
-                            <a href="#" class="project-link"><span>Reflow Process</span></a>
-                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link"><span>Build Documentation</span></a>
+                        <a href="#" class="project-link"><span>Reflow Process</span></a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 3D Viewer -->
+    <!-- 3D Viewer Overlay -->
     <div class="viewer-overlay" id="viewerOverlay">
         <div class="viewer-container">
             <div class="viewer-header">
@@ -768,53 +1045,61 @@
     </div>
 
     <script>
-        // --- Tile expand/collapse ---
-        const projectItems = document.querySelectorAll('.project-item');
+        // Removed aggressive 3D tilt effect for subtlety
+        const tiles = document.querySelectorAll('.project-tile');
 
-        projectItems.forEach((item) => {
-            const header = item.querySelector('.project-header');
-            if (!header) return;
+        tiles.forEach(tile => {
+            const tileHeader = tile.querySelector('.tile-header');
 
-            const toggleProject = () => {
-                const isExpanded = item.classList.contains('expanded');
+            // Click to expand
+            tileHeader.addEventListener('click', () => {
+                const isExpanded = tile.classList.contains('expanded');
+                const expandBtn = tile.querySelector('.expand-btn');
+
                 // Close all other tiles
-                projectItems.forEach(other => { if (other !== item) other.classList.remove('expanded'); });
-                // Toggle this tile
-                item.classList.toggle('expanded');
+                tiles.forEach(otherTile => {
+                    if (otherTile !== tile) {
+                        otherTile.classList.remove('expanded');
+                        const otherBtn = otherTile.querySelector('.expand-btn');
+                        if (otherBtn) otherBtn.textContent = 'Expand';
+                    }
+                });
 
-                // Scroll opened tile into view
+                // Toggle current tile
+                tile.classList.toggle('expanded');
+
+                // Update button text
+                if (!isExpanded) {
+                    expandBtn.textContent = 'Collapse';
+                } else {
+                    expandBtn.textContent = 'Expand';
+                }
+
+                // Scroll into view smoothly
                 if (!isExpanded) {
                     setTimeout(() => {
-                        const rect = item.getBoundingClientRect();
-                        const targetY = window.scrollY + rect.top - 100;
-                        window.scrollTo({ top: targetY, behavior: 'smooth' });
+                        const rect = tile.getBoundingClientRect();
+                        const scrollTop = window.scrollY;
+                        const targetY = rect.top + scrollTop - 100;
+
+                        window.scrollTo({
+                            top: targetY,
+                            behavior: 'smooth'
+                        });
                     }, 100);
                 }
-            };
-
-            header.addEventListener('click', toggleProject);
+            });
         });
 
-        // Keyboard navigation (Up/Down to move between expanded tiles, Esc to collapse)
+        // Keyboard navigation
         document.addEventListener('keydown', (e) => {
-            const items = Array.from(projectItems);
-            const expanded = document.querySelector('.project-item.expanded');
-            const idx = expanded ? items.indexOf(expanded) : -1;
-
-            if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                const next = Math.min(items.length - 1, idx + 1);
-                items[next].querySelector('.project-header').click();
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                const prev = Math.max(0, idx - 1);
-                items[prev].querySelector('.project-header').click();
-            } else if (e.key === 'Escape' && expanded) {
-                expanded.classList.remove('expanded');
+            if (e.key === 'Escape') {
+                tiles.forEach(tile => tile.classList.remove('expanded'));
+                close3DViewer();
             }
         });
 
-        // --- 3D Viewer (unchanged functionality) ---
+        // 3D Viewer functionality
         let scene, camera, renderer, pcbModel;
         let isViewerInitialized = false;
         let previousMousePosition = { x: 0, y: 0 };
@@ -832,20 +1117,30 @@
                 init3DViewer();
                 isViewerInitialized = true;
             }
+
             animate();
         }
 
         function close3DViewer() {
-            document.getElementById('viewerOverlay').classList.remove('active');
+            const overlay = document.getElementById('viewerOverlay');
+            overlay.classList.remove('active');
         }
 
         function recenterModel() {
             if (!pcbModel) return;
-            targetPanOffset.x = 0; targetPanOffset.y = 0;
-            panOffset.x = 0; panOffset.y = 0;
-            targetRotation.x = 0; targetRotation.y = 0;
-            rotation.x = 0; rotation.y = 0;
-            camera.fov = 15; camera.updateProjectionMatrix();
+
+            targetPanOffset.x = 0;
+            targetPanOffset.y = 0;
+            panOffset.x = 0;
+            panOffset.y = 0;
+
+            targetRotation.x = 0;
+            targetRotation.y = 0;
+            rotation.x = 0;
+            rotation.y = 0;
+
+            camera.fov = 15;
+            camera.updateProjectionMatrix();
         }
 
         function init3DViewer() {
@@ -875,6 +1170,7 @@
         function loadPCBModel() {
             const objPath = 'src/assets/Projects/Models/hvpb.obj';
             const mtlPath = 'src/assets/Projects/Models/hvpb.mtl';
+
             const basePath = objPath.substring(0, objPath.lastIndexOf('/') + 1);
 
             const mtlLoader = new THREE.MTLLoader();
@@ -884,24 +1180,46 @@
                 mtlPath.substring(mtlPath.lastIndexOf('/') + 1),
                 function (materials) {
                     materials.preload();
+
                     Object.keys(materials.materials).forEach(key => {
                         const mat = materials.materials[key];
                         mat.side = THREE.DoubleSide;
-                        mat.roughness = 1.0; mat.metalness = 0.0;
+
+                        mat.roughness = 1.0;
+                        mat.metalness = 0.0;
                         mat.emissive = mat.color ? mat.color.clone() : new THREE.Color(0x000000);
                         mat.emissiveIntensity = 0.9;
+
                         if (mat.color) {
-                            const { r, g, b } = mat.color;
-                            if (r < 0.2 && g < 0.2 && b < 0.2) { mat.color.setRGB(0, 0, 0); mat.emissive.setRGB(0, 0, 0); }
-                            if (r > 0.85 && g > 0.85 && b > 0.85) { mat.color.setRGB(0.45, 0.45, 0.45); mat.emissive.setRGB(0.7, 0.7, 0.7); }
+                            const r = mat.color.r;
+                            const g = mat.color.g;
+                            const b = mat.color.b;
+
+                            if (r < 0.2 && g < 0.2 && b < 0.2) {
+                                mat.color.setRGB(0, 0, 0);
+                                mat.emissive.setRGB(0, 0, 0);
+                            }
+                            if (r > 0.85 && g > 0.85 && b > 0.85) {
+                                mat.color.setRGB(0.45, 0.45, 0.45);
+                                mat.emissive.setRGB(0.7, 0.7, 0.7);
+                            }
                         }
+
                         if (mat.map) {
                             const maxAniso = renderer.capabilities.getMaxAnisotropy();
-                            mat.map.anisotropy = maxAniso; mat.map.minFilter = THREE.LinearMipMapLinearFilter; mat.map.magFilter = THREE.LinearFilter;
-                            mat.map.generateMipmaps = true; mat.map.needsUpdate = true; mat.emissiveMap = mat.map;
+                            mat.map.anisotropy = maxAniso;
+                            mat.map.minFilter = THREE.LinearMipMapLinearFilter;
+                            mat.map.magFilter = THREE.LinearFilter;
+                            mat.map.generateMipmaps = true;
+                            mat.map.needsUpdate = true;
+                            mat.emissiveMap = mat.map;
+
                             if (mat.emissiveMap) {
-                                mat.emissiveMap.anisotropy = maxAniso; mat.emissiveMap.minFilter = THREE.LinearMipMapLinearFilter;
-                                mat.emissiveMap.magFilter = THREE.LinearFilter; mat.emissiveMap.generateMipmaps = true; mat.emissiveMap.needsUpdate = true;
+                                mat.emissiveMap.anisotropy = maxAniso;
+                                mat.emissiveMap.minFilter = THREE.LinearMipMapLinearFilter;
+                                mat.emissiveMap.magFilter = THREE.LinearFilter;
+                                mat.emissiveMap.generateMipmaps = true;
+                                mat.emissiveMap.needsUpdate = true;
                             }
                         }
                     });
@@ -909,15 +1227,29 @@
                     const objLoader = new THREE.OBJLoader();
                     objLoader.setMaterials(materials);
                     objLoader.setPath(basePath);
+
                     objLoader.load(
                         objPath.substring(objPath.lastIndexOf('/') + 1),
-                        setupLoadedModel,
-                        (xhr) => console.log('OBJ: ' + (xhr.loaded / xhr.total * 100) + '% loaded'),
-                        (error) => { console.error('Error loading OBJ:', error); createPlaceholderPCB(); }
+                        function (object) {
+                            console.log('Model loaded successfully with materials!');
+                            setupLoadedModel(object);
+                        },
+                        function (xhr) {
+                            console.log('OBJ: ' + (xhr.loaded / xhr.total * 100) + '% loaded');
+                        },
+                        function (error) {
+                            console.error('Error loading OBJ:', error);
+                            createPlaceholderPCB();
+                        }
                     );
                 },
-                (xhr) => console.log('MTL: ' + (xhr.loaded / xhr.total * 100) + '% loaded'),
-                (error) => { console.warn('MTL not found, loading OBJ without materials'); loadOBJOnly(objPath); }
+                function (xhr) {
+                    console.log('MTL: ' + (xhr.loaded / xhr.total * 100) + '% loaded');
+                },
+                function (error) {
+                    console.warn('MTL not found, loading OBJ without materials');
+                    loadOBJOnly(objPath);
+                }
             );
         }
 
@@ -925,141 +1257,269 @@
             const basePath = objPath.substring(0, objPath.lastIndexOf('/') + 1);
             const objLoader = new THREE.OBJLoader();
             objLoader.setPath(basePath);
+
             objLoader.load(
                 objPath.substring(objPath.lastIndexOf('/') + 1),
                 function (object) {
                     object.traverse(function (child) {
                         if (child.isMesh && !child.material) {
                             child.material = new THREE.MeshStandardMaterial({
-                                color: 0x2d5016, roughness: 0.6, metalness: 0.2, side: THREE.DoubleSide
+                                color: 0x2d5016,
+                                roughness: 0.6,
+                                metalness: 0.2,
+                                side: THREE.DoubleSide
                             });
                         }
                     });
+                    console.log('Model loaded without MTL file');
                     setupLoadedModel(object);
                 },
-                (xhr) => console.log('OBJ: ' + (xhr.loaded / xhr.total * 100) + '% loaded'),
-                (error) => { console.error('Error loading OBJ:', error); createPlaceholderPCB(); }
+                function (xhr) {
+                    console.log('OBJ: ' + (xhr.loaded / xhr.total * 100) + '% loaded');
+                },
+                function (error) {
+                    console.error('Error loading OBJ:', error);
+                    createPlaceholderPCB();
+                }
             );
         }
 
         function setupLoadedModel(object) {
-            if (pcbModel) scene.remove(pcbModel);
+            if (pcbModel) {
+                scene.remove(pcbModel);
+            }
+
             pcbModel = object;
 
             const box = new THREE.Box3().setFromObject(pcbModel);
             const size = box.getSize(new THREE.Vector3());
             const center = box.getCenter(new THREE.Vector3());
+
             const maxDim = Math.max(size.x, size.y, size.z);
             const scale = 8 / maxDim;
-
             pcbModel.scale.setScalar(scale);
+
             pcbModel.position.x = -center.x * scale;
             pcbModel.position.y = -center.y * scale;
             pcbModel.position.z = -center.z * scale;
+
             scene.add(pcbModel);
 
             camera.position.set(0, maxDim * 0.5, maxDim * 1.5);
             camera.lookAt(0, 0, 0);
 
-            rotation.x = 0; rotation.y = 0; targetRotation.x = 0; targetRotation.y = 0;
+            rotation.x = 0;
+            rotation.y = 0;
+            targetRotation.x = 0;
+            targetRotation.y = 0;
+
             document.getElementById('viewerLoading').classList.add('hidden');
+
+            console.log('Model centered and scaled. Size:', size, 'Scale:', scale);
         }
 
         function createPlaceholderPCB() {
+            console.warn('Loading placeholder - OBJ/MTL files not found');
+
             document.getElementById('viewerLoading').classList.add('hidden');
+
             const group = new THREE.Group();
-            const board = new THREE.Mesh(new THREE.BoxGeometry(8, 0.15, 6),
-                new THREE.MeshStandardMaterial({ color: 0x2d5016, roughness: 0.7, metalness: 0.3 }));
+
+            const boardGeometry = new THREE.BoxGeometry(8, 0.15, 6);
+            const boardMaterial = new THREE.MeshStandardMaterial({
+                color: 0x2d5016,
+                roughness: 0.7,
+                metalness: 0.3
+            });
+            const board = new THREE.Mesh(boardGeometry, boardMaterial);
             group.add(board);
+
             for (let i = 0; i < 6; i++) {
-                const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.8),
-                    new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.4, metalness: 0.6 }));
-                cap.position.set(-3 + i * 1.2, 0.5, -2); cap.rotation.x = Math.PI / 2; group.add(cap);
+                const capGeometry = new THREE.CylinderGeometry(0.3, 0.3, 0.8);
+                const capMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x1a1a1a,
+                    roughness: 0.4,
+                    metalness: 0.6
+                });
+                const cap = new THREE.Mesh(capGeometry, capMaterial);
+                cap.position.set(-3 + i * 1.2, 0.5, -2);
+                cap.rotation.x = Math.PI / 2;
+                group.add(cap);
             }
+
             for (let i = 0; i < 3; i++) {
-                const ic = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.3, 1.2),
-                    new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.3, metalness: 0.8 }));
-                ic.position.set(-2 + i * 2, 0.25, 0.5); group.add(ic);
+                const icGeometry = new THREE.BoxGeometry(1.2, 0.3, 1.2);
+                const icMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x0a0a0a,
+                    roughness: 0.3,
+                    metalness: 0.8
+                });
+                const ic = new THREE.Mesh(icGeometry, icMaterial);
+                ic.position.set(-2 + i * 2, 0.25, 0.5);
+                group.add(ic);
             }
-            for (let i = 0; i < 2; i++) {
-                const conn = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.6, 0.8),
-                    new THREE.MeshStandardMaterial({ color: 0xcccccc, roughness: 0.4, metalness: 0.9 }));
-                conn.position.set(i ? 3 : -3, 0.4, 2.5); group.add(conn);
-            }
-            const traceMat = new THREE.MeshStandardMaterial({ color: 0xb87333, roughness: 0.2, metalness: 0.9 });
+
+            const connGeometry = new THREE.BoxGeometry(1.5, 0.6, 0.8);
+            const connMaterial = new THREE.MeshStandardMaterial({
+                color: 0xcccccc,
+                roughness: 0.4,
+                metalness: 0.9
+            });
+            const conn1 = new THREE.Mesh(connGeometry, connMaterial);
+            conn1.position.set(-3, 0.4, 2.5);
+            group.add(conn1);
+
+            const conn2 = new THREE.Mesh(connGeometry, connMaterial);
+            conn2.position.set(3, 0.4, 2.5);
+            group.add(conn2);
+
+            const traceGeometry = new THREE.BoxGeometry(7, 0.01, 0.1);
+            const traceMaterial = new THREE.MeshStandardMaterial({
+                color: 0xb87333,
+                roughness: 0.2,
+                metalness: 0.9
+            });
             for (let i = 0; i < 4; i++) {
-                const trace = new THREE.Mesh(new THREE.BoxGeometry(7, 0.01, 0.1), traceMat);
-                trace.position.set(0, 0.08, -2 + i * 1.5); group.add(trace);
+                const trace = new THREE.Mesh(traceGeometry, traceMaterial);
+                trace.position.set(0, 0.08, -2 + i * 1.5);
+                group.add(trace);
             }
-            pcbModel = group; scene.add(pcbModel); pcbModel.rotation.x = -0.3;
+
+            pcbModel = group;
+            scene.add(pcbModel);
+            pcbModel.rotation.x = -0.3;
         }
 
         function setupControls(canvas) {
-            let isPanning = false, isRotating = false;
+            let isPanning = false;
+            let isRotating = false;
+
             canvas.addEventListener('mousedown', (e) => {
-                if (e.button === 0) { isRotating = true; isPanning = false; }
-                else if (e.button === 2) { isPanning = true; isRotating = false; e.preventDefault(); }
+                if (e.button === 0) {
+                    isPanning = false;
+                    isRotating = true;
+                } else if (e.button === 2) {
+                    isRotating = false;
+                    isPanning = true;
+                    e.preventDefault();
+                }
                 previousMousePosition = { x: e.clientX, y: e.clientY };
             });
+
             canvas.addEventListener('mousemove', (e) => {
                 if (isRotating && pcbModel) {
-                    const dx = e.clientX - previousMousePosition.x, dy = e.clientY - previousMousePosition.y;
-                    targetRotation.y += dx * 0.03; targetRotation.x += dy * 0.03;
+                    const deltaX = e.clientX - previousMousePosition.x;
+                    const deltaY = e.clientY - previousMousePosition.y;
+
+                    targetRotation.y += deltaX * 0.03;
+                    targetRotation.x += deltaY * 0.03;
+
                     targetRotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, targetRotation.x));
+
                     previousMousePosition = { x: e.clientX, y: e.clientY };
                 } else if (isPanning && pcbModel) {
-                    const dx = e.clientX - previousMousePosition.x, dy = e.clientY - previousMousePosition.y;
-                    targetPanOffset.x += dx * 0.03; targetPanOffset.y -= dy * 0.03;
+                    const deltaX = e.clientX - previousMousePosition.x;
+                    const deltaY = e.clientY - previousMousePosition.y;
+
+                    targetPanOffset.x += deltaX * 0.03;
+                    targetPanOffset.y -= deltaY * 0.03;
+
                     previousMousePosition = { x: e.clientX, y: e.clientY };
                 }
             });
-            canvas.addEventListener('mouseup', () => { isPanning = false; isRotating = false; });
-            canvas.addEventListener('mouseleave', () => { isPanning = false; isRotating = false; });
-            canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+            canvas.addEventListener('mouseup', () => {
+                isPanning = false;
+                isRotating = false;
+            });
+
+            canvas.addEventListener('mouseleave', () => {
+                isPanning = false;
+                isRotating = false;
+            });
+
+            canvas.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+            });
+
             canvas.addEventListener('wheel', (e) => {
-                e.preventDefault(); camera.fov += e.deltaY * 0.05; camera.fov = Math.max(5, Math.min(75, camera.fov));
+                e.preventDefault();
+
+                camera.fov += e.deltaY * 0.05;
+                camera.fov = Math.max(5, Math.min(75, camera.fov));
                 camera.updateProjectionMatrix();
             });
+
             let touchStartPos = { x: 0, y: 0 };
             canvas.addEventListener('touchstart', (e) => {
                 if (e.touches.length === 1) {
-                    isRotating = true; touchStartPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                    isRotating = true;
+                    touchStartPos = {
+                        x: e.touches[0].clientX,
+                        y: e.touches[0].clientY
+                    };
                 }
             });
+
             canvas.addEventListener('touchmove', (e) => {
                 if (isRotating && e.touches.length === 1 && pcbModel) {
-                    const dx = e.touches[0].clientX - touchStartPos.x, dy = e.touches[0].clientY - touchStartPos.y;
-                    targetRotation.y += dx * 0.01; targetRotation.x += dy * 0.01;
+                    const deltaX = e.touches[0].clientX - touchStartPos.x;
+                    const deltaY = e.touches[0].clientY - touchStartPos.y;
+
+                    targetRotation.y += deltaX * 0.01;
+                    targetRotation.x += deltaY * 0.01;
+
                     targetRotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, targetRotation.x));
-                    touchStartPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+
+                    touchStartPos = {
+                        x: e.touches[0].clientX,
+                        y: e.touches[0].clientY
+                    };
                 }
             });
-            canvas.addEventListener('touchend', () => { isRotating = false; });
+
+            canvas.addEventListener('touchend', () => {
+                isRotating = false;
+            });
         }
 
         function animate() {
-            if (!document.getElementById('viewerOverlay').classList.contains('active')) return;
+            if (!document.getElementById('viewerOverlay').classList.contains('active')) {
+                return;
+            }
+
             requestAnimationFrame(animate);
+
             if (pcbModel) {
                 rotation.x += (targetRotation.x - rotation.x) * 0.1;
                 rotation.y += (targetRotation.y - rotation.y) * 0.1;
-                pcbModel.rotation.x = rotation.x; pcbModel.rotation.y = rotation.y;
+
+                pcbModel.rotation.x = rotation.x;
+                pcbModel.rotation.y = rotation.y;
+
                 panOffset.x += (targetPanOffset.x - panOffset.x) * 0.1;
                 panOffset.y += (targetPanOffset.y - panOffset.y) * 0.1;
-                pcbModel.position.x = panOffset.x; pcbModel.position.y = panOffset.y;
+
+                pcbModel.position.x = panOffset.x;
+                pcbModel.position.y = panOffset.y;
             }
+
             renderer.render(scene, camera);
         }
 
         function onWindowResize() {
             if (!renderer) return;
+
             const container = document.getElementById('viewerCanvas').parentElement;
-            camera.aspect = container.clientWidth / container.clientHeight; camera.updateProjectionMatrix();
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
             renderer.setSize(container.clientWidth, container.clientHeight);
         }
 
         document.getElementById('viewerOverlay').addEventListener('click', function (e) {
-            if (e.target === this) close3DViewer();
+            if (e.target === this) {
+                close3DViewer();
+            }
         });
     </script>
 </body>
