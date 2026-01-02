@@ -286,22 +286,24 @@
         }
 
         .btn-primary {
-            background: var(--accent);
-            color: var(--bg);
+            background: transparent;
+            color: var(--accent);
             border-color: var(--accent);
+            border-radius: 8px;
         }
 
         .btn-primary:hover {
-            background: var(--accent-light);
-            border-color: var(--accent-light);
+            background: var(--accent);
+            color: var(--bg);
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(107, 155, 209, 0.3);
+
         }
 
         .btn-secondary {
             background: transparent;
             border-color: var(--accent);
             color: var(--accent);
+            border-radius: 8px;
         }
 
         .btn-secondary:hover {
@@ -1411,12 +1413,12 @@
     <!-- Header -->
     <header>
         <div class="logo">KB</div>
-        <nav id="nav">
-            <a href="#hero" class="nav-link active">Home</a>
-            <a href="#about" class="nav-link">About</a>
-            <a href="#experience" class="nav-link">Experience</a>
-            <a href="#skills" class="nav-link">Skills</a>
-            <a href="#social" class="nav-link">Connect</a>
+        <nav data-liquid-glass-nav>
+            <a href="#hero">Home</a>
+            <a href="#about">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#skills">Skills</a>
+            <a href="#social">Connect</a>
         </nav>
         <div class="menu-toggle" id="menuToggle">
             <span></span>
@@ -1439,6 +1441,9 @@
                         <div class="subtitle-text">🏎️ Electrical Director @ MAC Formula Electric</div>
                         <div class="subtitle-text">🚚 Incoming HV Intern @ Harbinger Motors</div>
                     </div>
+
+                    <!-- data-decrypt data-decrypt-on="view" data-decrypt-sequential="true"
+                        data-decrypt-direction="start" data-decrypt-speed="15"> decrypted text animation -->
 
                     <p class="hero-description">
                         Specializing in power electronics, PCB design, and high-voltage systems.
@@ -1918,6 +1923,9 @@
                         <div class="social-handle">/kartikeyab</div>
                     </a>
                 </div>
+                <div data-magnet-arrows="true" data-magnet-lines data-magnet-rows="5" data-magnet-columns="16"
+                    data-magnet-color="rgba(107, 155, 209, 0.4)" data-magnet-height="3.5vmin"
+                    style="width: 100%; max-width: 1500px; height: 400px; margin: 60px auto 0;"></div>
             </div>
         </div>
     </section>
